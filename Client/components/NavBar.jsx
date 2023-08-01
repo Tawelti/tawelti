@@ -1,10 +1,11 @@
 import React from 'react'
+import { View,Text } from 'react-native'
 
 function NavBar() {
   return (
-    <div>
-      
-    </div>
+    <View>
+      <Text>navbar</Text>
+    </View>
   )
 }
 

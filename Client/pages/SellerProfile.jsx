@@ -1,10 +1,11 @@
 import React from 'react'
+import {  View,Text } from 'react-native'
 
 function SellerProfile() {
   return (
-    <div>
-      
-    </div>
+    <View>
+      <Text>seller</Text>
+    </View>
   )
 }
 
