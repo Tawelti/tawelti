@@ -22,7 +22,7 @@ const Places = sequelize.define('Places', {
     allowNull: false,
   },
   images: {
-    type: DataTypes.STRING(45),
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   descreption: {
