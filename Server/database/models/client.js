@@ -22,7 +22,7 @@ const Client = sequelize.define('Client', {
     type: DataTypes.STRING(45),
     allowNull: false,
   },
-  imgage: {
+  image: {
     type: DataTypes.STRING(500),
     allowNull: true,
   },

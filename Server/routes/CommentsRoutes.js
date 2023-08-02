@@ -1,12 +1,8 @@
 const router=require("express").Router()
-const {createComments}=require("../controllers/commentsController")
+const {createComments, getAllComment, deleteOne}=require("../controllers/commentsController")
 
 
 
-router.post("/create",createComments)
-
-
-
-
-
-module.exports=router
+router.post("/:Client_id/:Places_id/:Places_Seller_id",createComments)
+router.get ("/:placeId",getAllComment)
+router.delete("/:commentId",deleteOne)
