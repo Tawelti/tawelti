@@ -10,7 +10,7 @@ export default function App() {
       <StatusBar style="auto" />
       {/* <Text>hello fares </Text>
       <Text>hello fares   </Text>  */}
-     <Comments/>
+     <Home/>
     {/* <Home/>
     <NavBar/> */}
     </View>
