@@ -3,15 +3,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import Home from './pages/ClientPages/Home';
 import NavBar from './components/NavBar';
 import Comments from './pages/ClientPages/Comments';
+import Profil from './components/SellerComponents/profil';
+
 export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       {/* <Text>hello fares </Text>
       <Text>hello fares   </Text>  */}
-     <Comments/>
-    {/* <Home/>
-    <NavBar/> */}
+     {/* <Home/> */}
+   <Profil/>
+    <NavBar/> 
     </View>
   );
 }
