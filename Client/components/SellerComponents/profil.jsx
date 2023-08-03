@@ -14,7 +14,7 @@ const Profil = () => {
   }, [])
 
   const fetch = () => {
-    axios.get('http://192.168.100.6:3000/api/seller/get/1')
+    axios.get('http://192.168.101.8:3000/api/seller/get/1')
       .then((res) => {
         console.log(res.data[0])
         setData(res.data[0]);
@@ -26,7 +26,7 @@ const Profil = () => {
   };
 
   const updateProfile = (name , email) => {
-    axios.put('http://192.168.100.6:3000/api/seller/update/1', {
+    axios.put('http://192.168.101.8:3000/api/seller/update/1', {
         name: name,
         email: email,
        
@@ -137,13 +137,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: '400',
-    wordWrap: 'break-word',
+    // wordWrap: 'break-word',
   },
   profileUsername: {
     marginTop: '3%',
     color: '#757575',
     fontSize: 12,
-    fontFamily: 'Hanuman',
+    // fontFamily: 'Hanuman',
     fontWeight: '400',
     marginLeft: '38%',
   },
