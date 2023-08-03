@@ -12,7 +12,7 @@ const Profil = () => {
   useEffect(() => {
     fetch()
   }, [])
-  
+
   const fetch = () => {
     axios.get('http://192.168.100.6:3000/api/seller/get/1')
       .then((res) => {
@@ -66,7 +66,7 @@ const Profil = () => {
         />
       </View>
       <TouchableOpacity onPress={openDialog}>
-        <Image source={require('./assets/p.png')} style={styles.icon} />
+        <Image source={require('../../assets/p.png')} style={styles.icon} />
       </TouchableOpacity>
       <Text style={styles.Username} variant="displayLarge"> {data.name}</Text>
       <Text style={styles.profileUsername}>{data.email}</Text>
