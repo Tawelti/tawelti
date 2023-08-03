@@ -54,6 +54,10 @@ const Places = sequelize.define('Places', {
     allowNull: false,
     defaultValue: 0,
   },
+  category : {
+    type : DataTypes.ENUM("coffe" , "Restaurent" , "Lounge"),
+    allowNull: false,
+  }
 },{ timestamps: false });
   
 

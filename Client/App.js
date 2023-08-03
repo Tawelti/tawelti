@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Home from './pages/ClientPages/Home';
 import NavBar from './components/NavBar';
 import Comments from './pages/ClientPages/Comments';
+
 export default function App() {
   return (
     <View style={styles.container}>

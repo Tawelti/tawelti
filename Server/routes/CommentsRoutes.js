@@ -8,4 +8,4 @@ router.get ("/:placeId",getAllComment)
 router.delete("/:commentId",deleteOne)
 
 
-module.exports=router
+module.exports = router
