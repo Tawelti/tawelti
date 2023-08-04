@@ -24,6 +24,43 @@ module.exports = {
         res.status(500).json({ error: "Failed to get places" });
       });
   },
+
+  
+  //Get all vip and approved places
+  getAllApprovedAndVipPlaces(req, res) {
+    const type=req.params.type
+    Places.findAll({
+      where: {
+        approved: true,
+        type: type,
+      },
+    })
+      .then((places) => {
+        res.status(200).json(places);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: "Failed to get places" });
+      });
+  },
+
+
+  getAllAppCategoryPlaces(req, res) {
+    const type=req.params.type
+    Places.findAll({
+      where: {
+        approved: true,
+        type: type,
+      },
+    })
+      .then((places) => {
+        res.status(200).json(places);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: "Failed to get places" });
+      });
+  },
   //Delete place by ID
   deletePlace(req, res) {
     const placeId = req.params.id;

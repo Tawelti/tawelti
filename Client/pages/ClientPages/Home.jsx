@@ -1,17 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
-
-function Home() {
+import axios from 'axios';
+const Home=()=>{
   const [currentImage, setCurrentImage] = useState(0);
+  const [places , setPlaces] = useState([])
+  const [images , setImages] = useState([""])
 
-  const images = [
-    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80",
-    "https://cdn.sortiraparis.com/images/1001/100789/834071-too-restaurant-too-hotel-paris-photos-menu-entrees.jpg",
-    'https://toohotel.com/wp-content/uploads/2022/09/TOO_restaurant_Panoramique_vue_Paris_nuit_v2-scaled.jpg'
-  ]
+  
+const getImage =(arr)=>{
+  return arr.map((e)=>{
+    return e.images
+  })
+}
+  const get = () => {
+    axios.get('http://192.168.104.5:3000/api/places/getApp&type/vip')
+      .then((res) => {
+        setPlaces(res.data)
+        setImages(getImage(res.data)); 
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
+    
+  // 192.168.104.5 
 
   const changeImage = (direction) => {
     setCurrentImage((prevIndex) => {
+      
       let newIndex = prevIndex;
       if (direction === 'next') {
         newIndex = (prevIndex + 1) % images.length
@@ -23,6 +39,7 @@ function Home() {
   }
 
   useEffect(() => {
+    get()
     const timer = setInterval(() => changeImage('next'), 4000)
     return () => clearInterval(timer)
   }, [])
@@ -36,7 +53,9 @@ function Home() {
     style={styles.lefticons}
   />
   </TouchableOpacity>
+ 
       <Image
+      
         source={{ uri: images[currentImage] }}
         style={styles.image}
       />
