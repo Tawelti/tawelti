@@ -1,30 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
+import axios from 'axios';
 function AllPlaces() {
+const [places,setPlaces]=useState([])
+
+const get = () => {
+  axios.get('http://192.168.104.5:3000/api/places/getApp&cat/coffe')
+    .then((res) => {
+      setPlaces(res.data)
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+  useEffect(()=>{
+    get()
+  },[])
   return (
     <View style={styles.places}>
-    <View style={styles.card}>
-    <View style={styles.all}>
-    <Image
-    source={{ uri: "https://www.bnina.tn/wp-content/uploads/2019/03/The-716-Lac-2-2.jpeg" }}
-    style={styles.image}
-    />
-    <Text style={styles.title}> The 716</Text>
-    <Image
-    source={{ uri: "https://static.thenounproject.com/png/766721-200.png" }}
-    style={styles.rating}
-    />
-    <Image
-    source={{ uri: "https://static.vecteezy.com/system/resources/previews/018/888/722/original/red-heart-icon-png.png" }}
-    style={styles.like}
-    />
-          <Text style={styles.category}>coffe</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Book a table> </Text>
-          </TouchableOpacity>
-        </View>
+    {places.map((e)=>(
+      
+      <View style={styles.card}>
+      <View style={styles.all}>
+      <Image
+      source={{ uri: e.images }}
+      style={styles.image}
+      />
+      <Text style={styles.title}>{e.name}</Text>
+      <Image
+      source={{ uri: "https://static.thenounproject.com/png/766721-200.png" }}
+      style={styles.rating}
+      />
+      <Image
+      source={{ uri: "https://static.vecteezy.com/system/resources/previews/018/888/722/original/red-heart-icon-png.png" }}
+      style={styles.like}
+      />
+      <Text style={styles.category}>{e.category}</Text>
+      <TouchableOpacity style={styles.button}>
+      <Text style={styles.buttonText}>Book a table> </Text>
+      </TouchableOpacity>
       </View>
+      </View>
+      ))}
     </View>
   );
 }
@@ -41,6 +59,7 @@ const styles = StyleSheet.create({
     height: 154,
     backgroundColor: 'white',
     borderRadius: 26,
+    marginBottom: 15
   },
   image: {
     width: 152,
@@ -56,7 +75,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     top: 10,
-    left: -85,
+    left: -35,
     width: 84,
     height: 84,
   },
@@ -70,19 +89,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white', // Change this color
     zIndex: 1,
-    left:-198,
+    left:-149,
     height:40,
     width:122,
     top:106
   },
   category: {
     top: 70,
-    left: -205,
+    left: -155,
     fontSize: 18
   },
   like: {
     top: 105,
-    left: -161,
+    left: -116,
     width: 44,
     height: 44,
   },

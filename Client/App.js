@@ -3,17 +3,25 @@ import { StyleSheet, Text, View } from 'react-native';
 import Home from './pages/ClientPages/Home';
 import NavBar from './components/NavBar';
 import Comments from './pages/ClientPages/Comments';
-import AllPlaces from './pages/ClientPages/AllPlaces';
+import AllCoffe from './pages/ClientPages/AllCoffe';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 export default function App() {
+  const Stack = createStackNavigator();
   return (
+    
     <View style={styles.container}>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="AllCoffe" component={AllCoffe} />
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
       <StatusBar style="auto" />
       {/* <Text>hello fares </Text>
       <Text>hello fares   </Text>  */}
-     <AllPlaces/>
-    {/* <Home/>
-    <NavBar/> */}
-    <NavBar/>
+      <Home/>
+      
     </View>
   );
 }

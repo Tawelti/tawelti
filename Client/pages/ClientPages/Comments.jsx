@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet,TouchableOpacity,FlatList  } from 'react-native';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 
 function Comments() {
-  
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://192.168.101.8:3000/api/Comments/1')
+      .then(res => {
+        setData(res.data); 
+      })
+      .catch(err => console.log(err));
+  }, []);
   return (
-  
-      <View style={styles.container}>
+    <View style={styles.root}>
+      <Text>hello fares</Text>
+      <FlatList
+        data={data}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.container}>
             <TouchableOpacity onPress={() => {}}>
-              <Image style={styles.image} source={{ uri: 'https://images.ctfassets.net/hrltx12pl8hq/3j5RylRv1ZdswxcBaMi0y7/b84fa97296bd2350db6ea194c0dce7db/Music_Icon.jpg' }} />
+              <Image style={styles.image} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }}   />
             </TouchableOpacity>
             <View style={styles.content}>
               <View style={styles.contentHeader}>
-                <Text style={styles.name}>fares</Text>
-                <Text style={styles.time}>9:58 am</Text>
+                <Text style={styles.name}>{item. Client.name }</Text>
+                {/* <Text style={styles.time}>9:58 am</Text> */}
               </View>
-              <Text rkType="primary3 mediumLine">this is the comment</Text>
+              <Text rkType="primary3 mediumLine">this is the  {item.comment}</Text>
             </View>
           </View>
-   
+        )}
+      />
+    </View>
   );
 }
 
@@ -32,10 +48,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'flex-start',
+    
   },
   content: {
     marginLeft: 16,
-    flex: 1,
+    // flex: 1,
   },
   contentHeader: {
     flexDirection: 'row',
@@ -52,10 +69,10 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     marginLeft: 20,
   },
-  time: {
-    fontSize: 11,
-    color: '#808080',
-  },
+  // time: {
+  //   fontSize: 11,
+  //   color: '#808080',
+  // },
   name: {
     fontSize: 16,
     fontWeight: 'bold',

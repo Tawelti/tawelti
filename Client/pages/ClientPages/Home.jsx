@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native'
 const Home=()=>{
   const [currentImage, setCurrentImage] = useState(0);
   const [places , setPlaces] = useState([])
   const [images , setImages] = useState([""])
-
+  const navigation = useNavigation();
   
 const getImage =(arr)=>{
   return arr.map((e)=>{
@@ -44,6 +45,10 @@ const getImage =(arr)=>{
     return () => clearInterval(timer)
   }, [])
 
+  const navigat =()=>{
+    navigation.navigate("AllCoffe",{test:"hello"})
+  }
+
   return (
     <View style={styles.home}>
     <View style={styles.leftright}>
@@ -67,12 +72,13 @@ const getImage =(arr)=>{
     </TouchableOpacity>
     </View>
       <View style={styles.allicon}>
+      <TouchableOpacity onPress={() => navigat()}>
           <Image
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/590/590749.png" }}
             style={[styles.icons, { marginRight: 25 }]}
           />
       
-       
+          </TouchableOpacity>
           <Image
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/1996/1996055.png" }}
             style={[styles.icons, { marginRight: 25 }]}

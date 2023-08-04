@@ -46,11 +46,11 @@ module.exports = {
 
 
   getAllAppCategoryPlaces(req, res) {
-    const type=req.params.type
+    const category=req.params.category
     Places.findAll({
       where: {
         approved: true,
-        type: type,
+        category: category,
       },
     })
       .then((places) => {
