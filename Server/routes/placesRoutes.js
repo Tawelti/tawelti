@@ -3,7 +3,7 @@ const { addPlace, getAllPlaces,deletePlace,getAllApprovedAndVipPlaces,getAllAppC
 
 const router = Router();
 
-router.post("/create", addPlace);
+router.post("/create/:id_seller", addPlace);
 router.get("/getPlaces", getAllPlaces);
 router.get("/getApp&type/:type", getAllApprovedAndVipPlaces);
 router.get("/getApp&cat/:category", getAllAppCategoryPlaces);

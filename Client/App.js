@@ -1,5 +1,3 @@
-// App.js
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import Home from './pages/ClientPages/Home';
@@ -19,7 +17,9 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
-      <AllCoffe/>
+     
+   
+    <NavBar/> 
     </View>
   );
 }
