@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-function AllCoffe({ navigation }) {
+function AllCoffe() {
 const [places,setPlaces]=useState([])
 
 const get = () => {
