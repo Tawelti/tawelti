@@ -1,12 +1,16 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 
 const Ratings = () => {
-  const [defaultRating, setDefaultRating] = useState(2);
+  const [defaultRating, setDefaultRating] = useState(3);
   const maxRating = [1, 2, 3, 4, 5];
-  const starImgFilled = 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png';
-  const starImgCorner = 'https://raw.githubusercontent.com/tranhonghan/images/main/star_corner.png';
 
+  const updateRate=()=>{
+    axios.put(`http://192.168.101.8:3000/api/Comments/1`,{rating:defaultRating})
+    .then(()=>alert(defaultRating))
+    .catch((err)=>console.log(err))
+  }
   const CustomRatingBar = () => {
     return (
       <View style={styles.CustomRatingBarStyle}>
@@ -15,13 +19,14 @@ const Ratings = () => {
             <TouchableOpacity
               activeOpacity={0.7}
               key={item}
-              onPress={() => setDefaultRating(item)}>
+              onPress={() => {setDefaultRating(item),updateRate()}}>
               <Image
                 style={styles.starImgStyle}
                 source={item <= defaultRating 
-                    ? { uri: starImgFilled }
-                     : { uri: starImgCorner }}
+                    ? require("../../assets/starImgFilled.png")
+                     : require("../../assets/starImgCorner.png")}
               />
+                
             </TouchableOpacity>
           );
         })}
@@ -32,8 +37,17 @@ const Ratings = () => {
   return (
     
       <SafeAreaView style={styles.container}>
-        <Text style={styles.textStyle}>Please rate:</Text>
+        <Image source={{uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png'}}/>
+        {/* <Text style={styles.textStyle}>Please rate:</Text> */}
         <CustomRatingBar />
+        {/* <Text style={styles.textStyle}>
+                        {defaultRating+'/'+ maxRating.length}
+              </Text> */}
+
+              <Image source={{uri: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2RPnZYAhkji98gWkSS6yuNFYPxxiszp85YrR04OsLB8zoqqBz"}}
+            //   onError={(error) => console.log('Image loading error:', error)}
+            />
+            
       </SafeAreaView>
    
   );
@@ -41,24 +55,40 @@ const Ratings = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
+    // flex: 1,
+    padding: 5,
+    justifyContent:'flex-start',
+    alignItems: 'center',
+    
+    borderRadius:10,
+  //  backgroundColor:'red',
+  //  height:100,
+  //  padding:-100
+  marginTop:-20
   },
-  textStyle: {
-    textAlign: 'center',
-    fontSize: 23,
-  },
+
   CustomRatingBarStyle: {
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    padding:10,
     flexDirection: 'row',
     marginTop: 30,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    shadowColor: '#000',
+    // shadowOffset: {
+    //     width: 2,
+    //     height: 2,
+    //   },
+    //   shadowOpacity: 0.25,
+    //   shadowRadius: 3.84,
+      elevation: 8,
   },
   starImgStyle: {
     width: 40,
     height: 40,
     resizeMode: 'cover',
   },
+
 });
 
 export default Ratings;

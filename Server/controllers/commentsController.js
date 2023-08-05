@@ -48,5 +48,24 @@ module.exports= {
     .catch((err) => {
       return res.status(500).send(err);
     });
- }
+ },
+ updateRate: (req, res) => {
+  const rating = req.body.rating;
+  const clientId = req.params.clientId;
+  Commentes.update(
+    { rating: rating },
+    {
+      where: {
+        Client_id: clientId, 
+      },
+    }
+  )
+    .then((status) => {
+      res.status(200).send({ message: 'Rating updated successfully' });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({ message: 'Error updating rating' });
+    });
+}
 }
