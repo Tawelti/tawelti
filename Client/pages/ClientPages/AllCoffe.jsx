@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-function AllPlaces() {
+function AllCoffe({ navigation }) {
 const [places,setPlaces]=useState([])
 
 const get = () => {
-  axios.get('http://192.168.104.5:3000/api/places/getApp&cat/coffe')
+  axios.get('http://192.168.11.164:3000/api/places/getApp&cat/coffe')
     .then((res) => {
       setPlaces(res.data)
-      console.log(res.data);
     })
     .catch((err) => {
       console.log(err);
     })
   }
+
   useEffect(()=>{
     get()
   },[])
   return (
     <View style={styles.places}>
     {places.map((e)=>(
-      
       <View style={styles.card}>
       <View style={styles.all}>
       <Image
@@ -38,11 +37,12 @@ const get = () => {
       />
       <Text style={styles.category}>{e.category}</Text>
       <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>Book a table> </Text>
+      <Text style={styles.buttonText}>Book a table </Text>
       </TouchableOpacity>
       </View>
       </View>
       ))}
+     
     </View>
   );
 }
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AllPlaces;
+export default AllCoffe;

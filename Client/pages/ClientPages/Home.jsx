@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity,Button } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native'
-const Home=()=>{
+// import { Button } from '@chakra-ui/react';
+const Home=({navigation})=>{
+  // const navigation = useNavigation()
   const [currentImage, setCurrentImage] = useState(0);
   const [places , setPlaces] = useState([])
   const [images , setImages] = useState([""])
-  const navigation = useNavigation();
+
   
 const getImage =(arr)=>{
   return arr.map((e)=>{
@@ -14,10 +15,11 @@ const getImage =(arr)=>{
   })
 }
   const get = () => {
-    axios.get('http://192.168.104.5:3000/api/places/getApp&type/vip')
+    axios.get('http://192.168.11.164:3000/api/places/getApp&type/vip')
       .then((res) => {
         setPlaces(res.data)
         setImages(getImage(res.data)); 
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -28,7 +30,7 @@ const getImage =(arr)=>{
 
   const changeImage = (direction) => {
     setCurrentImage((prevIndex) => {
-      
+      // console.log(prevIndex);
       let newIndex = prevIndex;
       if (direction === 'next') {
         newIndex = (prevIndex + 1) % images.length
@@ -45,9 +47,7 @@ const getImage =(arr)=>{
     return () => clearInterval(timer)
   }, [])
 
-  const navigat =()=>{
-    navigation.navigate("AllCoffe",{test:"hello"})
-  }
+  
 
   return (
     <View style={styles.home}>
@@ -72,14 +72,14 @@ const getImage =(arr)=>{
     </TouchableOpacity>
     </View>
       <View style={styles.allicon}>
-      <TouchableOpacity onPress={() => navigat()}>
+      <TouchableOpacity  onPress={()=>navigation.navigate("allCoffe",{screen:"AllCoffe"})}>
           <Image
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/590/590749.png" }}
             style={[styles.icons, { marginRight: 25 }]}
           />
       
           </TouchableOpacity>
-          <Image
+            <Image
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/1996/1996055.png" }}
             style={[styles.icons, { marginRight: 25 }]}
           />
