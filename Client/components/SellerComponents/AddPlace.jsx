@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Alert,Button } from "react-native";
+import { View, StyleSheet, TextInput, Alert, Button, Text } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import axios from "axios";
 
 const NewPlace = () => {
   const [name, setName] = useState("");
@@ -9,32 +11,67 @@ const NewPlace = () => {
   const [mapLocation, setMapLocation] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-const [patentImage,setPatentImage] =useState("")
-
-
+  const [patentImage, setPatentImage] = useState("");
 
   const AddButton = async () => {
     try {
       const data = {
         name,
-        images: mainImageURL,
+        images,
         description,
         phone,
         mapLocation,
         latitude,
         longitude,
-        patentImage: patentImageURL,
+        patentImage,
       };
 
-      console.log("Data:", data);
+      const response = await axios.post(
+        "http://192.168.101.7:3000/api/places/create",
+        data
+      );
+
+      console.log("Response from server:", response.data);
+      Alert.alert("Success", "New place added successfully!");
     } catch (error) {
       console.log("Error:", error);
-      Alert.alert("Error", "Failed to add new place. Please try again.");
+      Alert.alert("Error", "Failed to add a new place. Please try again.");
     }
   };
 
+  const handleMapLocationChange = (newRegion) => {
+    setMapLocation("");
+    setMapRegion(newRegion);
+    setLatitude(newRegion.latitude.toString());
+    setLongitude(newRegion.longitude.toString());
+  };
+
+  const handleSearchLocation = () => {
+    // Implement your location search logic here
+    // For example, you can use Geocoding APIs to get latitude and longitude from the location name
+    // For demonstration purposes, I am just setting random values for latitude and longitude
+    const randomLatitude = Math.random() * 180 - 90;
+    const randomLongitude = Math.random() * 360 - 180;
+    setLatitude(randomLatitude.toString());
+    setLongitude(randomLongitude.toString());
+    setMapRegion({
+      ...mapRegion,
+      latitude: randomLatitude,
+      longitude: randomLongitude,
+    });
+  };
+
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+
   return (
     <View style={styles.container}>
+      <Text style={styles.headerText}>Add Your Place</Text>
+
       <TextInput
         style={styles.input}
         placeholder="Name"
@@ -64,6 +101,7 @@ const [patentImage,setPatentImage] =useState("")
         placeholder="Map Location"
         value={mapLocation}
         onChangeText={setMapLocation}
+        onSubmitEditing={handleSearchLocation} // Search for the location when the user submits the input
       />
       <TextInput
         style={styles.input}
@@ -84,6 +122,20 @@ const [patentImage,setPatentImage] =useState("")
         onChangeText={setPatentImage}
       />
 
+      {/* Google Map */}
+      <MapView
+        style={styles.map}
+        region={mapRegion}
+        onRegionChange={handleMapLocationChange}
+      >
+        <Marker
+          coordinate={{
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
+          }}
+        />
+      </MapView>
+
       <Button title="Add" onPress={AddButton} />
     </View>
   );
@@ -97,6 +149,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingVertical: 50,
   },
+  headerText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
   input: {
     width: 300,
     height: 40,
@@ -105,11 +162,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  image: {
-    width: 200,
+  map: {
+    width: 300,
     height: 200,
-    resizeMode: "cover",
-    marginBottom: 10,
+    marginVertical: 10,
   },
 });
 
