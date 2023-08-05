@@ -13,8 +13,8 @@ export default function App() {
       {/* <Text>hello fares </Text>
       <Text>hello fares   </Text>  */}
      {/* <Home/> */}
-     <Ratings/>
-     {/* <Comments/> */}
+     {/* <Ratings/> */}
+     <Comments />
    {/* <Profil/> */}
    
     <NavBar/> 
