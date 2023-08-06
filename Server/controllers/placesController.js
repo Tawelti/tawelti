@@ -4,13 +4,10 @@ module.exports = {
   //Add Place
   addPlace(req, res) {
     const placeData = req.body;
-    const Seller_id = req.params.Seller_id;
-
-    placeData.Seller_id = Seller_id;
-
-    Places.create(placeData)
+  
+    Places.create({ ...placeData, Seller_id: req.params.Seller_id })
       .then((newPlace) => {
-        res.status(201).json(newPlace);
+        res.status(201).json({ message: "New place added successfully", place: newPlace });
       })
       .catch((error) => {
         console.error(error);
