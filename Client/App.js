@@ -1,21 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './pages/ClientPages/Home';
-import NavBar from './components/NavBar';
-import Comments from './pages/ClientPages/Comments';
-import Profil from './components/SellerComponents/profil';
-import Ratings from './components/ClientComponent/Ratings';
+import AllCoffe from './pages/ClientPages/AllCoffe';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <View style={styles.container}>
+      <NavigationContainer>
+        <Stack.Navigator>
+        <Stack.Screen name="home" component={Home} />
+        <Stack.Screen name="allCoffe" component={AllCoffe} />
+        </Stack.Navigator>
+      </NavigationContainer>
       <StatusBar style="auto" />
-      {/* <Text>hello fares </Text>
-      <Text>hello fares   </Text>  */}
-     {/* <Home/> */}
-     {/* <Ratings/> */}
-     <Comments />
-   {/* <Profil/> */}
+     
    
     <NavBar/> 
     </View>
