@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // You can replace FontAwesome with the icon library of your choice
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+import { useNavigation } from '@react-navigation/native';
 
 const Navbar = () => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.navLink}>
         <Icon name="home" size={20} color="#333" />
-        <Text style={styles.navLinkText}>Home</Text>
+        <Text style={styles.navLinkText} onPress={()=>navigation.navigate("home")}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.navLink}>
-        <Icon name="search" size={20} color="#333" />
+        <Icon name="search" size={20} color="#333"/>
         <Text style={styles.navLinkText}>Search</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.navLink}>
@@ -19,7 +22,7 @@ const Navbar = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.navLink}>
         <Icon name="user" size={20} color="#333" />
-        <Text style={styles.navLinkText}>Profile</Text>
+        <Text style={styles.navLinkText} onPress={()=>navigation.navigate("ClentProfile")} >Profile</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Replace 'FontAwesome' with the icon library you want to use
+import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = () => {
+
+  const navigation = useNavigation()
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
@@ -72,7 +75,7 @@ const SignUpScreen = () => {
           </View>
 
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Sign up</Text>
+            <Text style={styles.buttonText} onPress={()=>navigation.navigate("SignIN")}>Sign up</Text>
           </View>
 
           <Text style={styles.orText}>Or sign up with</Text>

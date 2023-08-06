@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity,Button } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import Navbar from '../../components/NavBar';
+
 // import { Button } from '@chakra-ui/react';
 const Home=()=>{
   const navigation = useNavigation()
@@ -92,6 +94,7 @@ const getImage =(arr)=>{
         />
         </TouchableOpacity>
       </View>
+      <Navbar />
     </View>
   );
 }

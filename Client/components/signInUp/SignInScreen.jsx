@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Replace 'FontAwesome' with the icon library you want to use
+import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView , Button } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';  // Replace 'FontAwesome' with the icon library you want to use
+import { useNavigation } from '@react-navigation/native';
 
 const SignInScreen = () => {
+  const navigation = useNavigation()
   const [name, setName] = useState('');
   const [Password, setPassword] = useState('');
 
@@ -59,7 +61,7 @@ const SignInScreen = () => {
           <Text style={styles.passwordForget}>Forgot Password?</Text>
 
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Sign in</Text>
+            <Text style={styles.buttonText} onPress={()=>navigation.navigate("home")}>Sign in</Text>
           </View>
 
           <Text style={styles.orText}>Or continue with</Text>
