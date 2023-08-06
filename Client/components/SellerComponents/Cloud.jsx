@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, StyleSheet, Modal, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import Cloudinary from'react-native-cloudinary'
+import Cloudinary from 'react-native-cloudinary'
 
 const Cloud = () => {
   const [picture, setPicture] = useState('');
