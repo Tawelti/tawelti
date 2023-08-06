@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-function AllCoffe() {
+function ALLResto() {
 const [places,setPlaces]=useState([])
 
 const get = () => {
-  axios.get('http://192.168.1.13:3000/api/places/getApp&cat/coffe')
+  axios.get('http://192.168.1.13:3000/api/places/getApp&cat/Restaurent')
     .then((res) => {
       setPlaces(res.data)
     })
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white', // Change this color
     zIndex: 1,
-    left:-149,
+    left:-194,
     height:40,
     width:122,
     top:106
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AllCoffe;
+export default ALLResto;
