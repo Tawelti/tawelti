@@ -16,6 +16,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
+
    <NavigationContainer>
   <StatusBar style="auto" /> 
    <Stack.Navigator
@@ -31,10 +32,13 @@ export default function App() {
   </Stack.Navigator> 
 </NavigationContainer>
   );
+
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
+
     alignItems: 'center',
     justifyContent: 'center',
   },
