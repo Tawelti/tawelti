@@ -49,7 +49,6 @@ module.exports = {
     const category=req.params.category
     Places.findAll({
       where: {
-        approved: true,
         category: category,
       },
     })

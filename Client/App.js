@@ -16,6 +16,8 @@ import ClentProfile from './pages/ClientPages/ClentProfile';
 import AllLounge from './pages/ClientPages/AllLounge';
 import AllCoffe from './pages/ClientPages/AllCoffe';
 import ALLResto from './pages/ClientPages/ALLResto';
+import Comments from './pages/ClientPages/Comments';
+import PlaceProfil from './components/ClientComponent/PlaceProfil';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +41,9 @@ export default function App() {
     <Stack.Screen name="AllLounge" component={AllLounge} />
     <Stack.Screen name="AllCoffe" component={AllCoffe} />
     <Stack.Screen name="ALLResto" component={ALLResto} />
-  </Stack.Navigator> 
+    <Stack.Screen name="Comments" component={Comments} />
+    <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
+    </Stack.Navigator> 
 </NavigationContainer>
   );
 

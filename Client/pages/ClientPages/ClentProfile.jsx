@@ -22,7 +22,7 @@ const ClentProfile = () => {
       axios.get('http://192.168.208.127:3000/api/client/get/1')
         .then((res) => {
           console.log(res.data[0])
-          setData(res.data);
+          setData(res.data[0]);
           
         })
         .catch((err) => {

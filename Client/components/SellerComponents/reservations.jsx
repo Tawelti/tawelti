@@ -12,7 +12,7 @@ useEffect(() => {
 fetch()
 },[])
     const fetch =() => {
-axios.get("http://192.168.208.127:3000/api/Reservation/get/1")
+axios.get("http://192.168.208.127:3000/api/Reservation/get/18")
 .then(res => {
     console.log(res.data)
     setData(res.data)
@@ -26,9 +26,7 @@ axios.get("http://192.168.208.127:3000/api/Reservation/get/1")
         <View>
         {data.map((e) => (
             <View key={e.id} style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>Ahmed mzali</Text>
-                </View>
+               
                 <View style={styles.infoContainer}>
                     <View style={styles.info}>
                         <Text style={styles.infoLabel}>Date:</Text>
@@ -56,10 +54,10 @@ axios.get("http://192.168.208.127:3000/api/Reservation/get/1")
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-      height: 200,
+      height: 100,
       backgroundColor: '#F8F8FA',
       borderRadius: 26,
-      marginBottom: 15
+      marginTop: 50
       },
     header: {
         width: 100,
@@ -119,8 +117,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         borderRadius: 10,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        alignItems: 'center',
     },
     goBackText: {
         color: '#313131',
