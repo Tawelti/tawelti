@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import Navbar from '../../components/NavBar';
+import Pub from '../../components/ClientComponent/pubCoffe';
+
 function AllCoffe() {
+  const navigation = useNavigation()
 const [places,setPlaces]=useState([])
 
 const get = () => {
-  axios.get('http://192.168.1.13:3000/api/places/getApp&cat/coffe')
+  axios.get('http://192.168.208.127:3000/api/places/getApp&cat/coffe')
     .then((res) => {
       setPlaces(res.data)
     })
@@ -18,7 +23,11 @@ const get = () => {
     get()
   },[])
   return (
+
     <View style={styles.places}>
+    <View style={styles.pub}>
+    <Pub />
+    </View>
     {places.map((e)=>(
       <View style={styles.card}>
       <View style={styles.all}>
@@ -37,17 +46,21 @@ const get = () => {
       />
       <Text style={styles.category}>{e.category}</Text>
       <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>Book a table </Text>
+      <Text style={styles.buttonText}  onPress={()=>navigation.navigate("PlaceProfil")}>Book a table </Text>
       </TouchableOpacity>
       </View>
       </View>
       ))}
-     
+    
+    <Navbar/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+pub : {
+marginTop : -180,
+},
   places: {
     flex: 1,
     backgroundColor: '#E7AF2F',
@@ -59,7 +72,7 @@ const styles = StyleSheet.create({
     height: 154,
     backgroundColor: 'white',
     borderRadius: 26,
-    marginBottom: 15
+    marginBottom: 15,
   },
   image: {
     width: 152,
@@ -75,7 +88,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     top: 10,
-    left: -35,
+    left: -88,
     width: 84,
     height: 84,
   },
@@ -89,19 +102,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white', // Change this color
     zIndex: 1,
-    left:-149,
+    left:-259,
     height:40,
     width:122,
     top:106
   },
   category: {
     top: 70,
-    left: -155,
+    left: -205,
     fontSize: 18
   },
   like: {
     top: 105,
-    left: -116,
+    left: -226,
     width: 44,
     height: 44,
   },

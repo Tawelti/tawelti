@@ -16,7 +16,7 @@ const SignUpScreen = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.containerImage}>
-          <Image style={styles.image} source={require('../Image/home.jpg')} />
+          <Image style={styles.image} source={{uri : "https://www.wowapps.com/wp-content/uploads/2022/06/Reserved.png"}} />
         </View>
         <View style={styles.circle} />
         <View style={styles.circle} />

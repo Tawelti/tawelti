@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    marginLeft: 40,
+   
   },
   rating: {
     top: 10,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     zIndex: 1,
     height: 40,
-    marginLeft: -70,
+    marginLeft: -100,
     width: 122,
     top: 106,
   },
