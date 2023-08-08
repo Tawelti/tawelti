@@ -3,10 +3,12 @@ const { Places } = require("../database/models/places");
 module.exports = {
     //Add Place
   addPlace(req, res) {
+    console.log(req.body);
     const placeData = req.body;
-    Places.create(placeData)
+  // if(req.body.patentimage) throw new Error('hi')
+    Places.create({ ...placeData, Seller_id: req.params.Seller_id })
       .then((newPlace) => {
-        res.status(201).json(newPlace);
+        res.status(201).json({ message: "New place added successfully", place: newPlace });
       })
       .catch((error) => {
         console.error(error);
