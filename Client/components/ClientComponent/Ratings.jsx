@@ -19,7 +19,8 @@ const Ratings = () => {
             <TouchableOpacity
               activeOpacity={0.7}
               key={item}
-              onPress={() => {setDefaultRating(item),updateRate()}}>
+              onPressIn={()=>setDefaultRating(item)}
+              onPressOut={() => {updateRate()}}>
               <Image
                 style={styles.starImgStyle}
                 source={item <= defaultRating 
@@ -38,14 +39,10 @@ const Ratings = () => {
     
       <SafeAreaView style={styles.container}>
         <Image source={{uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png'}}/>
-        {/* <Text style={styles.textStyle}>Please rate:</Text> */}
         <CustomRatingBar />
-        {/* <Text style={styles.textStyle}>
-                        {defaultRating+'/'+ maxRating.length}
-              </Text> */}
+     
 
               <Image source={{uri: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2RPnZYAhkji98gWkSS6yuNFYPxxiszp85YrR04OsLB8zoqqBz"}}
-            //   onError={(error) => console.log('Image loading error:', error)}
             />
             
       </SafeAreaView>
