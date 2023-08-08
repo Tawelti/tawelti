@@ -49,7 +49,6 @@ module.exports = {
     const category=req.params.category
     Places.findAll({
       where: {
-        approved: true,
         category: category,
       },
     })
@@ -77,4 +76,13 @@ module.exports = {
         res.status(500).json({ error: "Failed to delete place" });
       });
   },
+  getAllPlacesWhereSellerId : (req , res) => {
+    Places.findAll({where : {Seller_id : req.params.Seller_id } })
+    .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
+ }
 };

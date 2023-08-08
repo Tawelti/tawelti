@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { View, Button, Image, StyleSheet, Modal, ScrollView, Alert } from 'react-native';
+import { View, Button, StyleSheet, Modal, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Cloudinary from 'react-native-cloudinary'
 
 const Cloud = () => {
   const [picture, setPicture] = useState('');
   const [modal, setModal] = useState(false);
 
-  const _uploadImage = (photo) => {
+  const _uploadImage = (photo, setImageUrl) => {
     const data = new FormData();
-    data.append('file', photo);
-    data.append('upload_preset', '_DemoEmployee');
+    data.append('file', {
+      uri: photo.assets[0].uri,
+      type: 'image/jpg',
+      name: 'image.jpg',
+    });
+    data.append('upload_preset', 'tawelti');
     data.append('cloud_name', 'dnzfcueon');
     fetch('https://api.cloudinary.com/v1_1/dnzfcueon/image/upload', {
       method: 'POST',
@@ -21,14 +26,14 @@ const Cloud = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setPicture(data.url);
-        setModal(false);
+        setImageUrl(data.url);
         console.log(data);
       })
       .catch((err) => {
         Alert.alert('Error While Uploading');
       });
   };
+  
 
   const handleGalleryAccess = async () => {
     try {
@@ -43,13 +48,8 @@ const Cloud = () => {
         quality: 1.0,
       });
 
-      if (!result.cancelled) {
-        const uri = result.uri;
-        const type = 'image/jpg';
-        const name = result.fileName;
-        const source = { uri, type, name };
-        console.log(source);
-        _uploadImage(source);
+      if (!result.canceled) {
+        _uploadImage(result, setPicture);
       }
     } catch (error) {
       console.log('Error selecting image from gallery:', error);
@@ -69,13 +69,12 @@ const Cloud = () => {
         quality: 1.0,
       });
 
-      if (!result.cancelled) {
-        const uri = result.uri;
-        const type = 'image/jpg';
-        const name = result.fileName;
-        const source = { uri, type, name };
-        console.log(source);
-        _uploadImage(source);
+      if (!result.canceled) { 
+        const assets = result.assets;
+        if (assets && assets.length > 0) {
+          const photo = assets[0];
+          _uploadImage(photo);
+        }
       }
     } catch (error) {
       console.log('Error taking photo:', error);
@@ -83,22 +82,24 @@ const Cloud = () => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-      <View style={styles.bottomButtonContainer}>
-        <Button
-          title={picture ? 'Image Uploaded' : 'Upload Image'} 
-          style={styles.input}
-          onPress={() => setModal(true)}
-        />
-      </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.buttonContainer}>
+          <Button
+            title={picture ? 'Image Uploaded' : 'Upload Image'}
+            style={styles.input}
+            onPress={() => setModal(true)}
+          />
+        </View>
         <Modal
           animationType="slide"
           transparent={true}
           visible={modal}
           onRequestClose={() => setModal(false)}
         >
-          
           <View style={styles.modalView}>
             <View style={styles.buttonModalView}>
               <Button title="Camera" style={styles.input} onPress={_takePhoto} />
@@ -107,17 +108,28 @@ const Cloud = () => {
             <Button title="Cancel" style={styles.input} onPress={() => setModal(false)} />
           </View>
         </Modal>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center',    
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   input: {
     margin: 6,
+  },
+  buttonContainer: {
+    justifyContent: 'center', 
+    alignItems: 'center',     
+    marginBottom: 50,        
   },
   buttonModalView: {
     flexDirection: 'row',
@@ -131,12 +143,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 120,
   },
-  bottomButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    bottom: 10, // Change 'top' to 'bottom' here
-  },
 });
-
 
 export default Cloud;

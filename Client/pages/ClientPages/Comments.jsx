@@ -1,23 +1,28 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView } from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList, TextInput, ScrollView } from 'react-native';
 import Ratings from '../../components/ClientComponent/Ratings';
 
 function Comments() {
   const [data, setData] = useState([]);
   const [text, setText] =useState('')
+
+
+  const fetch =() => {
+    axios.get('http://192.168.208.127:3000/api/Comments/20')
+    .then(res => {
+      setData(res.data); 
+    })
+    .catch(err => console.log(err));
+  }
   useEffect(() => {
-    axios.get('http://192.168.101.8:3000/api/Comments/1')
-      .then(res => {
-        setData(res.data); 
-      })
-      .catch(err => console.log(err));
-  }, [data]);
+  fetch()
+  }, []);
 
 const postComment=()=>{
-axios.post('http://192.168.101.8:3000/api/Comments/1/1/1',{comment:text})
+axios.post('http://192.168.208.127:3000/api/Comments/1/20/1',{comment:text})
 .then(() => {
-  alert('done') 
+  fetch()
 })
 .catch(err => console.log(err));
 }
@@ -42,8 +47,10 @@ axios.post('http://192.168.101.8:3000/api/Comments/1/1/1',{comment:text})
           </View>
         )}
       />
+      <View style={{position:'absolute',top:580 , left : 60}}>
        <Ratings/>
-          <View style={{flex:2,flexDirection:'row',marginBottom:120}}>
+       </View>
+          <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
     
               <TextInput
         style={styles.input}
@@ -63,7 +70,6 @@ axios.post('http://192.168.101.8:3000/api/Comments/1/1/1',{comment:text})
             </TouchableOpacity>
             </View>
       
-    {/* <Image source={{uri:'https://cdn-icons-png.flaticon.com/128/149/149071.png'}}/> */}
     
     </View>
   );
@@ -103,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor:'green'
   },
     input: {
-      width:350,
+      width:320,
     height: 40,
     margin: 12,
     borderWidth: 1,
