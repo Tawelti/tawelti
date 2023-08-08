@@ -1,20 +1,36 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList, TextInput, ScrollView } from 'react-native';
+import Ratings from '../../components/ClientComponent/Ratings';
+import IPurl from '../../IPurl';
 
 function Comments() {
   const [data, setData] = useState([]);
+  const [text, setText] =useState('')
+console.log("env ", IPurl.url);
 
+  const fetch =() => {
+    axios.get(`http://${IPurl.url}:3000/api/Comments/1`)
+    .then(res => {
+      setData(res.data); 
+    })
+    .catch(err => console.log(err));
+  }
   useEffect(() => {
-    axios.get('http://192.168.101.8:3000/api/Comments/1')
-      .then(res => {
-        setData(res.data); 
-      })
-      .catch(err => console.log(err));
+  fetch()
   }, []);
+
+const postComment=()=>{
+axios.post(`http://${IPurl.url}:3000/api/Comments/1/1/1`,{comment:text})
+.then(() => {
+  fetch()
+  fetch()
+})
+.catch(err => console.log(err));
+}
   return (
     <View style={styles.root}>
-      <Text>hello fares</Text>
+      
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
@@ -28,11 +44,37 @@ function Comments() {
                 <Text style={styles.name}>{item. Client.name }</Text>
                 {/* <Text style={styles.time}>9:58 am</Text> */}
               </View>
-              <Text rkType="primary3 mediumLine">this is the  {item.comment}</Text>
+              <Text rkType="primary3 mediumLine">  {item.comment}</Text>
             </View>
           </View>
         )}
       />
+      <View style={{position:'absolute',top:580 , left : 60}}>
+       <Ratings/>
+       </View>
+          <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
+       </View>
+          <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
+    
+              <TextInput
+        style={styles.input}
+        placeholder="write your comment here "
+        onChangeText={setText}
+        value={text}
+      />
+        <TouchableOpacity
+              activeOpacity={0.7}
+              
+              onPress={() => postComment()}>
+              <Image
+                style={styles.sendIcon}
+                source={require("../../assets/sendIcon.png")}
+              />
+                
+            </TouchableOpacity>
+            </View>
+      
+    
     </View>
   );
 }
@@ -68,6 +110,16 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 22,
     marginLeft: 20,
+    backgroundColor:'green'
+  },
+    input: {
+      width:320,
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    marginBottom:80,
+    borderRadius:10
   },
   // time: {
   //   fontSize: 11,
@@ -77,6 +129,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  sendIcon:{
+    width:25,
+    height:25,
+    marginTop:20
+  },
+  // senComment:{
+  //  display:'gri'
+  // }
 });
 
 export default Comments;

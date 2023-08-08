@@ -11,11 +11,20 @@ import Cloud from './components/SellerComponents/Cloud';
 import NewPlace from './components/SellerComponents/Place';
 import SignInScreen from './components/signInUp/SignInScreen';
 import GoogleMap from './components/map/GoogleMap';
+import Home from "./pages/ClientPages/Home"
+import ClentProfile from './pages/ClientPages/ClentProfile';
+import AllLounge from './pages/ClientPages/AllLounge';
+import AllCoffe from './pages/ClientPages/AllCoffe';
+import ALLResto from './pages/ClientPages/ALLResto';
+import Comments from './pages/ClientPages/Comments';
+import PlaceProfil from './components/ClientComponent/PlaceProfil';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  
   return (
+
    <NavigationContainer>
   <StatusBar style="auto" /> 
    <Stack.Navigator
@@ -28,13 +37,23 @@ export default function App() {
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="SignIN" component={SignInScreen} />
-  </Stack.Navigator> 
+    <Stack.Screen name="home" component={Home} />
+    <Stack.Screen name="ClentProfile" component={ClentProfile} />
+    <Stack.Screen name="AllLounge" component={AllLounge} />
+    <Stack.Screen name="AllCoffe" component={AllCoffe} />
+    <Stack.Screen name="ALLResto" component={ALLResto} />
+    <Stack.Screen name="Comments" component={Comments} />
+    <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
+    </Stack.Navigator> 
 </NavigationContainer>
   );
+
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
+
     alignItems: 'center',
     justifyContent: 'center',
   },

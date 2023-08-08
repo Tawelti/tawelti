@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TextInput , Button } from 'react-native';
 import axios from 'axios';
-import Navbar from '../../components/NavBar';
+import { useNavigation } from '@react-navigation/native';
+import Places from './Places';
 
-
-const ClentProfile = () => {
-
+const Profil = () => {
+  const navigation = useNavigation()
     const [data , setData] = useState([])
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [nameInput, setNameInput] = useState('')
@@ -19,7 +19,7 @@ const ClentProfile = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.208.127:3000/api/client/get/1')
+      axios.get('http://192.168.208.127:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -31,7 +31,23 @@ const ClentProfile = () => {
     };
   
     const updateProfile = (name , email) => {
-      axios.put('http://192.168.208.127:3000/api/client/update/1', {
+      axios.put('http://192.168.208.127:3000/api/seller/update/1', {
+          name: name,
+          email: email,
+         
+        })
+        .then((res) => {
+         setRefresh(!refresh)
+         fetch()
+          console.log("here");
+          console.log(res)
+        })
+        .then((err) => {
+          console.log(err);
+        });
+    };
+    const updateProfileImage = (name , email) => {
+      axios.put('http://192.168.208.127:3000/api/seller/updateImage/1', {
           name: name,
           email: email,
          
@@ -111,7 +127,36 @@ const ClentProfile = () => {
           </View>
         </View>
       </Modal>
-      <Navbar/>
+      <View style={styles.AddButton}>
+        <Button  title="Add Place" onPress={()=>navigation.navigate("NewPlace")} />
+      </View>
+      <View style={styles.calendarContainer}>
+      <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
+        <Text style={[styles.dayText, styles.nonSelectedDayText]}>Mo</Text>
+      </View>
+      <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
+        <Text style={[styles.dayText, styles.nonSelectedDayText]}>Tu</Text>
+      </View>
+      <View style={[styles.dayBox, styles.selectedDayBox]}>
+        <Text style={[styles.dayText, styles.selectedDayText]}>We</Text>
+      </View>
+      <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
+        <Text style={[styles.dayText, styles.nonSelectedDayText]}>Th</Text>
+      </View>
+      <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
+        <Text style={[styles.dayText, styles.nonSelectedDayText]}>Fr</Text>
+      </View>
+      <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
+        <Text style={[styles.dayText, styles.nonSelectedDayText]}>Sa</Text>
+      </View>
+      <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
+        <Text style={[styles.dayText, styles.nonSelectedDayText]}>Su</Text>
+      </View>
+    </View>
+ 
+    <View style={styles.containerPlaces}>
+      <Places  />
+    </View>
     </View>
 
   
@@ -207,7 +252,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: '100%',
-    marginTop : -260,
+    marginTop : -470,
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 24,
@@ -254,12 +299,15 @@ const styles = StyleSheet.create({
     width: '90%',
     height: '40%',
     borderRadius : 40 ,
-    marginTop: -330,
+    marginTop: -300,
     marginLeft : 20,
 
     overflow: 'hidden',
     background: 'linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%)',
   },
+  AddButton : {
+    marginTop : 170
+  }
 });
 
-export default ClentProfile;
+export default Profil;
