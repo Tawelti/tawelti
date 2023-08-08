@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Alert, Button, Text, Image, ActivityIndicator, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import apiKey from '../map/Keys';
+require ('dotenv').config()
 
 const CloudUpload = ({ setImage, buttonText }) => {
   const [modal, setModal] = useState(false);
@@ -138,7 +138,7 @@ console.log(patentImage?"patentImage"+  patentImage : "patentImage um");
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
           address
-        )}&key=${apiKey}`
+        )}&key=${process.env.apiKey}`
       );
 
       if (response.data.results.length > 0) {

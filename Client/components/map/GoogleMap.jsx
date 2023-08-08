@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import apiKey from "../map/Keys";
+require ('dotenv').config()
+
 
 const GoogleMap = () => {
   const [placeName, setPlaceName] = useState("");
@@ -10,7 +11,7 @@ const GoogleMap = () => {
 
   const handleSearch = () => {
     fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${placeName}&key=${apiKey}`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${placeName}&key=${process.env.apiKey}`
     )
       .then((response) => response.json())
       .then((data) => {
