@@ -18,7 +18,7 @@ const Navbar = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.navLink}>
         <Icon name="history" size={20} color="#333" />
-        <Text style={styles.navLinkText}>History</Text>
+        <Text style={styles.navLinkText} >History</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.navLink}>
         <Icon name="user" size={20} color="#333" />
