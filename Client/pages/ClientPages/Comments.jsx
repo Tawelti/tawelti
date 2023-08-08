@@ -2,14 +2,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList, TextInput, ScrollView } from 'react-native';
 import Ratings from '../../components/ClientComponent/Ratings';
+import IPurl from '../../IPurl';
 
 function Comments() {
   const [data, setData] = useState([]);
   const [text, setText] =useState('')
-
+console.log("env ", IPurl.url);
 
   const fetch =() => {
-    axios.get('http://192.168.208.127:3000/api/Comments/20')
+    axios.get(`http://${IPurl.url}:3000/api/Comments/1`)
     .then(res => {
       setData(res.data); 
     })
@@ -20,8 +21,9 @@ function Comments() {
   }, []);
 
 const postComment=()=>{
-axios.post('http://192.168.208.127:3000/api/Comments/1/20/1',{comment:text})
+axios.post(`http://${IPurl.url}:3000/api/Comments/1/1/1`,{comment:text})
 .then(() => {
+  fetch()
   fetch()
 })
 .catch(err => console.log(err));
@@ -49,6 +51,8 @@ axios.post('http://192.168.208.127:3000/api/Comments/1/20/1',{comment:text})
       />
       <View style={{position:'absolute',top:580 , left : 60}}>
        <Ratings/>
+       </View>
+          <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
        </View>
           <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
     

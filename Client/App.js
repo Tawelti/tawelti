@@ -22,6 +22,7 @@ import PlaceProfil from './components/ClientComponent/PlaceProfil';
 const Stack = createStackNavigator();
 
 export default function App() {
+  
   return (
 
    <NavigationContainer>
