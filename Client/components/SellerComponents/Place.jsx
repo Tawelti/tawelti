@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Alert, Button, Text, Image } from "react-native";
+import { View, StyleSheet, TextInput, Alert, Button, Text } from "react-native";
 import axios from "axios";
 import Cloud from "./Cloud"; 
 
 const NewPlace = () => {
   const [name, setName] = useState("");
-  const [descreption, setDescreption] = useState("");
+  const [description, setDescription] = useState("");
   const [phone, setPhone] = useState("");
   const [mapLocation, setMapLocation] = useState("");
   const [latitude, setLatitude] = useState("");
@@ -13,40 +13,33 @@ const NewPlace = () => {
   const [images, setImages] = useState("");
   const [patentImage, setPatentImage] = useState("");
 
-  const AddPlace = async () => {
+  const AddButton = async () => {
     try {
-      const placeData = {
+      const data = {
         name,
-        descreption,
+        description,
         phone,
         mapLocation,
-        Latitude: parseFloat(latitude),
-        Longitude: parseFloat(longitude),
+        latitude,
+        longitude,
         images,
         patentImage,
       };
-  
-      const apiUrl = 'http://192.168.240.150:3000/api/places/add/1';
-  
-      const response = await axios.post(apiUrl, placeData);
-  
-      if (response.status === 201) {
-        console.log('New place added:', response.data.place);
-        Alert.alert('Success', 'New place added successfully');
-      } else {
-        throw new Error('Failed to add a new place');
-      }
+
+      const response = await axios.post(
+        "http://192.168.1.77:3000/api/places/create/:Seller_id",
+        data
+      );
+      console.log("Response from server:", response.data);
+      Alert.alert("Success", "New place added successfully!");
     } catch (error) {
-      console.error('Error adding place:', error.message);
-      Alert.alert('Error', 'Failed to add a new place');
+      console.log("Error:", error);
+      Alert.alert("Error", "Failed to add a new place. Please try again.");
     }
   };
-  
 
   return (
     <View style={styles.container}>
-      <Image source={require("../Image/Tawelti.png")} style={styles.logo} />
-
       <Text style={styles.headerText}>Add Your Place</Text>
 
       <TextInput
@@ -59,8 +52,8 @@ const NewPlace = () => {
       <TextInput
         style={styles.input}
         placeholder="Description"
-        value={descreption}
-        onChangeText={setDescreption}
+        value={description}
+        onChangeText={setDescription}
       />
 
       <TextInput
@@ -103,7 +96,7 @@ const NewPlace = () => {
         buttonText={patentImage ? "Patent Image Uploaded" : "Select Patent Image"}
       />
 
-      <Button title="Add" onPress={AddPlace} />
+      <Button title="Add" onPress={AddButton} />
     </View>
   );
 };
@@ -115,12 +108,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     paddingVertical: 100,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-    resizeMode: "contain",
   },
   headerText: {
     fontSize: 24,
