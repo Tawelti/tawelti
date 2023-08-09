@@ -13,4 +13,13 @@ module.exports= {
             res.status(500).send(err);
           });
     },
+    deleteById : (req , res) => {
+Reservation.destroy({ where: { id: req.params.id } })
+.then((result) => {
+  res.json(result);
+})
+.catch((err) => {
+  res.status(500).send(err);
+})
+  }
  }
