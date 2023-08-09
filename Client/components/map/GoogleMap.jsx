@@ -9,7 +9,6 @@ const GoogleMap = () => {
 
   const handleSearch = () => {
  
-    const apiKey = 'AIzaSyDU7Z_rvxCYiZlr4FS7O9dsoMEohohka64';
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${placeName}&key=${apiKey}`)
       .then((response) => response.json())
       .then((data) => {
