@@ -1,1 +1,0 @@
-module.exports={url:'192.168.101.8'}

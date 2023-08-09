@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-require ('dotenv').config()
-
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 const GoogleMap = () => {
-  const [placeName, setPlaceName] = useState("");
+  const [placeName, setPlaceName] = useState('');
   const [location, setLocation] = useState(null);
   const [mapReady, setMapReady] = useState(false);
 
   const handleSearch = () => {
-    fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${placeName}&key=${process.env.apiKey}`
-    )
+ 
+    const apiKey = 'AIzaSyDU7Z_rvxCYiZlr4FS7O9dsoMEohohka64';
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${placeName}&key=${apiKey}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.results.length > 0) {
@@ -21,15 +19,15 @@ const GoogleMap = () => {
         }
       })
       .catch((error) => {
-        console.error("Error fetching location:", error);
+        console.error('Error fetching location:', error);
       });
   };
 
   const initialRegion = {
-    latitude: 40.7128,
-    longitude: -74.006,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitude: 40.7128, 
+    longitude: -74.0060,
+    latitudeDelta: 0.0922, 
+    longitudeDelta: 0.0421, 
   };
 
   const handleMapReady = () => {
@@ -77,7 +75,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 8,
     marginBottom: 8,
