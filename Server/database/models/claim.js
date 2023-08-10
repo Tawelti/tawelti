@@ -11,6 +11,7 @@ const Claim = sequelize.define('Claim', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
+    autoIncrement: true
   },
   content: {
     type: DataTypes.STRING(255),
