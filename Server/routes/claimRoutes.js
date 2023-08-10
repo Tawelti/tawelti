@@ -3,7 +3,7 @@ const {createClaim}=require("../controllers/claimController")
 
 
 
-router.post("/create",createClaim)
+router.post("/:Client_id/:Places_id",createClaim)
 
 
 
