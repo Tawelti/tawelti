@@ -1,11 +1,11 @@
 const router=require("express").Router()
-const {createReservation , findAll}=require("../controllers/reservationController")
+const {addReservation,findAll,deleteReservation}=require("../controllers/reservationController")
 
 
 
-router.post("/create",createReservation)
-router.get("/get/:Places_id",findAll)
-
+router.post("/add/:Client_Id/:Places_Id",addReservation)
+router.get("/get/:id",findAll)
+router.delete("/delete/:reservationId",deleteReservation)
 
 
 
