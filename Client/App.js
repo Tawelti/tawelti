@@ -20,7 +20,7 @@ import Comments from './pages/ClientPages/Comments';
 import PlaceProfil from './components/ClientComponent/PlaceProfil';
 import Claim from './components/ClientComponent/Claim';
 import ReservationDetails from './components/ClientComponent/ReservationDetails';
-
+import ProfilePayment from './components/SellerComponents/ProfilePayment';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -32,7 +32,7 @@ export default function App() {
     screenOptions={{
       headerShown: false,
     }}
-    initialRouteName="Loading"
+    initialRouteName="Profile"
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
     <Stack.Screen name="Home" component={HomeScreen} />
