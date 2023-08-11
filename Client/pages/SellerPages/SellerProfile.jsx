@@ -5,7 +5,6 @@ import Profil from '../../components/SellerComponents/profil';
 import Reservations from '../../components/SellerComponents/reservations';
 import NewPlace from './../../components/SellerComponents/Place';
 import Places from './../../components/SellerComponents/Places';
-import AddMenu from '../../components/SellerComponents/AddMenu';
 import Menu from "../../components/SellerComponents/Menu"
 import Drinks from '../../components/SellerComponents/Category/Drinks';
 import Food from '../../components/SellerComponents/Category/Food';
@@ -25,7 +24,6 @@ const SellerProfile = () => {
       <Stack.Screen name="Places" component={Places} />
       <Stack.Screen name="Reservations" component={Reservations} />
       <Stack.Screen name="NewPlace" component={NewPlace} />
-      <Stack.Screen name="AddMenu" component={AddMenu} />
       <Stack.Screen name="Menu" component={Menu} />
       <Stack.Screen name="Food" component={Food} />
       <Stack.Screen name="Drinks" component={Drinks} />
