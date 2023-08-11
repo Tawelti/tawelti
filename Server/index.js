@@ -16,6 +16,7 @@ const sellerRoutes = require("./routes/sellerRoutes");
 const tablesRoutes = require("./routes/tablesRoutes");
 
 
+
 const PORT = process.env.PORT || 3000;
 
 
@@ -32,7 +33,7 @@ app.use("api/Claim" , ClaimRouter)
 app.use("/api/Admin" , AdminRoutes)
 app.use("/api/client", clientRoutes);
 app.use("/api/Comments", CommentsRoutes);
-app.use("/api/menu", ProductsRoutes);
+app.use("/api/Product", ProductsRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/places", placesRoutes);
 app.use("/api/Reservation", ReservationRoutes);

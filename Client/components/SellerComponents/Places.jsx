@@ -37,8 +37,9 @@ const Places = () => {
               source={{ uri: 'https://static.thenounproject.com/png/766721-200.png' }}
               style={styles.rating}
             />
-            <Text style={styles.category}>{e.category}</Text>
-
+            <TouchableOpacity style={styles.ButtonMenu}   onPress={() => navigation.navigate('Menu')}>
+              <Text style={styles.buttonText}>Menu</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button}   onPress={() => navigation.navigate('Reservations')}>
               <Text style={styles.buttonText}>Reservations</Text>
             </TouchableOpacity>
@@ -99,14 +100,24 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     zIndex: 1,
     height: 40,
-    marginLeft: -100,
+    marginLeft: -90,
     width: 122,
     top: 106,
   },
-  category: {
-    top: 70,
-    marginLeft: -80,
-    fontSize: 18,
+  ButtonMenu: {
+    paddingVertical: 10,
+    paddingHorizontal: 17,
+    backgroundColor: '#E7AF2F',
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'white',
+    zIndex: 1,
+    height: 40,
+    marginLeft: -100,
+    width: 122,
+    top: 65,
   },
   drawerContainer: {
     flex: 1,

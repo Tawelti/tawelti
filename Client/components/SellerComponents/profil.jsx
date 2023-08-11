@@ -5,7 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import Places from './Places';
 
 const Profil = () => {
-  const navigation = useNavigation()
+  
+    const navigation = useNavigation()
     const [data , setData] = useState([])
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [nameInput, setNameInput] = useState('')
@@ -88,6 +89,7 @@ const Profil = () => {
       <TouchableOpacity onPress={openDialog}>
         <Image source={require('../../assets/p.png')} style={styles.icon} />
       </TouchableOpacity>
+
       <Text style={styles.Username} variant="displayLarge"> {data.name}</Text>
       <Text style={styles.profileUsername}>{data.email}</Text>
 </View>
@@ -124,6 +126,9 @@ const Profil = () => {
             <TouchableOpacity style={styles.buttonRed} onPress={closeDialog}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
+
+
+            
           </View>
         </View>
       </Modal>
