@@ -18,6 +18,8 @@ import AllCoffe from './pages/ClientPages/AllCoffe';
 import ALLResto from './pages/ClientPages/ALLResto';
 import Comments from './pages/ClientPages/Comments';
 import PlaceProfil from './components/ClientComponent/PlaceProfil';
+import Claim from './components/ClientComponent/Claim';
+import ReservationDetails from './components/ClientComponent/ReservationDetails';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +34,7 @@ export default function App() {
     }}
     initialRouteName="Loading"
   >
-    <Stack.Screen name="Loading" component={LoadingScreen} />
+    <Stack.Screen name="Loading" component={LoadingScreen }  />
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="SignIN" component={SignInScreen} />
@@ -43,18 +45,11 @@ export default function App() {
     <Stack.Screen name="ALLResto" component={ALLResto} />
     <Stack.Screen name="Comments" component={Comments} />
     <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
+    <Stack.Screen name="Claim" component={Claim} />
+    <Stack.Screen name="ReservationDetails" component={ReservationDetails} />
     </Stack.Navigator> 
 </NavigationContainer>
   );
 
-}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  }
 
