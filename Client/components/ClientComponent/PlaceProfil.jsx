@@ -84,7 +84,10 @@ const PlaceProfil = () => {
         <Text style={styles.buttonText}  onPress={()=>navigation.navigate("Comments")}>Comments</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Reserve Now</Text>
+        <Text style={styles.buttonText} onPress={()=>navigation.navigate("ReservationDetails")}>Reserve Now</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText} onPress={()=>navigation.navigate("Claim")}>Claim</Text>
       </TouchableOpacity>
     </View>
   );
