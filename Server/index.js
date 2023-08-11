@@ -14,7 +14,7 @@ const placesRoutes = require("./routes/placesRoutes");
 const ReservationRoutes = require("./routes/ReservationRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
 const tablesRoutes = require("./routes/tablesRoutes");
-
+const payment =require("./routes/PaymentRoutes")
 
 
 const PORT = process.env.PORT || 3000;
@@ -39,7 +39,7 @@ app.use("/api/places", placesRoutes);
 app.use("/api/Reservation", ReservationRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/tables", tablesRoutes);
-
+app.use("/api/payment",payment)
 
 
 sequelize.sync().then(() => console.log("database connected"));
