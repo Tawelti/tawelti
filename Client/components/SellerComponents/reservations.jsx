@@ -1,5 +1,5 @@
 import React , {useState , useEffect} from 'react';
-import { View, Text , StyleSheet , TouchableOpacity , ScrollView} from 'react-native';
+import { View, Text , StyleSheet , TouchableOpacity , ScrollView , Button} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
@@ -21,6 +21,17 @@ axios.get("http://192.168.208.127:3000/api/Reservation/get/18")
     console.log(err)
 })
     }
+
+const deleteRes = (id) => {
+    axios.delete(`http://192.168.208.127:3000/api/Reservation/delete/${id}`)
+    .then(res => {
+        console.log(res.data)
+       fetch()
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
     return (
         <ScrollView>
         <View>
@@ -41,6 +52,7 @@ axios.get("http://192.168.208.127:3000/api/Reservation/get/18")
                         <Text style={styles.infoValue}>12345 67890</Text>
                     </View>
                 </View>
+                <Button title="delete" onPress={() => deleteRes(e.id)}/>
             </View>
         ))}
         <TouchableOpacity style={styles.cancelButton}>
@@ -105,6 +117,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop : 70,
+        marginLeft : 150
     },
     buttonText: {
         color: '#313131',
