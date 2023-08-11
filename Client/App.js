@@ -35,6 +35,7 @@ export default function App() {
     initialRouteName="Profile"
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
+    <Stack.Screen name="Profile" component={ProfilePayment} />
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="SignIN" component={SignInScreen} />
