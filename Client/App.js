@@ -18,7 +18,7 @@ import AllCoffe from './pages/ClientPages/AllCoffe';
 import ALLResto from './pages/ClientPages/ALLResto';
 import Comments from './pages/ClientPages/Comments';
 import PlaceProfil from './components/ClientComponent/PlaceProfil';
-
+import ProfilePayment from './components/SellerComponents/ProfilePayment';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -30,8 +30,9 @@ export default function App() {
     screenOptions={{
       headerShown: false,
     }}
-    initialRouteName="Loading"
+    initialRouteName="Profile"
   >
+  <Stack.Screen name="Profile" component={ProfilePayment} />
     <Stack.Screen name="Loading" component={LoadingScreen} />
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />

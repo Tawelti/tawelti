@@ -1,6 +1,6 @@
 //this is in the back 
 const { default: axios }=require("axios")
-require('dotenv').config()
+// require('env').config()
 module.exports={
 Add: async (req,res)=>{
     let amount=parseFloat(req.params.amount)
