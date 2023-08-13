@@ -9,7 +9,7 @@ import Menu from "../../components/SellerComponents/Menu"
 import Drinks from '../../components/SellerComponents/Category/Drinks';
 import Food from '../../components/SellerComponents/Category/Food';
 import Chicha from '../../components/SellerComponents/Category/Chicha';
-import Dessert from '../../components/SellerComponents/Category/Dessert';
+import Dessertt from '../../components/SellerComponents/Category/Dessertt';
 
 
 
@@ -27,9 +27,8 @@ const SellerProfile = () => {
       <Stack.Screen name="Menu" component={Menu} />
       <Stack.Screen name="Food" component={Food} />
       <Stack.Screen name="Drinks" component={Drinks} />
-      <Stack.Screen name="Dessert" component={Dessert} />
+      <Stack.Screen name="Dessertt" component={Dessertt} />
       <Stack.Screen name="Chicha" component={Chicha} />
-
     </Stack.Navigator>
     
   </NavigationContainer>

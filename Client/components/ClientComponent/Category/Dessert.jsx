@@ -13,7 +13,7 @@ const Dessert = () => {
 
 
   const fetch = () => {
-      axios.get("http://192.168.191.127:3000/api/Product/getAll/1/Dessert") 
+      axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Dessert") 
       .then(res => {
         setData(res.data)
       })
@@ -21,48 +21,75 @@ const Dessert = () => {
         console.log(err)
       })
   }
+  const createOrder = (productId) => {
+    const Order = {
+      ClientId: 1,
+      Products_id: productId,
+      Reservation_id: 1, 
+      paymentstatus: 'false',
+    };
+
+    axios.post("http://192.168.169.127:3000/api/order/create", Order)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
 fetch()
   },[])
   return (
 
-    <View style={styles.containerCategory}>
-    <View style={styles.divider}></View>
-    <View style={styles.tabContainer}>
-      <View style={styles.tab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Dessertt")}>Dessert</Text>
+  <View style={styles.containerCategory}>
+      <View style={styles.divider}></View>
+      <View style={styles.tabContainer}>
+        <View style={styles.tab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
+        </View>
+        <View style={styles.tab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
+        </View>
+        <View style={styles.tab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+        </View>
+        <View style={styles.activeTab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+        </View>
       </View>
-      <View style={styles.tab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Food")}>Food</Text>
-      </View>
-      <View style={styles.tab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Chicha")}>Chicha</Text>
-      </View>
-      <View style={styles.activeTab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Drinks")}>Drinks</Text>
-      </View>
-    </View>
 
-    <ScrollView style={styles.scrollViewContent}>
-      <View style={styles.container}>
-        {data.map((el) => (
-          <View key={el.id} style={styles.menuItem}>
-            <Image style={styles.image} source={{ uri: el.image }} />
-            <Text style={styles.itemName}>{el.productname}</Text>
-            <Text style={styles.itemPrice}>${el.price}</Text>
-            <View style={styles.addButton}>
-              <Text style={styles.addButtonText}>Edit</Text>
+      <ScrollView  style={styles.scrollViewContent}>
+        <View style={styles.containeer}>
+          {data.map((el) => (
+            <View key={el.id} style={styles.menuItem}>
+              <Image style={styles.image} source={{ uri: el.image }} />
+              <Text style={styles.itemName}>{el.productname}</Text>
+              <Text style={styles.itemPrice}>${el.price}</Text>
+              <TouchableOpacity style={styles.addButton}>
+                <Text style={styles.addButtonText} onPress={() => {
+                    createOrder(el.id)
+                    alert("added to card")
+                  }}>+</Text>
+              </TouchableOpacity>
+              <View style={styles.dividerMenu}></View>
             </View>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+            
+          ))}
+        </View>
+       
+      </ScrollView>
   </View>
 );
 };
 
 const styles = StyleSheet.create({
+  containeer: {
+    width: '100%',
+    height: '100%',
+  
+  },
   header: {
     width: "100%",
     height: 140,
@@ -122,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop : "20%",
-    marginLeft : "83%"
+    marginLeft : "73%"
   },
   addButtonText: {
     color: 'white',
@@ -158,7 +185,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  paddingVertical: 23,
+  paddingVertical: 25,
   },
   tab: {
     flex: 1,

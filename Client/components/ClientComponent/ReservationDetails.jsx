@@ -1,7 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const ReservationDetails = () => {
+
+  const navigation = useNavigation()
+
   return (
 <View style={styles.containerCategory}>
 <View style={styles.divider}></View>
@@ -11,7 +16,7 @@ const ReservationDetails = () => {
           <Text style={styles.tabText} onPress={()=>navigation.navigate("Booking")}>Booking</Text>
         </View>
         <View style={styles.tab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Menu</Text>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("menu")}>Menu</Text>
         </View>
         
       </View>

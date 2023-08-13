@@ -14,7 +14,7 @@ const Places = () => {
 
   const fetch = () => {
     axios
-      .get('http://192.168.208.127:3000/api/places/get/1')
+      .get('http://192.168.191.127:3000/api/places/get/1')
       .then((res) => {
         console.log("places",res.data);
         setData(res.data);

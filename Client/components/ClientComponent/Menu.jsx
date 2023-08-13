@@ -1,20 +1,16 @@
-import React  , {useState , useEffect} from 'react';
-import { View, Text, Image,StyleSheet , ScrollView , TouchableOpacity, TextInput , Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import Cloud from "../Cloud.jsx"; 
 
-const Chicha = () => {
+
+const Menu = () => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
-    const [isDialogOpen, setDialogOpen] = useState(false)
-    const [nameInput, setNameInput] = useState('')
-    const [price, setPrice] = useState('')
-    const [image, setImage] = useState('')
 
 
     const fetch = () => {
-      axios.get("http://192.168.208.127:3000/api/Product/getAll/1/Chicha") 
+      axios.get("http://192.168.169.127:3000/api/Product/getAllwhere/1") 
       .then(res => {
         setData(res.data)
       })
@@ -22,118 +18,59 @@ const Chicha = () => {
         console.log(err)
       })
   }
+  const createOrder = (productId) => {
+    const Order = {
+      ClientId: 1,
+      Products_id: productId,
+      Reservation_id: 1, 
+      paymentstatus: 'false',
+    };
 
-  const openDialog = () => {
-    setDialogOpen(true);
-  };
-
-  const closeDialog = () => {
-    setDialogOpen(false);
-  };
-
-  const handleEditProfile = () => {
-    console.log(' new name:', nameInput);
-    closeDialog();
+    axios.post("http://192.168.169.127:3000/api/order/create", Order)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.error(error);
+      })
   };
 
   useEffect(() => {
   fetch()
   },[])
 
-  const AddProduct = (productname , price , Immage) => {
-    axios.post('http://192.168.191.127:3000/api/Product/create/1/Chicha', {
-      productname: productname,
-      price: price,
-      Immage : Immage   
-      })
-      .then((res) => {
-       fetch()
-        console.log(res)
-      })
-      .then((err) => {
-        console.log(err);
-      });
-  };
   return (
 
-    <View style={styles.containerCategory}>
-
+    <View >
     <View style={styles.divider}></View>
           <View style={styles.tabContainer}>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
             </View>
             <View style={styles.tab}>
               <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
             </View>
             <View style={styles.activeTab}>
               <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.addButtonCategory}  >
-        <Text style={styles.addButtonTextCategory} onPress={() => { openDialog() }}>+</Text>
-      </TouchableOpacity>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isDialogOpen}
-        onRequestClose={closeDialog}
-        style={styles.model}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Add Product</Text>
-            <TextInput
-            value={nameInput}
-              style={styles.input}
-              placeholder="Enter the product name"
-              onChangeText={setNameInput}
-            />
-
-         <TextInput
-         value={price}
-              style={styles.input}
-              placeholder="Enter the product price"
-              onChangeText={setPrice}
-            />
-
-            <View style={styles.cloudContainer}>
-        <Cloud
-          style={styles.cloudButton}
-          setImage={setImage}
-          buttonText={image ? 'Image Uploaded' : 'Select Image'}
-        />
-</View>
-
-            <TouchableOpacity style={styles.Buttons} onPress={handleEditProfile}>
-              <Text style={styles.buttonText} onPress={() => {
-                AddProduct(nameInput , price , image)
-                closeDialog()
-                }
-
-                }>Add</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.Buttons} onPress={closeDialog}>
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-
-
-
-          </View>
-        </View>
-      </Modal>
           <ScrollView style={styles.scrollViewContent}>
             <View style={styles.container}>
               {data.map(el => (
                 <View key={el.id} style={styles.menuItem}>
-                  <Image style={styles.image} source={{ uri: el.image }} />
+                  <Image style={styles.image} source={{uri: el.image}} />
                   <Text style={styles.itemName}>{el.productname}</Text>
                   <Text style={styles.itemPrice}>${el.price}</Text>
-                  <TouchableOpacity style={styles.addButton}>
-                    <Text style={styles.addButtonText}>Edit</Text>
+                  <TouchableOpacity style={styles.addButton}
+                  onPress={() => {
+                    createOrder(el.id)
+                    alert("added to card")
+                  }}
+                  >
+                    <Text style={styles.addButtonText}>+</Text>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -149,7 +86,7 @@ const Chicha = () => {
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        marginTop: 20,
+        marginTop: -5,
       },
       menuItem: {
         width: '48%', 
@@ -157,6 +94,7 @@ const Chicha = () => {
         borderRadius: 15,
         marginBottom: 20,
         padding: 10,
+        
       },
       itemName: {
         fontSize: 16,
@@ -178,10 +116,11 @@ const Chicha = () => {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 8,
+        fontSize : 20
       },
       addButtonText: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: '600',
       },
       image: {
@@ -325,4 +264,4 @@ const Chicha = () => {
     }
     });
 
-export default Chicha;
+export default Menu;

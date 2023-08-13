@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 
-const Dessert = () => {
+const Dessertt = () => {
 
   const navigation = useNavigation()
   const [data , setData]= useState([])
@@ -27,42 +27,49 @@ fetch()
   },[])
   return (
 
-    <View style={styles.containerCategory}>
-    <View style={styles.divider}></View>
-    <View style={styles.tabContainer}>
-      <View style={styles.tab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Dessertt")}>Dessert</Text>
+  <View style={styles.containerCategory}>
+      <View style={styles.divider}></View>
+      <View style={styles.tabContainer}>
+        <View style={styles.tab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
+        </View>
+        <View style={styles.tab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
+        </View>
+        <View style={styles.tab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+        </View>
+        <View style={styles.activeTab}>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+        </View>
       </View>
-      <View style={styles.tab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Food")}>Food</Text>
-      </View>
-      <View style={styles.tab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Chicha")}>Chicha</Text>
-      </View>
-      <View style={styles.activeTab}>
-        <Text style={styles.tabText} onPress={() => navigation.navigate("Drinks")}>Drinks</Text>
-      </View>
-    </View>
 
-    <ScrollView style={styles.scrollViewContent}>
-      <View style={styles.container}>
-        {data.map((el) => (
-          <View key={el.id} style={styles.menuItem}>
-            <Image style={styles.image} source={{ uri: el.image }} />
-            <Text style={styles.itemName}>{el.productname}</Text>
-            <Text style={styles.itemPrice}>${el.price}</Text>
-            <View style={styles.addButton}>
-              <Text style={styles.addButtonText}>Edit</Text>
+      <ScrollView  style={styles.scrollViewContent}>
+        <View style={styles.containeer}>
+          {data.map((el) => (
+            <View key={el.id} style={styles.menuItem}>
+              <Image style={styles.image} source={{ uri: el.image }} />
+              <Text style={styles.itemName}>{el.productname}</Text>
+              <Text style={styles.itemPrice}>${el.price}</Text>
+              <TouchableOpacity style={styles.addButton}>
+                <Text style={styles.addButtonText}>Edit</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+          ))}
+        </View>
+      </ScrollView>
   </View>
 );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    width: '50%',
+    height: '100%',
+    position: 'relative',
+    backgroundColor: 'white',
+    overflow: 'hidden',
+  },
   header: {
     width: "100%",
     height: 140,
@@ -89,11 +96,18 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     width: '90%',
-    height: "10.5%",
-    marginTop : "1%",
-    marginBottom: -55,
-    
-
+    marginLeft : "4%",
+    height: "8.5%",
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    marginTop : "6%",
+    marginBottom: -10,
   },
   itemName: {
     fontSize: 20,
@@ -121,8 +135,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop : "20%",
-    marginLeft : "83%"
+    marginTop : "-8%",
+    marginLeft : "70%"
   },
   addButtonText: {
     color: 'white',
@@ -131,13 +145,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   image: {
-    width: 202,
-    height: 206,
-    left: "17%",
-    top: "9%",
+    width: 144,
+    height: 150,
+    left: "16%",
+    top: "10%",
     position: 'absolute',
     marginLeft:"25%",
-    borderRadius : 15
+    borderRadius : 40
   },
   containerCategory: {
     width: '100%',
@@ -148,17 +162,17 @@ const styles = StyleSheet.create({
     width: 320,
     height: StyleSheet.hairlineWidth,
     left: 29,
-    top: 90,
+    top: 130,
     position: 'absolute',
     borderColor: '#AAAAAA',
     borderWidth: 0.5,
   },
   tabContainer: {
-  width: "100%",
+     width: "100%",
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  paddingVertical: 23,
+  paddingVertical: 60,
   },
   tab: {
     flex: 1,
@@ -196,13 +210,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     paddingHorizontal: 16, 
   },
-  dividerMenu : {
-        width: "100%",
-        height: "0.5%",
-        top: 260,
-        position: 'absolute',
-        backgroundColor: '0.50px rgba(231, 175, 47, 0.75) solid'
-  }
 });
 
-export default Dessert;
+export default Dessertt;

@@ -2,19 +2,15 @@ import React  , {useState , useEffect} from 'react';
 import { View, Text, Image,StyleSheet , ScrollView , TouchableOpacity, TextInput , Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import Cloud from "../Cloud.jsx"; 
 
-const Chicha = () => {
+
+const Drinks = () => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
-    const [isDialogOpen, setDialogOpen] = useState(false)
-    const [nameInput, setNameInput] = useState('')
-    const [price, setPrice] = useState('')
-    const [image, setImage] = useState('')
 
 
     const fetch = () => {
-      axios.get("http://192.168.208.127:3000/api/Product/getAll/1/Chicha") 
+      axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Drinks") 
       .then(res => {
         setData(res.data)
       })
@@ -22,109 +18,46 @@ const Chicha = () => {
         console.log(err)
       })
   }
+  const createOrder = (productId) => {
+    const Order = {
+      ClientId: 1,
+      Products_id: productId,
+      Reservation_id: 1, 
+      paymentstatus: 'false',
+    };
 
-  const openDialog = () => {
-    setDialogOpen(true);
+    axios.post("http://192.168.169.127:3000/api/order/create", Order)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
-  const closeDialog = () => {
-    setDialogOpen(false);
-  };
-
-  const handleEditProfile = () => {
-    console.log(' new name:', nameInput);
-    closeDialog();
-  };
 
   useEffect(() => {
   fetch()
   },[])
 
-  const AddProduct = (productname , price , Immage) => {
-    axios.post('http://192.168.191.127:3000/api/Product/create/1/Chicha', {
-      productname: productname,
-      price: price,
-      Immage : Immage   
-      })
-      .then((res) => {
-       fetch()
-        console.log(res)
-      })
-      .then((err) => {
-        console.log(err);
-      });
-  };
   return (
 
-    <View style={styles.containerCategory}>
-
+    <View >
     <View style={styles.divider}></View>
           <View style={styles.tabContainer}>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
             </View>
             <View style={styles.tab}>
               <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
             </View>
             <View style={styles.activeTab}>
               <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.addButtonCategory}  >
-        <Text style={styles.addButtonTextCategory} onPress={() => { openDialog() }}>+</Text>
-      </TouchableOpacity>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isDialogOpen}
-        onRequestClose={closeDialog}
-        style={styles.model}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Add Product</Text>
-            <TextInput
-            value={nameInput}
-              style={styles.input}
-              placeholder="Enter the product name"
-              onChangeText={setNameInput}
-            />
-
-         <TextInput
-         value={price}
-              style={styles.input}
-              placeholder="Enter the product price"
-              onChangeText={setPrice}
-            />
-
-            <View style={styles.cloudContainer}>
-        <Cloud
-          style={styles.cloudButton}
-          setImage={setImage}
-          buttonText={image ? 'Image Uploaded' : 'Select Image'}
-        />
-</View>
-
-            <TouchableOpacity style={styles.Buttons} onPress={handleEditProfile}>
-              <Text style={styles.buttonText} onPress={() => {
-                AddProduct(nameInput , price , image)
-                closeDialog()
-                }
-
-                }>Add</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.Buttons} onPress={closeDialog}>
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-
-
-
-          </View>
-        </View>
-      </Modal>
           <ScrollView style={styles.scrollViewContent}>
             <View style={styles.container}>
               {data.map(el => (
@@ -133,8 +66,12 @@ const Chicha = () => {
                   <Text style={styles.itemName}>{el.productname}</Text>
                   <Text style={styles.itemPrice}>${el.price}</Text>
                   <TouchableOpacity style={styles.addButton}>
-                    <Text style={styles.addButtonText}>Edit</Text>
+                    <Text style={styles.addButtonText}  onPress={() => {
+                    createOrder(el.id)
+                    alert("added to card")
+                  }}>+</Text>
                   </TouchableOpacity>
+                  <View style={styles.dividerMenu}></View>
                 </View>
               ))}
             </View>
@@ -145,24 +82,28 @@ const Chicha = () => {
 
     const styles = StyleSheet.create({
       container: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        marginTop: 20,
+        flexDirection: 'row', 
+        flexWrap: 'wrap',  
+        justifyContent: 'space-between', 
+        paddingHorizontal: 10, 
+        backgroundColor : "white"
       },
       menuItem: {
-        width: '48%', 
-        backgroundColor: 'white',
+        width: '100%', 
         borderRadius: 15,
         marginBottom: 20,
         padding: 10,
+        
       },
       itemName: {
         fontSize: 16,
         fontWeight: '500',
         color: 'black',
-        marginTop: 10,
+        marginBottom: 10,
+        marginBottom: 2,
+        flexWrap: 'wrap', 
+        width: '40%', 
+        marginTop : "19%"
       },
       itemPrice: {
         fontSize: 14,
@@ -171,24 +112,30 @@ const Chicha = () => {
         marginTop: 5,
       },
       addButton: {
+        width : "26%",
         backgroundColor: '#20A090',
-        borderRadius: 15,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 15,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 8,
+        marginTop : "20%",
+        marginLeft : "73%"
       },
       addButtonText: {
-        color: 'white',
-        fontSize: 14,
+        color: 'black',
+        fontSize: 25,
         fontWeight: '600',
       },
       image: {
-        width: '100%',
-        height: 150,
-        borderRadius: 10,
-        marginBottom: 8,
+        width: 202,
+        height: 206,
+        left: "17%",
+        top: "9%",
+        position: 'absolute',
+        marginLeft:"25%",
+        borderRadius : 15
+        
       },
 
       containerCategory: {
@@ -322,7 +269,14 @@ const Chicha = () => {
       justifyContent: 'center',
       marginTop: -150,
       zIndex: 1,
-    }
+    },
+    dividerMenu : {
+      width: "100%",
+      height: "0.5%",
+      top: 260,
+      position: 'absolute',
+      backgroundColor: '0.50px rgba(231, 175, 47, 0.75) solid'
+}
     });
 
-export default Chicha;
+export default Drinks;

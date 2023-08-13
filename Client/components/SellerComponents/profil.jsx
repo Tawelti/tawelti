@@ -20,7 +20,7 @@ const Profil = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.208.127:3000/api/seller/get/1')
+      axios.get('http://192.168.191.127:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -32,7 +32,7 @@ const Profil = () => {
     };
   
     const updateProfile = (name , email) => {
-      axios.put('http://192.168.208.127:3000/api/seller/update/1', {
+      axios.put('http://192.168.191.127:3000/api/seller/update/1', {
           name: name,
           email: email,
          
@@ -48,7 +48,7 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
-      axios.put('http://192.168.208.127:3000/api/seller/updateImage/1', {
+      axios.put('http://192.168.191.127:3000/api/seller/updateImage/1', {
           name: name,
           email: email,
          

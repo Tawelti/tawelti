@@ -14,7 +14,7 @@ const Food = () => {
 
 
   const fetch = () => {
-    axios.get("http://192.168.208.127:3000/api/Product/getAll/1/Food") 
+    axios.get("http://192.168.191.127:3000/api/Product/getAll/1/Food") 
     .then(res => {
       setData(res.data)
     })
@@ -41,7 +41,7 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
-  axios.post('http://192.168.208.127:3000/api/Product/create/1/Food', {
+  axios.post('http://192.168.191.127:3000/api/Product/create/1/Food', {
     productname: productname,
     price: price,
     Immage : Immage   
@@ -61,10 +61,10 @@ return (
   <View style={styles.divider}></View>
         <View style={styles.tabContainer}>
           <View style={styles.tab}>
-            <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
+            <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
           </View>
           <View style={styles.tab}>
-            <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
+            <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
           </View>
           <View style={styles.tab}>
             <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
@@ -145,38 +145,14 @@ return (
 
   const styles = StyleSheet.create({
     container: {
-      width: '100%',
-      height: '100%',
-      position: 'relative',
-      backgroundColor: 'white',
-      overflow: 'hidden',
-    },
-    header: {
-      width: "100%",
-      height: 140,
-      borderRadius: 40,
-      position: 'absolute',
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-
-    },
-    headerText: {
-      color: 'black',
-      fontSize: 20,
-      fontFamily: 'Roboto',
-      fontWeight: '800',
-      letterSpacing: 1,
-      flex: 1,
       flexWrap: 'wrap',
-    },
-    headerImage: {
-      width: "20%",
-      height: "55%",
-      marginRight : "100%"
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      marginTop: 20,
     },
     menuItem: {
-      width: '100%', 
+      width: '48%', 
       backgroundColor: 'white',
       borderRadius: 15,
       marginBottom: 20,
@@ -201,13 +177,11 @@ return (
       paddingHorizontal: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 20,
-      zIndex: 1,
+      marginTop: 8,
     },
     addButtonText: {
       color: 'white',
-      fontSize: 16,
-      fontFamily: 'Roboto',
+      fontSize: 14,
       fontWeight: '600',
     },
     image: {
@@ -216,7 +190,6 @@ return (
       borderRadius: 10,
       marginBottom: 8,
     },
-
     containerCategory: {
       width: '100%',
       height: '100%',

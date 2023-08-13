@@ -1,19 +1,20 @@
 import React  , {useState , useEffect} from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet , ScrollView } from 'react-native';
+import { View, Text, Image,StyleSheet , ScrollView , TouchableOpacity, TextInput , Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 
-
-
 const Menu = () => {
+    const navigation = useNavigation()
+    const [data , setData]=useState([])
+    const [isDialogOpen, setDialogOpen] = useState(false)
+    const [nameInput, setNameInput] = useState('')
+    const [price, setPrice] = useState('')
+    const [image, setImage] = useState('')
 
-  const navigation = useNavigation()
-  const [data , setData]= useState([])
 
-
-  const fetch = () => {
-      axios.get("http://192.168.208.127:3000/api/Product/getAllwhere/1") 
+    const fetch = () => {
+      axios.get("http://192.168.191.127:3000/api/Product/getAllwhere/1") 
       .then(res => {
         setData(res.data)
       })
@@ -22,193 +23,282 @@ const Menu = () => {
       })
   }
 
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleEditProfile = () => {
+    console.log(' new name:', nameInput);
+    closeDialog();
+  };
+
   useEffect(() => {
-fetch()
+  fetch()
   },[])
+
+
   return (
 
-  <View style={styles.containerCategory}>
-      <View style={styles.divider}></View>
-      <View style={styles.tabContainer}>
-        <View style={styles.tab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
-        </View>
-        <View style={styles.tab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
-        </View>
-        <View style={styles.tab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
-        </View>
-        <View style={styles.activeTab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
-        </View>
-      </View>
+    <View style={styles.containerCategory}>
 
-      <ScrollView  style={styles.scrollViewContent}>
-        <View style={styles.containeer}>
-          {data.map((el) => (
-            <View key={el.id} style={styles.menuItem}>
-              <Image style={styles.image} source={{ uri: el.image }} />
-              <Text style={styles.itemName}>{el.productname}</Text>
-              <Text style={styles.itemPrice}>${el.price}</Text>
-              <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.addButtonText}>Edit</Text>
-              </TouchableOpacity>
+    <View style={styles.divider}></View>
+          <View style={styles.tabContainer}>
+            <View style={styles.tab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
             </View>
-          ))}
+            <View style={styles.tab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
+            </View>
+            <View style={styles.tab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+            </View>
+            <View style={styles.activeTab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+            </View>
+          </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isDialogOpen}
+        onRequestClose={closeDialog}
+        style={styles.model}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Add Product</Text>
+            <TextInput
+            value={nameInput}
+              style={styles.input}
+              placeholder="Enter the product name"
+              onChangeText={setNameInput}
+            />
+
+         <TextInput
+         value={price}
+              style={styles.input}
+              placeholder="Enter the product price"
+              onChangeText={setPrice}
+            />
+
+            <TouchableOpacity style={styles.Buttons} onPress={handleEditProfile}>
+              <Text style={styles.buttonText} onPress={() => {
+                AddProduct(nameInput , price , image)
+                closeDialog()
+                }
+
+                }>Add</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.Buttons} onPress={closeDialog}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+
+
+
+          </View>
         </View>
-      </ScrollView>
-  </View>
-);
-};
+      </Modal>
+          <ScrollView style={styles.scrollViewContent}>
+            <View style={styles.container}>
+              {data.map(el => (
+                <View key={el.id} style={styles.menuItem}>
+                  <Image style={styles.image} source={{ uri: el.image }} />
+                  <Text style={styles.itemName}>{el.productname}</Text>
+                  <Text style={styles.itemPrice}>${el.price}</Text>
+                  <TouchableOpacity style={styles.addButton}>
+                    <Text style={styles.addButtonText}>Edit</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      );
+    };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-    backgroundColor: 'white',
-    overflow: 'hidden',
-  },
-  header: {
-    width: "100%",
-    height: 140,
-    borderRadius: 40,
-    position: 'absolute',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    const styles = StyleSheet.create({
+      container: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        marginTop: -5,
+      },
+      menuItem: {
+        width: '48%', 
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginBottom: 20,
+        padding: 10,
+      },
+      itemName: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: 'black',
+        marginTop: 10,
+      },
+      itemPrice: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: 'black',
+        marginTop: 5,
+      },
+      addButton: {
+        backgroundColor: '#20A090',
+        borderRadius: 15,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 8,
+      },
+      addButtonText: {
+        color: 'white',
+        fontSize: 14,
+        fontWeight: '600',
+      },
+      image: {
+        width: '100%',
+        height: 150,
+        borderRadius: 10,
+        marginBottom: 8,
+      },
 
-  },
-  headerText: {
-    color: 'black',
-    fontSize: 20,
-    fontFamily: 'Roboto',
-    fontWeight: '800',
-    letterSpacing: 1,
-    flex: 1,
-    flexWrap: 'wrap',
-  },
-  headerImage: {
-    width: "20%",
-    height: "55%",
-    marginRight : "100%"
-  },
-  menuItem: {
-    width: '100%',
-    height: "12%",
-    padding: 15,
-    backgroundColor: 'white',
-    borderRadius: 15,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    marginTop : "5%",
-    marginBottom: -10,
-  },
-  itemName: {
-    fontSize: 20,
-    fontFamily: 'Roboto',
-    fontWeight: '500',
-    color: 'black',
-    marginBottom: 10,
-    marginBottom: 2,
-    flexWrap: 'wrap', 
-    width: '40%', 
-    marginTop : "20%"
-  },
-  itemPrice: {
-    fontSize: 18,
-    fontFamily: 'Roboto',
-    fontWeight: '500',
-    color: 'black',
-    marginTop : 10
-  },
-  addButton: {
-    width : "24%",
-    backgroundColor: '#20A090',
-    borderRadius: 15,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop : "6%",
-    marginLeft : "70%"
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'Roboto',
-    fontWeight: '600',
-  },
-  image: {
-    width: 204,
-    height: 220,
-    left: "16%",
-    top: "3%",
-    position: 'absolute',
-    marginLeft:"25%",
-    borderRadius : 40
-  },
-  containerCategory: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#FCFAF9',  
-  },
-  divider: {
-    width: 320,
-    height: StyleSheet.hairlineWidth,
-    left: 29,
-    top: 130,
-    position: 'absolute',
-    borderColor: '#AAAAAA',
-    borderWidth: 0.5,
-  },
-  tabContainer: {
-     width: "100%",
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: 60,
-  },
-  tab: {
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    display: 'flex',
-    borderBottomColor: 'transparent',
-    borderBottomWidth: 2
-  },
-  tabText: {
-    color: '#313131',
-    fontSize: 19,
-    fontStyle: 'italic',
-    fontWeight: '500',
-    flexWrap: 'wrap',
-  },
-  activeTab: {
-    flex: 1, 
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activeTabText: {
-    color: '#E7AF2F',
-    fontSize: 19,
-    fontStyle: 'italic',
-    fontWeight: '700',
-    flexWrap: 'wrap',
-  },
-  containeer : {
-    flexDirection: 'row', 
-    flexWrap: 'wrap',  
-    justifyContent: 'space-between', 
-    paddingHorizontal: 16, 
-  },
-});
+      containerCategory: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#FCFAF9',
+
+
+      },
+      divider: {
+        width: 320,
+        height: StyleSheet.hairlineWidth,
+        left: 29,
+        top: 130,
+        position: 'absolute',
+        borderColor: '#AAAAAA',
+        borderWidth: 0.5,
+      },
+      tabContainer: {
+         width: "100%",
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 60,
+      },
+      tab: {
+        flex: 1,
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10,
+        display: 'flex',
+        borderBottomColor: 'transparent',
+        borderBottomWidth: 2
+      },
+      tabText: {
+        color: '#313131',
+        fontSize: 19,
+        fontStyle: 'italic',
+        fontWeight: '500',
+        flexWrap: 'wrap',
+      },
+      activeTab: {
+        flex: 1, 
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+      },
+      activeTabText: {
+        color: '#E7AF2F',
+        fontSize: 19,
+        fontStyle: 'italic',
+        fontWeight: '700',
+        flexWrap: 'wrap',
+      },
+      containeer : {
+        width: "100%",
+        paddingHorizontal: 20, 
+        paddingBottom: 20,
+      }, 
+      addButtonCategory: {
+        backgroundColor: '#20A090',
+        borderRadius: 15,
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        alignSelf: 'center',
+        marginBottom: 10,
+      },
+      addButtonTextCategory: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'Roboto',
+        fontWeight: '600',
+      }, 
+      modalView: {
+        height : 500,
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+      },
+      button: {
+        backgroundColor: '#2196F3',
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+        marginBottom: 10,
+      },
+      buttonRed: {
+        backgroundColor: 'red',
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+      },
+      buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+      }, 
+      cloudContainer: {
+        alignItems: 'center',
+        marginTop: -300,
+      },
+      cloudButton: {
+        backgroundColor: '#20A090',
+        borderRadius: 15,
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        alignItems: 'center',
+      },
+    Buttons : {
+      backgroundColor: '#20A090',
+      borderRadius: 15,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: -150,
+      zIndex: 1,
+    }
+    });
 
 export default Menu;

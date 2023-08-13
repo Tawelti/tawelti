@@ -14,7 +14,7 @@ const Drinks = () => {
 
 
   const fetch = () => {
-    axios.get("http://192.168.208.127:3000/api/Product/getAll/1/Drinks") 
+    axios.get("http://192.168.191.127:3000/api/Product/getAll/1/Drinks") 
     .then(res => {
       setData(res.data)
     })
@@ -41,7 +41,7 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
-  axios.post('http://192.168.208.127:3000/api/Product/create/1/Food', {
+  axios.post('http://192.168.191.127:3000/api/Product/create/1/Food', {
     productname: productname,
     price: price,
     Immage : Immage   
@@ -61,7 +61,7 @@ return (
   <View style={styles.divider}></View>
         <View style={styles.tabContainer}>
           <View style={styles.tab}>
-            <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
+            <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
           </View>
           <View style={styles.tab}>
             <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
@@ -70,7 +70,7 @@ return (
             <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
           </View>
           <View style={styles.activeTab}>
-            <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+            <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.addButtonCategory}  >
