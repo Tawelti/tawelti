@@ -4,9 +4,8 @@ module.exports= {
   //add reservation
     addReservation(req,res) {
 const reservationDate=req.body;
-console.log(req.params.Places_Id );
 
-         Reservation.create({...reservationDate,Client_id:req.params.Client_Id,Places_id:req.params.Places_Id })
+         Reservation.create({...reservationDate,Client_id:req.params.Client_id,Places_id:req.params.Places_id })
         .then(reservation => {
           res.status(201).json({message:'add successfuly',reserve:reservation})
         })
@@ -27,9 +26,9 @@ console.log(req.params.Places_Id );
       },
       //delete reservation by id
       deleteReservation (req, res)  {
-        const reservationId = req.params.reservationId; 
+        const id = req.params.id; 
       
-        Reservation.findByPk(reservationId)
+        Reservation.findByPk(id)
           .then(reservation => {
             if (!reservation) {
               return res.status(404).json({ error: 'Reservation not found' });

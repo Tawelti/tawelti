@@ -3,9 +3,9 @@ const {addReservation,findAll,deleteReservation}=require("../controllers/reserva
 
 
 
-router.post("/add/:Client_Id/:Places_Id",addReservation)
+router.post("/add/:Client_id/:Places_id",addReservation)
 router.get("/get/:id",findAll)
-router.delete("/delete/:reservationId",deleteReservation)
+router.delete("/delete/:id",deleteReservation)
 
 
 
