@@ -30,7 +30,6 @@ const getImage =(arr)=>{
   // 192.168.104.5
   const changeImage = (direction) => {
     setCurrentImage((prevIndex) => {
-      console.log(prevIndex);
       let newIndex = prevIndex;
       if (direction === 'next') {
         newIndex = (prevIndex + 1) % images.length
