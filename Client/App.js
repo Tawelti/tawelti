@@ -19,6 +19,8 @@ import ALLResto from './pages/ClientPages/ALLResto';
 import Comments from './pages/ClientPages/Comments';
 import PlaceProfil from './components/ClientComponent/PlaceProfil';
 import ProfilePayment from './components/SellerComponents/ProfilePayment';
+
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -30,7 +32,7 @@ export default function App() {
     screenOptions={{
       headerShown: false,
     }}
-    initialRouteName="Profile"
+    initialRouteName="Loading"
   >
   <Stack.Screen name="Profile" component={ProfilePayment} />
     <Stack.Screen name="Loading" component={LoadingScreen} />
@@ -46,6 +48,7 @@ export default function App() {
     <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
     </Stack.Navigator> 
 </NavigationContainer>
+
   );
 
 }

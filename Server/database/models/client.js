@@ -19,7 +19,7 @@ const Client = sequelize.define('Client', {
     unique: true,
   },
   password: {
-    type: DataTypes.STRING(45),
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   image: {

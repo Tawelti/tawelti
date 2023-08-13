@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TextInput , But
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Places from './Places';
+import ProfilePayment from './ProfilePayment';
 
 const Profil = () => {
   const navigation = useNavigation()
@@ -11,7 +12,7 @@ const Profil = () => {
     const [nameInput, setNameInput] = useState('')
     const [emailInput, setEmailInput] = useState('')
     const [refresh , setRefresh] = useState(false)
- //fhdkls
+
   
   
     useEffect(() => {
@@ -19,7 +20,7 @@ const Profil = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.208.127:3000/api/seller/get/1')
+      axios.get('http://172.20.10.8:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -155,7 +156,6 @@ const Profil = () => {
     </View>
  
     <View style={styles.containerPlaces}>
-      <Places  />
     </View>
     </View>
 
