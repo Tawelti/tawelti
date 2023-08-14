@@ -29,6 +29,7 @@ import Drinks from "./components/ClientComponent/Category/Drinks"
 import Order from './components/ClientComponent/Order';
 
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -38,8 +39,11 @@ export default function App() {
    <NavigationContainer>
   <StatusBar style="auto" /> 
    <Stack.Navigator
-    screenOptions={{ headerShown: false  }}
-    initialRouteName="Order"
+
+    screenOptions={{
+      headerShown: false,
+    }}
+    initialRouteName="Loading"
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
     <Stack.Screen name="Profile" component={ProfilePayment} />
@@ -63,6 +67,7 @@ export default function App() {
     <Stack.Screen name="Order" component={Order} />
     </Stack.Navigator> 
 </NavigationContainer>
+
   );
 
   }

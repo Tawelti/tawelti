@@ -1,9 +1,9 @@
 const router=require("express").Router()
-const {createClient , getOneByid , updateClient}=require("../controllers/clientController")
+const {register , getOneByid , updateClient}=require("../controllers/clientController")
 
 
 
-router.post("/create",createClient)
+router.post("/register",register)
 router.get("/get/:id",getOneByid)
 router.put("/update/:id",updateClient)
 
