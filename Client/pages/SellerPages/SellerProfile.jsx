@@ -19,7 +19,7 @@ const SellerProfile = () => {
 
   return ( 
     <NavigationContainer>
-    <Stack.Navigator screenOptions={{ headerShown: false }}  >
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Menu" >
       <Stack.Screen name="Profil" component={Profil} />
       <Stack.Screen name="Places" component={Places} />
       <Stack.Screen name="Reservations" component={Reservations} />

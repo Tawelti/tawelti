@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -40,6 +40,8 @@ export default function App() {
    <Stack.Navigator
     screenOptions={{ headerShown: false  }}
     initialRouteName="Order"
+    
+
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
     <Stack.Screen name="Profile" component={ProfilePayment} />
@@ -62,6 +64,7 @@ export default function App() {
     <Stack.Screen name="Drinks" component={Drinks} />
     <Stack.Screen name="Order" component={Order} />
     </Stack.Navigator> 
+    <NavBar />
 </NavigationContainer>
   );
 

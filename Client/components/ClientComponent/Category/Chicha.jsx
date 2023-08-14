@@ -42,7 +42,7 @@ const Chicha = () => {
 
   return (
 
-    <View >
+    <View style={styles.containerCategory}>
     <View style={styles.divider}></View>
           <View style={styles.tabContainer}>
             <View style={styles.tab}>
@@ -52,7 +52,7 @@ const Chicha = () => {
               <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+              <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
             </View>
             <View style={styles.activeTab}>
               <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
