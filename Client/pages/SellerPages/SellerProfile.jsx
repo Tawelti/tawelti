@@ -11,16 +11,19 @@ import Drinks from '../../components/SellerComponents/Category/Drinks';
 import Food from '../../components/SellerComponents/Category/Food';
 import Chicha from '../../components/SellerComponents/Category/Chicha';
 import Dessert from '../../components/SellerComponents/Category/Dessert';
+import ProfilePayment from '../../components/SellerComponents/ProfilePayment';
+import {StripeProvider} from "@stripe/stripe-react-native"
 
-
-
+const STRIPE_KEY="pk_test_51NdUs4K6fT8eoEEp6JPAos9zSkBbl1ag3EbDAbkq4cDPlvmda1JpBFT1uRVs2koxHNlVIzNLeJvYQntDEMaMabih00FNGtROAs"
 const Stack = createStackNavigator()
 
 const SellerProfile = () => {
 
   return ( 
+    <StripeProvider publishableKey={STRIPE_KEY}>
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}  >
+    <Stack.Navigator screenOptions={{ headerShown: false }}  initialRouteName="Payment"  >
       <Stack.Screen name="Profil" component={Profil} />
       <Stack.Screen name="Places" component={Places} />
       <Stack.Screen name="Reservations" component={Reservations} />
@@ -32,9 +35,12 @@ const SellerProfile = () => {
       <Stack.Screen name="Dessert" component={Dessert} />
       <Stack.Screen name="Chicha" component={Chicha} />
 
+      <Stack.Screen name="Payment" component={ProfilePayment} />
+
     </Stack.Navigator>
     
   </NavigationContainer>
+  </StripeProvider>
   );
 };
 

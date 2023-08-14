@@ -1,9 +1,9 @@
 const router= require("express").Router()
-const {createseller , getOneByid , updateSeller}=require("../controllers/sellerController")
+const {register , getOneByid , updateSeller}=require("../controllers/sellerController")
 
 
 
-router.post("/create",createseller)
+router.post("/register",register)
 router.get("/get/:id",getOneByid)
 router.put("/update/:id",updateSeller)
 

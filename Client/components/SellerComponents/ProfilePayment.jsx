@@ -1,16 +1,16 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, TextInput , Button } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, TextInput , Button, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
+import { useStripe } from '@stripe/stripe-react-native';
 
 
 const ProfilePayment = () => {
   const navigation = useNavigation()
     const [data , setData] = useState([])
     const [amount,setAmount]=useState(0)
- 
+ const {initPaymentSheet,presentPaymentSheet}=useStripe()
   
   
     useEffect(() => {
@@ -18,7 +18,7 @@ const ProfilePayment = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.11.85:3000/api/seller/get/1')
+      axios.get('http://172.20.10.8:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0])
@@ -29,28 +29,50 @@ const ProfilePayment = () => {
         })
     }
   const premuim=()=>{
-    setAmount(50000)
+    setAmount(5000)
   }
   const normale=()=>{
-    setAmount(35000)
+    setAmount(3500)
   }
-  console.log(amount);
-  const pay =()=>{
-axios.post(`http://192.168.11.85:3000/api/payment/pay/${amount}`)
-.then((rslt)=>{
-  const {result}=rslt.data
-  console.log(result);
-  Linking.openURL(result.link);
-
-
-}).then((rslt)=>{
-  console.log(rsl);
+  console.log(amount)
+  const pay = () => {
+    if (amount === 0) {
+      Alert.alert("Choose a Package", "Please choose a package first.")
+      return
+    }
+    axios.post(`http://172.20.10.8:3000/api/payment/pay/${amount}`)
+      .then((response) => {
+        const { paymentIntent } = response.data;
+        console.log(paymentIntent)
+  const initResponse= initPaymentSheet({
+  merchantDisplayName:"Tawelti",
+  paymentIntentClientSecret:paymentIntent,
 })
-.catch((err)=>{
-  console.log(err);
+console.log(initResponse)
+presentPaymentSheet()
+.then((PaymentResponse) => {
+  if (PaymentResponse.error) {
+    console.log(PaymentResponse.error);
+    Alert.alert(
+      `Error code: ${PaymentResponse.error.code}`,
+      PaymentResponse.error.message
+    )
+  } else {
+    Alert.alert(
+      "Payment Successful",
+      "Your payment has been processed successfully!"
+    )
+    navigation.navigate("Profil")
+  }
 })
-
-  }  
+.catch((error) => {
+  console.log(error);
+});
+})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
     return (
        
     <View style={styles.container}>
