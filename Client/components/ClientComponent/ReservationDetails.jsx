@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import {
   View,
@@ -66,7 +65,7 @@ const ReservationDetails = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.containerCategory}>
       <Image
-        source={require('../Image/lounge.png')} 
+        source={{ uri: "https://media-cdn.tripadvisor.com/media/photo-s/0f/2f/68/67/visite-716.jpg" }}
         style={styles.image}
       />
 
@@ -81,16 +80,13 @@ const ReservationDetails = ({ navigation }) => {
             Booking
           </Text>
         </View>
-
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("menu")}>Menu</Text>
-
+        <View style={styles.tab}>
           <Text
             style={styles.tabText}
-            onPress={() => navigation.navigate('Menu')}
+            onPress={() => navigation.navigate('menu')}
           >
             Menu
           </Text>
-
         </View>
       </View>
 

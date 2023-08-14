@@ -1,10 +1,10 @@
 import React  , {useState , useEffect} from 'react';
-import { View, Text, Image,StyleSheet , ScrollView , TouchableOpacity, TextInput , Modal } from 'react-native';
+import { View, Text, Image,StyleSheet , ScrollView , TouchableOpacity, TextInput , Modal ,  KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Cloud from "../Cloud.jsx"; 
 
-const Drinks = () => {
+const DessertSeller = () => {
   const navigation = useNavigation()
   const [data , setData]=useState([])
   const [isDialogOpen, setDialogOpen] = useState(false)
@@ -14,7 +14,7 @@ const Drinks = () => {
 
 
   const fetch = () => {
-    axios.get("http://192.168.191.127:3000/api/Product/getAll/1/Drinks") 
+    axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Dessert") 
     .then(res => {
       setData(res.data)
     })
@@ -41,7 +41,7 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
-  axios.post('http://192.168.191.127:3000/api/Product/create/1/Food', {
+  axios.post('http://192.168.169.127:3000/api/Product/create/1/Dessert', {
     productname: productname,
     price: price,
     Immage : Immage   
@@ -55,22 +55,24 @@ const AddProduct = (productname , price , Immage) => {
     });
 };
 return (
-
+  <KeyboardAvoidingView // Wrap the entire view with KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
   <View style={styles.containerCategory}>
-
   <View style={styles.divider}></View>
         <View style={styles.tabContainer}>
           <View style={styles.tab}>
-            <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
-          </View>
-          <View style={styles.tab}>
-            <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
-          </View>
-          <View style={styles.tab}>
-            <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
-          </View>
-          <View style={styles.activeTab}>
-            <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("DessertSeller")}>Dessert</Text>
+            </View>
+            <View style={styles.tab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("FoodSeller")}>Food</Text>
+            </View>
+            <View style={styles.tab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("ChichaSeller")}>Chicha</Text>
+            </View>
+            <View style={styles.activeTab}>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("DrinksSeller")}>Drinks</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.addButtonCategory}  >
@@ -108,20 +110,14 @@ return (
       />
 </View>
 
-          <TouchableOpacity style={styles.Buttons} onPress={handleEditProfile}>
-            <Text style={styles.buttonText} onPress={() => {
-              AddProduct(nameInput , price , image)
-              closeDialog()
-              }
-
-              }>Add</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.Buttons} onPress={closeDialog}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
-
-
-
+<View style={styles.buttonsContainer}>
+                <TouchableOpacity style={styles.button} onPress={handleEditProfile}>
+                  <Text style={styles.buttonText}>Add</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={closeDialog}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
         </View>
       </View>
     </Modal>
@@ -140,43 +136,20 @@ return (
           </View>
         </ScrollView>
       </View>
+      </KeyboardAvoidingView>
     );
   };
 
   const styles = StyleSheet.create({
     container: {
-      width: '100%',
-      height: '100%',
-      position: 'relative',
-      backgroundColor: 'white',
-      overflow: 'hidden',
-    },
-    header: {
-      width: "100%",
-      height: 140,
-      borderRadius: 40,
-      position: 'absolute',
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-
-    },
-    headerText: {
-      color: 'black',
-      fontSize: 20,
-      fontFamily: 'Roboto',
-      fontWeight: '800',
-      letterSpacing: 1,
-      flex: 1,
       flexWrap: 'wrap',
-    },
-    headerImage: {
-      width: "20%",
-      height: "55%",
-      marginRight : "100%"
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      marginTop: 20,
     },
     menuItem: {
-      width: '100%', 
+      width: '48%', 
       backgroundColor: 'white',
       borderRadius: 15,
       marginBottom: 20,
@@ -201,13 +174,11 @@ return (
       paddingHorizontal: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 20,
-      zIndex: 1,
+      marginTop: 8,
     },
     addButtonText: {
       color: 'white',
-      fontSize: 16,
-      fontFamily: 'Roboto',
+      fontSize: 14,
       fontWeight: '600',
     },
     image: {
@@ -216,7 +187,6 @@ return (
       borderRadius: 10,
       marginBottom: 8,
     },
-
     containerCategory: {
       width: '100%',
       height: '100%',
@@ -317,12 +287,6 @@ return (
       elevation: 2,
       marginBottom: 10,
     },
-    buttonRed: {
-      backgroundColor: 'red',
-      borderRadius: 10,
-      padding: 10,
-      elevation: 2,
-    },
     buttonText: {
       color: 'white',
       fontWeight: 'bold',
@@ -331,6 +295,7 @@ return (
     cloudContainer: {
       alignItems: 'center',
       marginTop: -300,
+      flexDirection: 'row',
     },
     cloudButton: {
       backgroundColor: '#20A090',
@@ -346,8 +311,12 @@ return (
     paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -150,
+    
     zIndex: 1,
-  }
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   });
-export default Drinks;
+export default DessertSeller;

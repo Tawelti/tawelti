@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 
-const Menu = () => {
+const MenuSeller = () => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
     const [isDialogOpen, setDialogOpen] = useState(false)
@@ -14,7 +14,7 @@ const Menu = () => {
 
 
     const fetch = () => {
-      axios.get("http://192.168.191.127:3000/api/Product/getAllwhere/1") 
+      axios.get("http://192.168.169.127:3000/api/Product/getAllwhere/1") 
       .then(res => {
         setData(res.data)
       })
@@ -48,16 +48,16 @@ const Menu = () => {
     <View style={styles.divider}></View>
           <View style={styles.tabContainer}>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("DessertSeller")}>Dessert</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("FoodSeller")}>Food</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("ChichaSeller")}>Chicha</Text>
             </View>
             <View style={styles.activeTab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("DrinksSeller")}>Drinks</Text>
             </View>
           </View>
       <Modal
@@ -301,4 +301,4 @@ const Menu = () => {
     }
     });
 
-export default Menu;
+export default MenuSeller;
