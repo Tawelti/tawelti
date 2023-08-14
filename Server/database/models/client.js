@@ -3,6 +3,7 @@ const sequelize = require('../configdb');
 
 
 
+const defaultImageURL = 'https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/avatar-icon.png';
 const Client = sequelize.define('Client', {
   id: {
     type: DataTypes.INTEGER,
@@ -25,6 +26,7 @@ const Client = sequelize.define('Client', {
   image: {
     type: DataTypes.STRING(500),
     allowNull: true,
+    defaultValue: defaultImageURL,
   },
 },{ timestamps: false })
 

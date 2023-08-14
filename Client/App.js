@@ -6,6 +6,7 @@ import HomeScreen from './components/HomeScreen';
 import LoadingScreen from './components/LoadingScreen';
 import SignUpScreen from './components/signInUp/SignUpScreen';
 import NavBar from './components/NavBar';
+import Cloud from './components/SellerComponents/Cloud';
 import SignInScreen from './components/signInUp/SignInScreen';
 import Home from "./pages/ClientPages/Home"
 import ClentProfile from './pages/ClientPages/ClentProfile';
@@ -32,18 +33,24 @@ import FoodSeller from './components/SellerComponents/Category/FoodSeller';
 import ChichaSeller from './components/SellerComponents/Category/ChichaSeller';
 
 
+import {StripeProvider} from "@stripe/stripe-react-native"
+import Profil from './components/SellerComponents/profil';
+import Reservations from './components/SellerComponents/reservations';
+import NewPlace from './components/SellerComponents/Place';
+import Places from './components/SellerComponents/Places';
+const STRIPE_KEY="pk_test_51NdUs4K6fT8eoEEp6JPAos9zSkBbl1ag3EbDAbkq4cDPlvmda1JpBFT1uRVs2koxHNlVIzNLeJvYQntDEMaMabih00FNGtROAs"
 
 const Stack = createStackNavigator();
 
 export default function App() {
 
   return (
-
+    <StripeProvider publishableKey={STRIPE_KEY}>
    <NavigationContainer>
   <StatusBar style="auto" /> 
    <Stack.Navigator
     screenOptions={{ headerShown: false  }}
-    initialRouteName="Profil"
+    initialRouteName="Loading"
     
 
   >
@@ -76,7 +83,7 @@ export default function App() {
     <Stack.Screen name="ChichaSeller" component={ChichaSeller} />
     </Stack.Navigator> 
 </NavigationContainer>
-
+</StripeProvider>
   );
 
   }

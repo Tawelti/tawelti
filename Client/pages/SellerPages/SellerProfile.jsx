@@ -15,13 +15,16 @@ import AddPlaceScreen from './../../components/SellerComponents/AddPlaceScreen';
 
 
 
+import ProfilePayment from '../../components/SellerComponents/ProfilePayment';
+import {StripeProvider} from "@stripe/stripe-react-native"
+
 const Stack = createStackNavigator()
 
 const SellerProfile = () => {
 
   return ( 
     <NavigationContainer>
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}  initialRouteName="Payment"  >
       <Stack.Screen name="Profil" component={Profil} />
       <Stack.Screen name="Places" component={Places} />
       <Stack.Screen name="Reservations" component={Reservations} />
@@ -32,6 +35,10 @@ const SellerProfile = () => {
       <Stack.Screen name="Dessertt" component={Dessertt} />
       <Stack.Screen name="Chicha" component={Chicha} />
       <Stack.Screen name="AddPlaceScreen" component={AddPlaceScreen} />
+      
+
+      <Stack.Screen name="Payment" component={ProfilePayment} />
+
     </Stack.Navigator>
     
   </NavigationContainer>

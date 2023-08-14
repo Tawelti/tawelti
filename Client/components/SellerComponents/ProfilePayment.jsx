@@ -4,24 +4,44 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, TextInput , B
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useStripe } from '@stripe/stripe-react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePayment = () => {
   const navigation = useNavigation()
     const [data , setData] = useState([])
     const [amount,setAmount]=useState(0)
  const {initPaymentSheet,presentPaymentSheet}=useStripe()
-  
+  const [id,setId]=useState(0)
   
     useEffect(() => {
       fetch()
+      getemail()
     }, [])
   
+    
+    const getemail = async () => {
+      try {
+        const email = await AsyncStorage.getItem('userEmail')
+        if (email) {
+          const response = await axios.get(`http://172.20.10.8:3000/api/seller/email/${email}`);
+          console.log(response.data);
+          console.log(response.data.id);
+          setData(response.data);
+          setId(response.data.id)
+        } else {
+          console.log('User email not found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+
     const fetch = () => {
-      axios.get('http://172.20.10.8:3000/api/seller/get/1')
+      axios.get(`http://172.20.10.8:3000/api/seller/get/${id}`)
         .then((res) => {
-          console.log(res.data[0])
-          setData(res.data[0])
+          console.log(res.data)
+          setData(res.data)
           
         })
         .catch((err) => {
