@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import {
   View,
@@ -80,13 +81,16 @@ const ReservationDetails = ({ navigation }) => {
             Booking
           </Text>
         </View>
-        <View style={styles.tab}>
+
+          <Text style={styles.tabText} onPress={()=>navigation.navigate("menu")}>Menu</Text>
+
           <Text
             style={styles.tabText}
             onPress={() => navigation.navigate('Menu')}
           >
             Menu
           </Text>
+
         </View>
       </View>
 

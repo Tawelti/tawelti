@@ -21,16 +21,25 @@ import PlaceProfil from './components/ClientComponent/PlaceProfil';
 import Claim from './components/ClientComponent/Claim';
 import ReservationDetails from './components/ClientComponent/ReservationDetails';
 import ProfilePayment from './components/SellerComponents/ProfilePayment';
+import Menu from "./components/ClientComponent/Menu"
+import Dessert from "./components/ClientComponent/Category/Dessert"
+import Food from "./components/ClientComponent/Category/Food"
+import Chicha from "./components/ClientComponent/Category/Chicha"
+import Drinks from "./components/ClientComponent/Category/Drinks"
+import Order from './components/ClientComponent/Order';
+
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
+
   return (
 
    <NavigationContainer>
   <StatusBar style="auto" /> 
    <Stack.Navigator
+
     screenOptions={{
       headerShown: false,
     }}
@@ -50,6 +59,12 @@ export default function App() {
     <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
     <Stack.Screen name="Claim" component={Claim} />
     <Stack.Screen name="ReservationDetails" component={ReservationDetails} />
+    <Stack.Screen name="menu" component={Menu} />
+    <Stack.Screen name="Dessert" component={Dessert} />
+    <Stack.Screen name="Food" component={Food} />
+    <Stack.Screen name="Chicha" component={Chicha} />
+    <Stack.Screen name="Drinks" component={Drinks} />
+    <Stack.Screen name="Order" component={Order} />
     </Stack.Navigator> 
 </NavigationContainer>
 
