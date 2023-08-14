@@ -77,8 +77,7 @@ fetch()
             </View>
             
           ))}
-        </View>
-       
+        </View> 
       </ScrollView>
   </View>
 );

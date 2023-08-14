@@ -16,7 +16,7 @@ const getImage =(arr)=>{
   })
 }
   const get = () => {
-    axios.get('http://192.168.208.127:3000/api/places/getApp&type/vip')
+    axios.get('http://192.168.169.127:3000/api/places/getApp&type/vip')
       .then((res) => {
         setPlaces(res.data)
         setImages(getImage(res.data));

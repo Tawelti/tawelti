@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import Navbar from '../NavBar';
+
 
 
 const Menu = () => {
@@ -76,6 +78,7 @@ const Menu = () => {
               ))}
             </View>
           </ScrollView>
+      
         </View>
       );
     };

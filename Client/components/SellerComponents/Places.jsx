@@ -14,7 +14,7 @@ const Places = () => {
 
   const fetch = () => {
     axios
-      .get('http://192.168.191.127:3000/api/places/get/1')
+      .get('http://192.168.169.127:3000/api/places/get/1')
       .then((res) => {
         console.log("places",res.data);
         setData(res.data);
@@ -37,7 +37,7 @@ const Places = () => {
               source={{ uri: 'https://static.thenounproject.com/png/766721-200.png' }}
               style={styles.rating}
             />
-            <TouchableOpacity style={styles.ButtonMenu}   onPress={() => navigation.navigate('Menu')}>
+            <TouchableOpacity style={styles.ButtonMenu}   onPress={() => navigation.navigate('MenuSeller')}>
               <Text style={styles.buttonText}>Menu</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}   onPress={() => navigation.navigate('Reservations')}>

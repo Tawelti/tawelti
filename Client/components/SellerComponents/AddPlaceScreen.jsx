@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Alert, Button, Text, Image, ActivityIndicator, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-require ('dotenv').config()
+// require ('dotenv').config()
 
 const CloudUpload = ({ setImage, buttonText }) => {
   const [modal, setModal] = useState(false);
@@ -138,7 +138,7 @@ console.log(patentImage?"patentImage"+  patentImage : "patentImage um");
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
           address
-        )}&key=${process.env.apiKey}`
+        )}&key=${apiKey}`
       );
 
       if (response.data.results.length > 0) {
@@ -174,7 +174,7 @@ console.log(patentImage?"patentImage"+  patentImage : "patentImage um");
         patentimage:patentImage,
       };
 
-      const apiUrl = 'http://192.168.101.10:3000/api/places/add/1';
+      const apiUrl = 'http://192.168.169.127:3000/api/places/create/1';
 
       const response = await axios.post(apiUrl, placeData);
 

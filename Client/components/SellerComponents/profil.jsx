@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TextInput , But
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Places from './Places';
-import ProfilePayment from './ProfilePayment';
 
 const Profil = () => {
   
@@ -22,8 +21,7 @@ const Profil = () => {
   
     const fetch = () => {
 
-      axios.get('http://192.168.191.127:3000/api/seller/get/1')
-
+      axios.get('http://192.168.169.127:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -35,7 +33,7 @@ const Profil = () => {
     };
   
     const updateProfile = (name , email) => {
-      axios.put('http://192.168.191.127:3000/api/seller/update/1', {
+      axios.put('http://192.168.169.127:3000/api/seller/update/1', {
           name: name,
           email: email,
          
@@ -51,7 +49,7 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
-      axios.put('http://192.168.191.127:3000/api/seller/updateImage/1', {
+      axios.put('http://192.168.169.127/api/seller/updateImage/1', {
           name: name,
           email: email,
          
@@ -136,7 +134,7 @@ const Profil = () => {
         </View>
       </Modal>
       <View style={styles.AddButton}>
-        <Button  title="Add Place" onPress={()=>navigation.navigate("NewPlace")} />
+        <Button  title="Add Place" onPress={()=>navigation.navigate("AddPlaceScreen")} />
       </View>
       <View style={styles.calendarContainer}>
       <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
@@ -163,6 +161,7 @@ const Profil = () => {
     </View>
  
     <View style={styles.containerPlaces}>
+    <Places/>
     </View>
     </View>
 

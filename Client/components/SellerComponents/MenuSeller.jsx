@@ -2,9 +2,9 @@ import React  , {useState , useEffect} from 'react';
 import { View, Text, Image,StyleSheet , ScrollView , TouchableOpacity, TextInput , Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import Cloud from "../Cloud.jsx"; 
 
-const Chicha = () => {
+
+const MenuSeller = () => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
     const [isDialogOpen, setDialogOpen] = useState(false)
@@ -14,7 +14,7 @@ const Chicha = () => {
 
 
     const fetch = () => {
-      axios.get("http://192.168.208.127:3000/api/Product/getAll/1/Chicha") 
+      axios.get("http://192.168.169.127:3000/api/Product/getAllwhere/1") 
       .then(res => {
         setData(res.data)
       })
@@ -40,20 +40,7 @@ const Chicha = () => {
   fetch()
   },[])
 
-  const AddProduct = (productname , price , Immage) => {
-    axios.post('http://192.168.191.127:3000/api/Product/create/1/Chicha', {
-      productname: productname,
-      price: price,
-      Immage : Immage   
-      })
-      .then((res) => {
-       fetch()
-        console.log(res)
-      })
-      .then((err) => {
-        console.log(err);
-      });
-  };
+
   return (
 
     <View style={styles.containerCategory}>
@@ -61,21 +48,18 @@ const Chicha = () => {
     <View style={styles.divider}></View>
           <View style={styles.tabContainer}>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessertt")}>Dessert</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("DessertSeller")}>Dessert</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("FoodSeller")}>Food</Text>
             </View>
             <View style={styles.tab}>
-              <Text style={styles.activeTabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("ChichaSeller")}>Chicha</Text>
             </View>
             <View style={styles.activeTab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
+              <Text style={styles.tabText} onPress={()=>navigation.navigate("DrinksSeller")}>Drinks</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.addButtonCategory}  >
-        <Text style={styles.addButtonTextCategory} onPress={() => { openDialog() }}>+</Text>
-      </TouchableOpacity>
       <Modal
         animationType="slide"
         transparent={true}
@@ -99,14 +83,6 @@ const Chicha = () => {
               placeholder="Enter the product price"
               onChangeText={setPrice}
             />
-
-            <View style={styles.cloudContainer}>
-        <Cloud
-          style={styles.cloudButton}
-          setImage={setImage}
-          buttonText={image ? 'Image Uploaded' : 'Select Image'}
-        />
-</View>
 
             <TouchableOpacity style={styles.Buttons} onPress={handleEditProfile}>
               <Text style={styles.buttonText} onPress={() => {
@@ -149,7 +125,7 @@ const Chicha = () => {
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        marginTop: 20,
+        marginTop: -5,
       },
       menuItem: {
         width: '48%', 
@@ -325,4 +301,4 @@ const Chicha = () => {
     }
     });
 
-export default Chicha;
+export default MenuSeller;

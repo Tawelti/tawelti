@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView , Modal} from 'react-native';
 import { faMoneyBillAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import Navbar from '../NavBar';
+
 
 const Order = () => {
   const [data, setData] = useState([]);
@@ -51,6 +53,7 @@ const Order = () => {
     paymentMethod();
   };
   return (
+
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.contentContainer}>
         {data.map((el, i) => (
@@ -97,6 +100,8 @@ const Order = () => {
       </View>
     </Modal>
   </ScrollView>
+  
+
   );
 };
 
@@ -114,13 +119,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: -10,
     padding: 10,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
+    marginTop : 20
   },
   image: {
     width: 80,
@@ -172,7 +178,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 50,
   },
   paymentButtonText: {
     color: 'white',
