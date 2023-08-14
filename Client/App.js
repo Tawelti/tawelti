@@ -29,6 +29,7 @@ import Drinks from "./components/ClientComponent/Category/Drinks"
 import Order from './components/ClientComponent/Order';
 
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -66,6 +67,7 @@ export default function App() {
     </Stack.Navigator> 
     <NavBar />
 </NavigationContainer>
+
   );
 
   }

@@ -22,7 +22,7 @@ const Seller = sequelize.define('Seller', {
     allowNull: false,
   },
   password: {
-    type: DataTypes.STRING(45),
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   image: {

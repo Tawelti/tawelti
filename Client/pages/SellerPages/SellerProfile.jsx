@@ -1,6 +1,7 @@
-import React  from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { StripeProvider } from "@stripe/stripe-react-native";
 import Profil from '../../components/SellerComponents/profil';
 import Reservations from '../../components/SellerComponents/reservations';
 import NewPlace from './../../components/SellerComponents/Place';
@@ -10,6 +11,7 @@ import Drinks from '../../components/SellerComponents/Category/Drinks';
 import Food from '../../components/SellerComponents/Category/Food';
 import Chicha from '../../components/SellerComponents/Category/Chicha';
 import Dessertt from '../../components/SellerComponents/Category/Dessertt';
+import ProfilePayment from '../../components/SellerComponents/ProfilePayment';
 
 
 
@@ -34,8 +36,5 @@ const SellerProfile = () => {
   </NavigationContainer>
   );
 };
-
-
-
 
 export default SellerProfile;
