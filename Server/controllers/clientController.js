@@ -17,7 +17,6 @@ module.exports= {
       image,
       })
 
-      // Generate JWT token
       const token = jwt.sign({ userId: newUser.id, email: newUser.email }, 'so-secret', {
         expiresIn: '1h',
       })

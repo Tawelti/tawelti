@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Replace 'FontAwesome' with the icon library you want to use
+import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity,Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Cloud from '../SellerComponents/Cloud';
 import { useNavigation } from '@react-navigation/native';
-
+import axios from 'axios';
 const SignUpScreen = () => {
   const navigation = useNavigation()
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [patente, setPatente] = useState('');
   const [userType, setUserType] = useState(null);
   const [showUploadButton, setShowUploadButton] = useState(true);
@@ -20,6 +21,36 @@ const SignUpScreen = () => {
       setShowUploadButton(true);
     } else {
       setShowUploadButton(false);
+    }
+  }
+  
+  const handleSignUp = async () => {
+    try {
+      let registrationData = {
+        name,
+        email,
+        password,
+      };
+
+      if (userType === 'seller') {
+        registrationData.patentimage = patente
+      }
+
+      const endpoint = userType === 'seller' ? 'http://172.20.10.8:3000/api/seller/register' : 'http://172.20.10.8  :3000/api/client/register';
+console.log(registrationData)
+      const response = await axios.post(endpoint, registrationData)
+
+      if (response.data.message) {
+        console.log(response.data)
+        Alert.alert(
+          "login successfully"
+    )
+        navigation.navigate('SignIN')
+      } else {
+        console.error('Registration failed')
+      }
+    } catch (error) {
+      console.error(error)
     }
   };
 
@@ -50,7 +81,9 @@ const SignUpScreen = () => {
               <Text style={styles.userTypeButtonText}>I'm a Client</Text>
             </TouchableOpacity>
           )}
-
+          <TouchableOpacity onPress={() => navigation.navigate("SignIN")} style={styles.userTypeButton}>
+          <Text style={styles.userTypeButtonText}> Already have an account </Text>
+        </TouchableOpacity>
           {userType && (
             <View>
               <View style={styles.inputContainer}>
@@ -92,6 +125,8 @@ const SignUpScreen = () => {
                 <View style={styles.inputWrapper}>
                   <TextInput
                     style={styles.input}
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
                     secureTextEntry
                     placeholder="Enter your password"
                     placeholderTextColor="#B6B6B6"
@@ -110,17 +145,19 @@ const SignUpScreen = () => {
                       />
                     </View>
                   )}
+
                   <View style={styles.button2}>
-                  <Text style={styles.buttonText} onPress={() => navigation.navigate("SignIN")}>Sign up</Text>
+                  <Text style={styles.buttonText} onPress={() => handleSignUp()}>Sign up</Text>
                   </View>
                 </View>
               )}
 
               {userType === 'client' && (
                 <View style={styles.button}>
-                  <Text style={styles.buttonText} onPress={() => navigation.navigate("SignIN")}>Sign up</Text>
+                  <Text style={styles.buttonText} onPress={() => handleSignUp()}>Sign up</Text>
                 </View>
               )}
+
             </View>
           )}
         </View>

@@ -8,7 +8,6 @@ import SignUpScreen from './components/signInUp/SignUpScreen';
 import { StyleSheet, Text, View } from 'react-native';
 import NavBar from './components/NavBar';
 import Cloud from './components/SellerComponents/Cloud';
-import NewPlace from './components/SellerComponents/Place';
 import SignInScreen from './components/signInUp/SignInScreen';
 import GoogleMap from './components/map/GoogleMap';
 import Home from "./pages/ClientPages/Home"
@@ -21,13 +20,18 @@ import PlaceProfil from './components/ClientComponent/PlaceProfil';
 import Claim from './components/ClientComponent/Claim';
 import ReservationDetails from './components/ClientComponent/ReservationDetails';
 import ProfilePayment from './components/SellerComponents/ProfilePayment';
-
+import {StripeProvider} from "@stripe/stripe-react-native"
+import Profil from './components/SellerComponents/profil';
+import Reservations from './components/SellerComponents/reservations';
+import NewPlace from './components/SellerComponents/Place';
+import Places from './components/SellerComponents/Places';
+const STRIPE_KEY="pk_test_51NdUs4K6fT8eoEEp6JPAos9zSkBbl1ag3EbDAbkq4cDPlvmda1JpBFT1uRVs2koxHNlVIzNLeJvYQntDEMaMabih00FNGtROAs"
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-
+    <StripeProvider publishableKey={STRIPE_KEY}>
    <NavigationContainer>
   <StatusBar style="auto" /> 
    <Stack.Navigator
@@ -37,6 +41,7 @@ export default function App() {
     initialRouteName="Loading"
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
+    <Stack.Screen name="Profil" component={Profil} />
     <Stack.Screen name="Profile" component={ProfilePayment} />
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -50,9 +55,9 @@ export default function App() {
     <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
     <Stack.Screen name="Claim" component={Claim} />
     <Stack.Screen name="ReservationDetails" component={ReservationDetails} />
-    </Stack.Navigator> 
+      </Stack.Navigator> 
 </NavigationContainer>
-
+</StripeProvider>
   );
 
   }

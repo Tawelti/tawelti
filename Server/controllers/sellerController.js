@@ -18,8 +18,6 @@ module.exports= {
       image,
       patentimage,
       })
-
-      // Generate JWT token
       const token = jwt.sign({ userId: newUser.id, email: newUser.email }, 'so-secret', {
         expiresIn: '1h',
       })
@@ -53,6 +51,20 @@ updateSeller:(req,res)=>{
     .catch(error=> 
     res.status(500).json(error)
     )
+},
+getByEmail: (req, res) => {
+  const { email } = req.params;
+  Seller.findOne({ where: { email } })
+    .then((result) => {
+      if (result) {
+        res.json(result);
+      } else {
+        res.status(404).json({ message: 'Seller not found' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 },
 
 }
