@@ -20,13 +20,16 @@ const Products = sequelize.define('Products', {
   image: {
     type: DataTypes.STRING(500),
     allowNull: true,
-  }
+  },
+  category : {
+    type : DataTypes.ENUM("Drinks" , "Food" , "Chicha" , "Dessert"),
+    allowNull: false,
+  },
   },{ timestamps: false })
 
 
-Places.hasMany(Products)
-Products.belongsTo(Places)
-
+  Places.hasMany(Products, { foreignKey: 'Places_id' })
+  Products.belongsTo(Places, { foreignKey: 'Places_id' })
 
 
 

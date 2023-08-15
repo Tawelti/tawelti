@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+
 import {
   Button,
   Modal,
@@ -9,7 +11,10 @@ import {
   TextInput,
   View,
 } from "react-native";
+
 function Claim() {
+  const navigation = useNavigation()
+
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState("");
 
@@ -18,8 +23,11 @@ function Claim() {
   }, []);
  
   const addClaim=()=>{
-    axios.post(`http://192.168.101.3:3000/api/Claim/1/1`,{content:text})
-    .then (()=>{alert('your claim has been sent to the admin')})
+    axios.post("http://192.168.208.127:3000/api/Claim/1/1",{content:text})
+    .then ((res)=>{
+      alert("your reclamation has been send it seccufully")
+      console.log(res)
+    })
     .catch((err)=>console.log(err))
   }
   return (
@@ -29,7 +37,7 @@ function Claim() {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
@@ -51,13 +59,23 @@ function Claim() {
                     <View style={{flexDirection: 'row'}} >
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
+                    onPress={() => 
+                    {
+                    setModalVisible(!modalVisible)
+                    navigation.navigate("PlaceProfil")
+                     } }
                     >
                     <Text style={styles.textStyle}>Cancel</Text>
                     </Pressable>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => addClaim()}
+                    onPress={() => 
+            
+                   { 
+                    addClaim()
+                    navigation.navigate("PlaceProfil")
+                    
+                   }}
                     >
                     <Text style={styles.textStyle}>Send</Text>
                     </Pressable>
@@ -65,12 +83,7 @@ function Claim() {
           </View>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
+  
     </View>
   );
 }
@@ -80,7 +93,7 @@ const styles = StyleSheet.create({
     //   flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 52,
+    marginTop: 180,
   },
   modalView: {
     margin: 20,

@@ -14,7 +14,8 @@ const placesRoutes = require("./routes/placesRoutes");
 const ReservationRoutes = require("./routes/ReservationRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
 const tablesRoutes = require("./routes/tablesRoutes");
-
+const payment =require("./routes/PaymentRoutes")
+const login =require("./routes/loginRoutes")
 
 const PORT = process.env.PORT || 3000;
 
@@ -27,18 +28,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use("api/Favorite" , FavoriteRoutes)
-app.use("api/Claim" , ClaimRouter)
+app.use("/api/Favorite" , FavoriteRoutes)
+app.use("/api/Claim" , ClaimRouter)
 app.use("/api/Admin" , AdminRoutes)
 app.use("/api/client", clientRoutes);
 app.use("/api/Comments", CommentsRoutes);
-app.use("/api/menu", ProductsRoutes);
+app.use("/api/Product", ProductsRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/places", placesRoutes);
 app.use("/api/Reservation", ReservationRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/tables", tablesRoutes);
-
+app.use("/api/payment",payment)
+app.use("/api/login",login)
 
 
 sequelize.sync().then(() => console.log("database connected"));

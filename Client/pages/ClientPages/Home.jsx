@@ -16,7 +16,7 @@ const getImage =(arr)=>{
   })
 }
   const get = () => {
-    axios.get('http://192.168.208.127:3000/api/places/getApp&type/vip')
+    axios.get('http://192.168.169.127:3000/api/places/getApp&type/vip')
       .then((res) => {
         setPlaces(res.data)
         setImages(getImage(res.data));
@@ -30,7 +30,6 @@ const getImage =(arr)=>{
   // 192.168.104.5
   const changeImage = (direction) => {
     setCurrentImage((prevIndex) => {
-      console.log(prevIndex);
       let newIndex = prevIndex;
       if (direction === 'next') {
         newIndex = (prevIndex + 1) % images.length

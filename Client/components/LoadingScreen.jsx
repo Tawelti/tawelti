@@ -10,7 +10,6 @@ const LoadingScreen = ({ navigation }) => {
       duration: 3000, // Adjust the duration as per your preference
       useNativeDriver: true,
     }).start(() => {
-      // Animation complete, navigate to the HomeScreen
       navigation.replace('Home');
     });
   }, [logoAnim, navigation]);

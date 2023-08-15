@@ -1,13 +1,58 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Replace 'FontAwesome' with the icon library you want to use
+import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity,Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Cloud from '../SellerComponents/Cloud';
 import { useNavigation } from '@react-navigation/native';
-
+import axios from 'axios';
 const SignUpScreen = () => {
-
   const navigation = useNavigation()
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [patente, setPatente] = useState('');
+  const [userType, setUserType] = useState(null);
+  const [showUploadButton, setShowUploadButton] = useState(true);
+
+  const handleUserType = (type) => {
+    console.log('handleUserType triggered with type:', type);
+    setUserType(type);
+    if (type === 'seller') {
+      setShowUploadButton(true);
+    } else {
+      setShowUploadButton(false);
+    }
+  }
+  
+  const handleSignUp = async () => {
+    try {
+      let registrationData = {
+        name,
+        email,
+        password,
+      };
+
+      if (userType === 'seller') {
+        registrationData.patentimage = patente
+      }
+
+      const endpoint = userType === 'seller' ? 'http://172.20.10.8:3000/api/seller/register' : 'http://172.20.10.8  :3000/api/client/register';
+console.log(registrationData)
+      const response = await axios.post(endpoint, registrationData)
+
+      if (response.data.message) {
+        console.log(response.data)
+        Alert.alert(
+          "login successfully"
+    )
+        navigation.navigate('SignIN')
+      } else {
+        console.error('Registration failed')
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -26,64 +71,95 @@ const SignUpScreen = () => {
           <Text style={styles.title}>Get Started Free</Text>
           <Text style={styles.subTitle}>Free Forever. No Credit Card Needed</Text>
 
-          <View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>
-                <Icon name="user" size={18} color="black" /> Your Name
-              </Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  value={name}
-                  onChangeText={(text) => setName(text)}
-                  placeholder="Enter your name"
-                  placeholderTextColor="#B6B6B6"
-                />
+          {userType !== 'seller' && (
+            <TouchableOpacity onPress={() => handleUserType('seller')} style={styles.userTypeButton}>
+              <Text style={styles.userTypeButtonText}>I'm a Seller</Text>
+            </TouchableOpacity>
+          )}
+          {userType !== 'client' && (
+            <TouchableOpacity onPress={() => handleUserType('client')} style={styles.userTypeButton}>
+              <Text style={styles.userTypeButtonText}>I'm a Client</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity onPress={() => navigation.navigate("SignIN")} style={styles.userTypeButton}>
+          <Text style={styles.userTypeButtonText}> Already have an account </Text>
+        </TouchableOpacity>
+          {userType && (
+            <View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>
+                  <Icon name="user" size={18} color="black" /> Your Name
+                </Text>
+                <View style={styles.inputWrapper}>
+                  <TextInput
+                    style={styles.input}
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                    placeholder="Enter your name"
+                    placeholderTextColor="#B6B6B6"
+                  />
+                </View>
               </View>
-            </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>
-                <Icon name="envelope" size={18} color="black" /> Email Address
-              </Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={(text) => setEmail(text)}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  placeholder="Enter your email address"
-                  placeholderTextColor="#B6B6B6"
-                />
+              <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>
+                  <Icon name="envelope" size={18} color="black" /> Email Address
+                </Text>
+                <View style={styles.inputWrapper}>
+                  <TextInput
+                    style={styles.input}
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholder="Enter your email address"
+                    placeholderTextColor="#B6B6B6"
+                  />
+                </View>
               </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>
+                  <Icon name="lock" size={18} color="black" /> Password
+                </Text>
+                <View style={styles.inputWrapper}>
+                  <TextInput
+                    style={styles.input}
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    secureTextEntry
+                    placeholder="Enter your password"
+                    placeholderTextColor="#B6B6B6"
+                  />
+                </View>
+              </View>
+
+              {userType === 'seller' && (
+                <View>
+                  {showUploadButton && (
+                    <View style={styles.uploadContainer}>
+                      <Cloud
+                        buttonStyle={styles.uploadButton}
+                        setImage={setPatente}
+                        buttonText={patente ? 'Patent Image Uploaded' : 'Select Patent Image'}
+                      />
+                    </View>
+                  )}
+
+                  <View style={styles.button2}>
+                  <Text style={styles.buttonText} onPress={() => handleSignUp()}>Sign up</Text>
+                  </View>
+                </View>
+              )}
+
+              {userType === 'client' && (
+                <View style={styles.button}>
+                  <Text style={styles.buttonText} onPress={() => handleSignUp()}>Sign up</Text>
+                </View>
+              )}
+
             </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>
-              <Icon name="lock" size={18} color="black" /> Password
-            </Text>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                secureTextEntry
-                placeholder="Enter your password"
-                placeholderTextColor="#B6B6B6"
-              />
-            </View>
-          </View>
-
-          <View style={styles.button}>
-            <Text style={styles.buttonText} onPress={()=>navigation.navigate("SignIN")}>Sign up</Text>
-          </View>
-
-          <Text style={styles.orText}>Or sign up with</Text>
-
-          <View style={styles.socialButtonsContainer}>
-            <Image style={styles.socialButton} source={{ uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png' }} />
-            <Image style={styles.socialButton} source={{ uri: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png' }} />
-          </View>
+          )}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -128,12 +204,23 @@ const styles = StyleSheet.create({
     borderColor: '#E7B10A',
     paddingHorizontal: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.40)',
-
   },
   input: {
     flex: 1,
     height: 40,
     color: '#ffffff',
+  },
+  uploadContainer: {
+    alignItems: 'center',
+    marginBottom: -10,
+  },
+  uploadButton: {
+    backgroundColor: '#E7B10A',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     width: 314,
@@ -144,29 +231,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
   },
+  button2: {
+    width: 314,
+    height: 50,
+    borderRadius: 15,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: -10,
+  },
   buttonText: {
     fontSize: 17.92,
     fontWeight: '500',
     color: 'white',
   },
-  orText: {
-    fontSize: 11.25,
+  userTypeButton: {
+    width: 314,
+    height: 50,
+    borderRadius: 15,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  userTypeButtonText: {
+    fontSize: 17.92,
     fontWeight: '500',
-    color: '#B6B6B6',
-    marginTop: 20,
-  },
-  socialButtonsContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  socialButton: {
-    width: 58.10,
-    height: 60,
-    borderRadius: 8.85,
-    borderWidth: 0.15,
-    borderColor: 'white',
-    backgroundColor: 'rgba(255, 255, 255, 0.20)',
-    marginHorizontal: 5,
+    color: 'white',
   },
   containerImage: {
     flexShrink: 0,

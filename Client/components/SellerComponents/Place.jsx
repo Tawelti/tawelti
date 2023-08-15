@@ -13,6 +13,7 @@ const NewPlace = () => {
   const [images, setImages] = useState("");
   const [patentImage, setPatentImage] = useState("");
 
+
   const AddButton = async () => {
     try {
       const data = {
@@ -96,7 +97,7 @@ const NewPlace = () => {
         buttonText={patentImage ? "Patent Image Uploaded" : "Select Patent Image"}
       />
 
-      <Button title="Add" onPress={AddButton} />
+      {/* <Button title="Add" onPress={AddButton} /> */}
     </View>
   );
 };

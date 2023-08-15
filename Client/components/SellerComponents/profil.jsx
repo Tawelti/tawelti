@@ -5,13 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import Places from './Places';
 
 const Profil = () => {
-  const navigation = useNavigation()
+  
+    const navigation = useNavigation()
     const [data , setData] = useState([])
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [nameInput, setNameInput] = useState('')
     const [emailInput, setEmailInput] = useState('')
     const [refresh , setRefresh] = useState(false)
- 
+
   
   
     useEffect(() => {
@@ -19,7 +20,8 @@ const Profil = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.208.127:3000/api/seller/get/1')
+
+      axios.get('http://192.168.169.127:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -31,7 +33,7 @@ const Profil = () => {
     };
   
     const updateProfile = (name , email) => {
-      axios.put('http://192.168.208.127:3000/api/seller/update/1', {
+      axios.put('http://192.168.169.127:3000/api/seller/update/1', {
           name: name,
           email: email,
          
@@ -47,7 +49,7 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
-      axios.put('http://192.168.208.127:3000/api/seller/updateImage/1', {
+      axios.put('http://192.168.169.127/api/seller/updateImage/1', {
           name: name,
           email: email,
          
@@ -88,6 +90,7 @@ const Profil = () => {
       <TouchableOpacity onPress={openDialog}>
         <Image source={require('../../assets/p.png')} style={styles.icon} />
       </TouchableOpacity>
+
       <Text style={styles.Username} variant="displayLarge"> {data.name}</Text>
       <Text style={styles.profileUsername}>{data.email}</Text>
 </View>
@@ -124,11 +127,14 @@ const Profil = () => {
             <TouchableOpacity style={styles.buttonRed} onPress={closeDialog}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
+
+
+            
           </View>
         </View>
       </Modal>
       <View style={styles.AddButton}>
-        <Button  title="Add Place" onPress={()=>navigation.navigate("NewPlace")} />
+        <Button  title="Add Place" onPress={()=>navigation.navigate("AddPlaceScreen")} />
       </View>
       <View style={styles.calendarContainer}>
       <View style={[styles.dayBox, styles.nonSelectedDayBox]}>
@@ -155,7 +161,7 @@ const Profil = () => {
     </View>
  
     <View style={styles.containerPlaces}>
-      <Places  />
+    <Places/>
     </View>
     </View>
 
