@@ -18,6 +18,9 @@ import AllCoffe from './pages/ClientPages/AllCoffe';
 import ALLResto from './pages/ClientPages/ALLResto';
 import Comments from './pages/ClientPages/Comments';
 import PlaceProfil from './components/ClientComponent/PlaceProfil';
+import Claim from './components/ClientComponent/Claim';
+
+
 
 const Stack = createStackNavigator();
 
@@ -43,6 +46,9 @@ export default function App() {
     <Stack.Screen name="ALLResto" component={ALLResto} />
     <Stack.Screen name="Comments" component={Comments} />
     <Stack.Screen name="PlaceProfil" component={PlaceProfil} />
+    <Stack.Screen name="Claim" component={Claim} />
+    <Stack.Screen name="AndroidApp" component={AndroidApp} />
+    <Stack.Screen name="Fares" component={Fares} />
     </Stack.Navigator> 
 </NavigationContainer>
   );

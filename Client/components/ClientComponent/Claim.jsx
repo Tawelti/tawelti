@@ -14,12 +14,12 @@ function Claim() {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    setModalVisible(!modalVisible);
+    setModalVisible(true);
   }, []);
  
   const addClaim=()=>{
-    axios.post(`http://192.168.101.8:3000/api/Claim/1/1`,{content:text})
-    .then (()=>{console.log('object')})
+    axios.post(`http://192.168.101.3:3000/api/Claim/1/1`,{content:text})
+    .then (()=>{alert('your claim has been sent to the admin')})
     .catch((err)=>console.log(err))
   }
   return (
