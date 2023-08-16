@@ -7,7 +7,7 @@ import Navbar from '../NavBar';
 
 const Order = () => {
   const [data, setData] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(120);
   const [selectedPayment, setSelectedPayment] = useState('cash');
   const [showModel, setShowModel] = useState(false);
 
@@ -36,10 +36,10 @@ const Order = () => {
       });
   };
 
-  const calculateTotal = (orderData) => {
-    const sum = orderData.reduce((acc, el) => acc + el.Product.price, 0);
-    setTotal(sum);
-  };
+  // const calculateTotal = (orderData) => {
+  //   const sum = orderData.reduce((acc, el) => acc + el.Product.price, 0);
+  //   setTotal(sum);
+  // };
 
   useEffect(() => {
     fetch()
@@ -77,33 +77,49 @@ const Order = () => {
       <Text style={styles.totalAmount}>${total}</Text>
     </View>
     {total > 100 ? (
-        <TouchableOpacity style={styles.paymentButton} onPress={() => handlePayment(total)}>
+        <><TouchableOpacity style={styles.paymentButton} onPress={() => handlePayment(total)}>
           <Text style={styles.paymentButtonText}>You should Pay with card</Text>
-        </TouchableOpacity>
+        </TouchableOpacity><Modal visible={showModel} animationType="slide" transparent>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]}>
+                  <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cashIcon]} />
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay All Amount</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => handlePayment()}>
+                  <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cardIcon]} />
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay 25%</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
+                  <Text style={styles.closeModalButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal></>
+
+
+        
       ) : (
-        <TouchableOpacity style={styles.paymentButton} onPress={paymentMethod}>
-          <Text style={styles.paymentButtonText}>Choose Payment Method</Text>
-        </TouchableOpacity>
+        <><TouchableOpacity style={styles.paymentButton} onPress={() => handlePayment(total)}>
+          <Text style={styles.paymentButtonText}>Choose payment Method</Text>
+        </TouchableOpacity><Modal visible={showModel} animationType="slide" transparent>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]}>
+                  <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cashIcon]} />
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay With card</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => handlePayment()}>
+                  <FontAwesomeIcon icon={faMoneyBillAlt} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cardIcon]} />
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay Cash</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
+                  <Text style={styles.closeModalButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal></>    
       )}
-      <Modal visible={showModel} animationType="slide" transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]}>
-              <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cashIcon]} />
-              <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay All Amount</Text>
-            </TouchableOpacity>
-            {total > 25 && (
-              <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => handlePayment(total * 0.25)}>
-                <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cardIcon]} />
-                <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay 25%</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
-              <Text style={styles.closeModalButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </ScrollView>
   
 
