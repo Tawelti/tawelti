@@ -1,39 +1,37 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView , Modal} from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Modal } from 'react-native';
 import { faMoneyBillAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import Navbar from '../NavBar';
 
-
 const Order = () => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState('cash')
+  const [selectedPayment, setSelectedPayment] = useState('cash');
   const [showModel, setShowModel] = useState(false);
-  const [showSecondModal, setShowSecondModal] = useState(false);
-  const [selectedPercentage, setSelectedPercentage] = useState('full');
-  
 
   const fetch = () => {
-    axios.get("http://192.168.234.127:3000/api/order/getAll/1")
-      .then(res => {
+    axios
+      .get('http://192.168.234.127:3000/api/order/getAll/1')
+      .then((res) => {
         console.log(res.data);
         setData(res.data);
         calculateTotal(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
   const remove = (id) => {
-    axios.delete(`http://192.168.234.127:3000/api/order/delete/${id}`)
-      .then(res => {
+    axios
+      .delete(`http://192.168.169.127:3000/api/order/delete/${id}`)
+      .then((res) => {
         console.log(res.data);
-        fetch()
+        fetch();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -44,122 +42,69 @@ const Order = () => {
   };
 
   useEffect(() => {
-    fetch();
+    fetch()
   }, []);
 
   const paymentMethod = () => {
-    setShowModel(!showModel);
+    setShowModel(!showModel)
   };
 
   const handlePayment = (pay) => {
-    setSelectedPayment(pay);
-    paymentMethod();
+    setSelectedPayment(pay)
+    paymentMethod()
   };
-
-  const handlePayments = (pay) => {
-    setSelectedPayment(pay);
-    if (pay === 'online') {
-      setShowSecondModal(true); 
-    } else {
-      paymentMethod();
-    }
-  };
-
-  const handlePayOnline = (percentage) => {
-    setSelectedPercentage(percentage);
-    setShowSecondModal(false);
-    paymentMethod(); 
-  };
-
   return (
 
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.contentContainer}>
-        {data.map((el, i) => (
-          <TouchableOpacity key={el.id} style={styles.card}>
-            <Image style={styles.image} source={{ uri: el.Product.image }} />
-            <View style={styles.detailsContainer}>
-              <Text style={styles.itemName}>{el.Product.productname}</Text>
-              <Text style={styles.price}>{el.Product.price}</Text>
-            </View>
-            <TouchableOpacity style={styles.addToCartButton}>
-              <Text style={styles.addToCartButtonText} onPress={() => {remove(el.id)}}>Remove</Text>
-            </TouchableOpacity>
+    <View style={styles.contentContainer}>
+      {data.map((el, i) => (
+        <TouchableOpacity key={el.id} style={styles.card}>
+          <Image style={styles.image} source={{ uri: el.Product.image }} />
+          <View style={styles.detailsContainer}>
+            <Text style={styles.itemName}>{el.Product.productname}</Text>
+            <Text style={styles.price}>{el.Product.price}</Text>
+          </View>
+          <TouchableOpacity style={styles.addToCartButton}>
+            <Text style={styles.addToCartButtonText} onPress={() => remove(el.id)}>
+              Remove
+            </Text>
           </TouchableOpacity>
-        ))}
-      </View>
-      <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Total Amount:</Text>
-        <Text style={styles.totalAmount}>${total}</Text>
-      </View>
-      <TouchableOpacity style={styles.paymentButton} onPress={paymentMethod}>
-      <Text style={styles.paymentButtonText}>Choose Payment Method</Text>
-    </TouchableOpacity>
-    <Modal visible={showModel} animationType="slide" transparent>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <TouchableOpacity
-            style={[styles.modalPaymentButton, selectedPayment === 'cash' ? styles.selectedPayment : null]}
-            onPress={() => handlePayment('cash')}
-          >
-            <FontAwesomeIcon icon={faMoneyBillAlt} style={[styles.paymentIcon, selectedPayment === 'cash' ? styles.selectedPaymentText : null , styles.cashIcon]} />
-            <Text style={[styles.modalPaymentButtonText, selectedPayment === 'cash' ? styles.selectedPaymentText : null]}>Cash</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.modalPaymentButton, selectedPayment === 'online' ? styles.selectedPayment : null]}
-            onPress={() => handlePayments('online')}
-          >
-            <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, selectedPayment === 'online' ? styles.selectedPaymentText : null , styles.cardIcon]} />
-            <Text style={[styles.modalPaymentButtonText, selectedPayment === 'online' ? styles.selectedPaymentText : null]}>Card</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
-            <Text style={styles.closeModalButtonText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-    <Modal visible={showSecondModal} animationType="slide" transparent>
+        </TouchableOpacity>
+      ))}
+    </View>
+    <View style={styles.totalContainer}>
+      <Text style={styles.totalText}>Total Amount:</Text>
+      <Text style={styles.totalAmount}>${total}</Text>
+    </View>
+    {total > 100 ? (
+        <TouchableOpacity style={styles.paymentButton} onPress={() => handlePayment(total)}>
+          <Text style={styles.paymentButtonText}>You should Pay with card</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.paymentButton} onPress={paymentMethod}>
+          <Text style={styles.paymentButtonText}>Choose Payment Method</Text>
+        </TouchableOpacity>
+      )}
+      <Modal visible={showModel} animationType="slide" transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <TouchableOpacity
-              style={[
-                styles.modalPaymentButton,
-                selectedPercentage === 'full' ? styles.selectedPayment : null,
-              ]}
-              onPress={() => handlePayOnline('full')}
-            >
-              <Text
-                style={[
-                  styles.modalPaymentButtonText,
-                  selectedPercentage === 'full' ? styles.selectedPaymentText : null,
-                ]}
-              >
-                Pay Full Amount
-              </Text>
+            <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]}>
+              <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cashIcon]} />
+              <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay All Amount</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.modalPaymentButton,
-                selectedPercentage === '25' ? styles.selectedPayment : null,
-              ]}
-              onPress={() => handlePayOnline('25')}
-            >
-              <Text
-                style={[
-                  styles.modalPaymentButtonText,
-                  selectedPercentage === '25' ? styles.selectedPaymentText : null,
-                ]}
-              >
-                Pay 25%
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeModalButton} onPress={() => setShowSecondModal(false)}>
+            {total > 25 && (
+              <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => handlePayment(total * 0.25)}>
+                <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, styles.selectedPaymentText, styles.cardIcon]} />
+                <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay 25%</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
               <Text style={styles.closeModalButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-  </ScrollView>
+    </ScrollView>
   
 
   );
