@@ -4,17 +4,23 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 
-const Reservations = () => {
+const Reservations = ({route}) => {
     const navigation = useNavigation();
     const [data , setData] = useState([])
-    
+    const [places_id, setPlaces_id] = useState(0);
+    const { id } = route.params;
+    console.log(id);
 useEffect(() => {
 fetch()
 },[])
+
+
     const fetch =() => {
-axios.get("http://192.168.208.127:3000/api/Reservation/get/18")
+        console.log(places_id);
+axios.get(`http:/192.168.11.229:3000/api/Reservation/getOne/${id}`)
 .then(res => {
-    console.log(res.data)
+    console.log(res.data,'hi')
+    setPlaces_id(res.data.id)
     setData(res.data)
 })
 .catch(err => {
@@ -23,7 +29,7 @@ axios.get("http://192.168.208.127:3000/api/Reservation/get/18")
     }
 
 const deleteRes = (id) => {
-    axios.delete(`http://192.168.208.127:3000/api/Reservation/delete/${id}`)
+    axios.delete(`http:/192.168.11.229:3000/api/Reservation/delete/${id}`)
     .then(res => {
         console.log(res.data)
        fetch()
@@ -48,8 +54,8 @@ const deleteRes = (id) => {
                         <Text style={styles.infoValue}>{e.numberofperson}</Text>
                     </View>
                     <View style={styles.info}>
-                        <Text style={styles.infoLabel}>Phone:</Text>
-                        <Text style={styles.infoValue}>12345 67890</Text>
+                        <Text style={styles.infoLabel}>Client:</Text>
+                        <Text style={styles.infoValue}>{e.Client_id}</Text>
                     </View>
                 </View>
                 <Button title="delete" onPress={() => deleteRes(e.id)}/>
@@ -81,9 +87,7 @@ const styles = StyleSheet.create({
     headerText: {
         color: '#313131',
         fontSize: 24,
-        fontFamily: 'Poppins',
         fontWeight: '700',
-        wordWrap: 'break-word',
     },
     infoContainer: {
         flexDirection: 'row',
@@ -98,16 +102,12 @@ const styles = StyleSheet.create({
     infoLabel: {
         color: '#313131',
         fontSize: 20,
-        fontFamily: 'Poppins',
         fontWeight: '600',
-        wordWrap: 'break-word',
     },
     infoValue: {
         color: '#313131',
         fontSize: 20,
-        fontFamily: 'Poppins',
         fontWeight: '500',
-        wordWrap: 'break-word',
     },
     cancelButton: {
         width: 100,
@@ -123,9 +123,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#313131',
         fontSize: 20,
-        fontFamily: 'Poppins',
         fontWeight: '700',
-        wordWrap: 'break-word',
     },
     goBack: {
         paddingLeft: 10,
@@ -136,9 +134,7 @@ const styles = StyleSheet.create({
     goBackText: {
         color: '#313131',
         fontSize: 13,
-        fontFamily: 'Poppins',
         fontWeight: '600',
-        wordWrap: 'break-word',
     },
 });
 

@@ -1,110 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native'; 
-import axios from 'axios';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 
-const Tables = () => {
-  const [data, setData] = useState([]);
+const Tables = ({ onClose }) => {
+  const [selectedTable, setSelectedTable] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
-    axios.get(`http://192.168.133.150:3000/api/tables/get`)
-      .then(res => {
-        console.log(res.data);
-        setData(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  const TableClick = (number) => {
+    setSelectedTable(number);
+    Alert.alert(
+      'Table Selected',
+      `You have selected Table ${number}. Are you sure?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Confirm', onPress: () => handleConfirmation(number) },
+      ]
+    );
   };
 
-  const reserveTable = () => {
-    axios.post('http://192.168.133.150:3000/api/tables/add/1/1')
-      .then(() => {
-        const updatedData = data.map(table => {
-          if (table.PlaceId === 1 && table.Order_id === 1) {
-            if (!table.reserved) {
-              const updatedTable = { ...table, reserved: true };
-  
-              axios.put(`http://192.168.133.150:3000/api/tables/${table.id}`, { reserved: true })
-                .then(() => {
-                  console.log('Table reservation status updated in the database.');
-                })
-                .catch(error => {
-                  console.error('Error updating table reservation status:', error);
-                });
-  
-              return updatedTable;
-            }
-          }
-          return table;
-        });
-        setData(updatedData);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  const handleConfirmation = (number) => {
+    Alert.alert(
+      'Confirmed',
+      `You have confirmed the selection of Table ${number}.`
+    );
+    onClose();
   };
-  
-  
-  
+
+  const tables = [
+    { number: 1, capacity: 4 },
+    { number: 2, capacity: 2 },
+    { number: 3, capacity: 6 },
+    { number: 4, capacity: 5 },
+    { number: 5, capacity: 8 },
+    { number: 6, capacity: 6 },
+    { number: 7, capacity: 2 },
+    { number: 8, capacity: 8 },
+    { number: 9, capacity: 4 },
+    { number: 10, capacity: 4 },
+    { number: 11, capacity: 4 },
+    { number: 12, capacity: 2 },
+    { number: 13, capacity: 6 },
+    { number: 14, capacity: 5 },
+    { number: 15, capacity: 8 },
+    { number: 16, capacity: 6 },
+    { number: 17, capacity: 2 },
+    { number: 18, capacity: 8 },
+  ];
+
+  const renderTableRows = () => {
+    const rows = [];
+    for (let i = 0; i < tables.length; i += 3) {
+      const row = tables.slice(i, i + 3);
+      rows.push(
+        <View key={i} style={styles.tableRow}>
+          {row.map(table => (
+            <TouchableOpacity
+              key={table.number}
+              onPress={() => TableClick(table.number)}
+              style={[
+                styles.table,
+                selectedTable === table.number && styles.selectedTable,
+              ]}
+            >
+              <Text style={styles.tableText}>Table {table.number}</Text>
+              <Text>Capacity: {table.capacity}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      );
+    }
+    return rows;
+  };
 
   return (
-    <ScrollView
-      horizontal 
-      contentContainerStyle={styles.scrollViewContent} 
-    >
-      {data.map(table => (
+    <View style={styles.container}>
+    <Text style={styles.title}>Select a Table:</Text>
+    <ScrollView contentContainerStyle={styles.tablesContainer}>
+      {tables.map(table => (
         <TouchableOpacity
-          key={table.id}
+          key={table.number}
+          onPress={() => TableClick(table.number)}
           style={[
-            styles.smallCircle,
-            { backgroundColor: table.reserved ? '#FF0000' : '#00FF00' },
-          ]}
-          onPress={() => {
-            if (!table.reserved) {
-              reserveTable(table);
-            }
-          }}
-        >
-          <Text style={styles.smallCircleText}>{table.number}</Text>
-        </TouchableOpacity>
-      ))}
-      {Array.from({ length: 50 - data.length }, (_, index) => (
-        <TouchableOpacity
-          key={data.length + index}
-          style={[
-            styles.smallCircle,
-            { backgroundColor: '#00FF00' },
+            styles.table,
+            selectedTable === table.number && styles.selectedTable,
           ]}
         >
-          <Text style={styles.smallCircleText}>{data.length + index + 1}</Text>
+          <Text style={styles.tableText}>Table {table.number}</Text>
+          <Text>Capacity: {table.capacity}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>
-  );
+    <Text style={styles.selectedInfo}>
+      {selectedTable ? `You selected Table ${selectedTable}` : 'Please select a table'}
+    </Text>
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    marginTop: 20,
-  },
-  smallCircle: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    justifyContent: 'center',
+  container: {
+    flex: 2,
+    padding: 16,
     alignItems: 'center',
-    margin: 5,
+    bottom:30
   },
-  smallCircleText: {
-    color: '#313131',
-    fontSize: 16,
+  title: {
+    fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  tablesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  table: {
+    backgroundColor: '#e0e0e0',
+    borderRadius: 8,
+    padding: 16,
+    width: 100,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  selectedTable: {
+    backgroundColor: '#E7B10A',
+  },
+  tableText: {
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  selectedInfo: {
+    marginTop: 16,
+    fontSize: 16,
   },
 });
 

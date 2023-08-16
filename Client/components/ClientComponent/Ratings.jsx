@@ -7,7 +7,7 @@ const Ratings = () => {
   const maxRating = [1, 2, 3, 4, 5];
 
   const updateRate=()=>{
-    axios.put(`http://192.168.101.8:3000/api/Comments/1`,{rating:defaultRating})
+    axios.put(`http:/192.168.11.229:3000/api/Comments/1`,{rating:defaultRating})
     .then(()=>alert(defaultRating))
     .catch((err)=>console.log(err))
   }
