@@ -1,89 +1,130 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView , Modal,Alert} from 'react-native';
-import Navbar from '../NavBar';
+
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Modal, Alert } from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
+
+import { faMoneyBillAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+
+import Navbar from '../NavBar';
+
 
 const Order = () => {
   const [data, setData] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState('cash')
+  const [total, setTotal] = useState(120);
+  const [selectedPayment, setSelectedPayment] = useState('cash');
   const [showModel, setShowModel] = useState(false);
-  const {initPaymentSheet,presentPaymentSheet}=useStripe()
+  const { initPaymentSheet, presentPaymentSheet } = useStripe()
+  const [showSecondModal, setShowSecondModal] = useState(false);
+  const [selectedPercentage, setSelectedPercentage] = useState('full');
+  const [percentage, setPercentage] = useState(1)
   const fetch = () => {
+
     axios.get("http://192.168.104.9:3000/api/order/getAll/1")
       .then(res => {
+
         console.log(res.data);
         setData(res.data);
         calculateTotal(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
   const remove = (id) => {
+
+
     axios.delete(`http://192.168.104.9:3000/api/order/delete/${id}`)
+
+
       .then(res => {
+
         console.log(res.data);
-        fetch()
+        fetch();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
+
   const calculateTotal = (orderData) => {
     const sum = orderData.reduce((acc, el) => acc + el.Product.price, 0);
     setTotal(sum);
   };
+
   useEffect(() => {
-    fetch();
+    fetch()
+    calculate25Percent(total)
   }, []);
   const paymentMethod = () => {
-    setShowModel(!showModel);
+    setShowModel(!showModel)
   };
   const handlePayment = (pay) => {
-    setSelectedPayment(pay);
-    paymentMethod();
+    setSelectedPayment(pay)
+    paymentMethod()
   };
-  const payment = () => {
+  console.log(percentage);
+
+  const payment = (amount) => {
     if (total === 0) {
       Alert.alert("Pass order", "Please pass your order package first.")
       return
     }
-   
-    axios.post(`http://192.168.104.9:3000/api/payment/pay/${total*100}`)
-    .then((response) => {
+
+    axios.post(`http://192.168.104.9:3000/api/payment/pay/${amount * 100}`)
+      .then((response) => {
         const { paymentIntent } = response.data;
         console.log(paymentIntent)
-  const initResponse= initPaymentSheet({
-  merchantDisplayName:"Tawelti",
-  paymentIntentClientSecret:paymentIntent,
-})
-console.log(initResponse)
-presentPaymentSheet()
-.then((PaymentResponse) => {
-  if (PaymentResponse.error) {
-    console.log(PaymentResponse.error);
-    Alert.alert(
-      `Error code: ${PaymentResponse.error.code}`,
-      PaymentResponse.error.message
-    )
-  } else {
-    Alert.alert(
-      "Payment Successful",
-      "Your payment has been processed successfully!"
-    )
-    paymentMethod();
-  }
-})
-.catch((error) => {
-  console.log(error);
-});
-})
+        const initResponse = initPaymentSheet({
+          merchantDisplayName: "Tawelti",
+          paymentIntentClientSecret: paymentIntent,
+        })
+        console.log(initResponse)
+        presentPaymentSheet()
+          .then((PaymentResponse) => {
+            if (PaymentResponse.error) {
+              console.log(PaymentResponse.error);
+              Alert.alert(
+                `Error code: ${PaymentResponse.error.code}`,
+                PaymentResponse.error.message
+              )
+            } else {
+              Alert.alert(
+                "Payment Successful",
+                "Your payment has been processed successfully!"
+              )
+              paymentMethod();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  const handlePayments = (pay) => {
+    setSelectedPayment(pay);
+    if (pay === 'online') {
+      setShowSecondModal(true)
+    } else {
+      paymentMethod();
+    }
+  };
+
+  const handlePayOnline = (percentage) => {
+    setSelectedPercentage(percentage);
+    setShowSecondModal(false)
+    paymentMethod();
+  };
+
+  function calculate25Percent(total) {
+    const tot = 0.25 * total;
+    setPercentage(tot)
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.contentContainer}>
@@ -95,7 +136,9 @@ presentPaymentSheet()
               <Text style={styles.price}>{el.Product.price}</Text>
             </View>
             <TouchableOpacity style={styles.addToCartButton}>
-              <Text style={styles.addToCartButtonText} onPress={() => {remove(el.id)}}>Remove</Text>
+              <Text style={styles.addToCartButtonText} onPress={() => remove(el.id)}>
+                Remove
+              </Text>
             </TouchableOpacity>
           </TouchableOpacity>
         ))}
@@ -104,35 +147,56 @@ presentPaymentSheet()
         <Text style={styles.totalText}>Total Amount:</Text>
         <Text style={styles.totalAmount}>${total}</Text>
       </View>
-      <TouchableOpacity style={styles.paymentButton} onPress={paymentMethod}>
-      <Text style={styles.paymentButtonText}>Choose Payment Method</Text>
-    </TouchableOpacity>
-    <Modal visible={showModel} animationType="slide" transparent>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <TouchableOpacity
-            style={[styles.modalPaymentButton, selectedPayment === 'cash' ? styles.selectedPayment : null]}
-            onPress={() => handlePayment('cash')}
-          >
-            
-            <Text style={[styles.modalPaymentButtonText, selectedPayment === 'cash' ? styles.selectedPaymentText : null]}>Cash</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.modalPaymentButton, selectedPayment === 'online' ? styles.selectedPayment : null]}
-            onPress={() => payment()}
-          >
-            
-            <Text style={[styles.modalPaymentButtonText, selectedPayment === 'online' ? styles.selectedPaymentText : null]}>Card</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
-            <Text style={styles.closeModalButtonText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  </ScrollView>
-  );
-};
+      {total > 100 ? (
+        <View>
+        <TouchableOpacity style={styles.paymentButton} onPress={() => handlePayment(total)}>
+          <Text style={styles.paymentButtonText}>You should Pay with card</Text>
+        </TouchableOpacity>
+        <Modal visible={showModel} animationType="slide" transparent>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => payment(total)}>
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay All Amount</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => payment(percentage)}>
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay 25%</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
+                  <Text style={styles.closeModalButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          </View> ) : (
+        <View>
+         <TouchableOpacity style={styles.paymentButton} onPress={() => handlePayment(total)}>
+          <Text style={styles.paymentButtonText}>Choose payment Method</Text>
+         </TouchableOpacity><Modal visible={showModel} animationType="slide" transparent>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => payment(total)}>
+
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay With card</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.modalPaymentButton, styles.selectedPayment]} onPress={() => handlePayment()}>
+
+                  <Text style={[styles.modalPaymentButtonText, styles.selectedPaymentText]}>Pay Cash</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
+                  <Text style={styles.closeModalButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          </View>
+      )}
+    </ScrollView>
+
+
+  )
+}
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -154,7 +218,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
-    marginTop : 20
+    marginTop: 20
   },
   image: {
     width: 80,
