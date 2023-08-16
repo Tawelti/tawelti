@@ -4,7 +4,7 @@ const sequelize = require('../configdb');
 
 const { Places } = require('./places');
 
-
+const defaultImageURL = 'https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/avatar-icon.png';
 
 const Seller = sequelize.define('Seller', {
   id: {
@@ -22,12 +22,13 @@ const Seller = sequelize.define('Seller', {
     allowNull: false,
   },
   password: {
-    type: DataTypes.STRING(45),
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   image: {
     type: DataTypes.STRING(500),
     allowNull: true,
+    defaultValue: defaultImageURL,
   },
   patentimage: {
     type: DataTypes.STRING(500),

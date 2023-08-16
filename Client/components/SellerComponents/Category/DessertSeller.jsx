@@ -14,7 +14,11 @@ const DessertSeller = () => {
 
 
   const fetch = () => {
+<<<<<<< HEAD
     axios.get("http://192.168.11.149:3000/api/Product/getAll/1/Dessert") 
+=======
+    axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Dessert") 
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
     .then(res => {
       setData(res.data)
     })
@@ -41,7 +45,11 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
+<<<<<<< HEAD
   axios.post('http://192.168.11.229:3000/api/Product/create/1/Dessert', {
+=======
+  axios.post('http://192.168.169.127:3000/api/Product/create/1/Dessert', {
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
     productname: productname,
     price: price,
     Immage : Immage   

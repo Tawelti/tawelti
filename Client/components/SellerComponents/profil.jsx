@@ -13,7 +13,10 @@ const Profil = () => {
     const [nameInput, setNameInput] = useState('')
     const [emailInput, setEmailInput] = useState('')
     const [refresh , setRefresh] = useState(false)
+<<<<<<< HEAD
     const [id,setId]=useState(0)
+=======
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
   
   
@@ -39,7 +42,11 @@ const Profil = () => {
     }
     const fetch = () => {
 
+<<<<<<< HEAD
       axios.get(`http://192.168.11.229:3000:3000/api/seller/get/${id}`)
+=======
+      axios.get('http://192.168.169.127:3000/api/seller/get/1')
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -51,7 +58,11 @@ const Profil = () => {
     };
   
     const updateProfile = (name , email) => {
+<<<<<<< HEAD
       axios.put('http://192.168.11.229:3000:3000/api/seller/update/1', {
+=======
+      axios.put('http://192.168.169.127:3000/api/seller/update/1', {
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
           name: name,
           email: email,
          
@@ -67,7 +78,11 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
+<<<<<<< HEAD
       axios.put('http://192.168.11.229:3000/api/seller/updateImage/1', {
+=======
+      axios.put('http://192.168.169.127/api/seller/updateImage/1', {
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
           name: name,
           email: email,
          

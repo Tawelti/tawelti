@@ -23,7 +23,11 @@ const ProfilePayment = () => {
       try {
         const email = await AsyncStorage.getItem('userEmail')
         if (email) {
+<<<<<<< HEAD
           const response = await axios.get(`http://192.168.11.229:3000/api/seller/email/${email}`);
+=======
+          const response = await axios.get(`http://172.20.10.8:3000/api/seller/email/${email}`);
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
           console.log(response.data);
           console.log(response.data.id);
           setData(response.data);
@@ -38,7 +42,11 @@ const ProfilePayment = () => {
 
 
     const fetch = () => {
+<<<<<<< HEAD
       axios.get(`http://192.168.11.229:3000/api/seller/get/${id}`)
+=======
+      axios.get(`http://172.20.10.8:3000/api/seller/get/${id}`)
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
         .then((res) => {
           console.log(res.data)
           setData(res.data)
@@ -60,7 +68,11 @@ const ProfilePayment = () => {
       Alert.alert("Choose a Package", "Please choose a package first.")
       return
     }
+<<<<<<< HEAD
     axios.post(`http://192.168.11.229:3000/api/payment/pay/${amount}`)
+=======
+    axios.post(`http://172.20.10.8:3000/api/payment/pay/${amount}`)
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       .then((response) => {
         const { paymentIntent } = response.data;
         console.log(paymentIntent)

@@ -1,7 +1,7 @@
 const router=require("express").Router()
 const { Router } = require("express")
-const {Add,Verify}=require ("../controllers/Payment")
+const {intent}=require ("../controllers/Payment")
 
-router.post("/pay/:amount",Add)
-router.get("/verify/:id",Verify)
+router.post("/pay/:amount",intent)
+
 module.exports=router
