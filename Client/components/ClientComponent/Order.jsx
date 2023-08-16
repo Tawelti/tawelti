@@ -7,7 +7,7 @@ import Navbar from '../NavBar';
 
 const Order = () => {
   const [data, setData] = useState([]);
-  const [total, setTotal] = useState(150);
+  const [total, setTotal] = useState(0);
   const [selectedPayment, setSelectedPayment] = useState('cash');
   const [showModel, setShowModel] = useState(false);
 
@@ -36,10 +36,10 @@ const Order = () => {
       });
   };
 
-  // const calculateTotal = (orderData) => {
-  //   const sum = orderData.reduce((acc, el) => acc + el.Product.price, 0);
-  //   setTotal(sum);
-  // };
+  const calculateTotal = (orderData) => {
+    const sum = orderData.reduce((acc, el) => acc + el.Product.price, 0);
+    setTotal(sum);
+  };
 
   useEffect(() => {
     fetch()
