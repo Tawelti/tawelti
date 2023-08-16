@@ -11,9 +11,12 @@ const Order = () => {
   const [total, setTotal] = useState(0);
   const [selectedPayment, setSelectedPayment] = useState('cash')
   const [showModel, setShowModel] = useState(false);
+  const [showSecondModal, setShowSecondModal] = useState(false);
+  const [selectedPercentage, setSelectedPercentage] = useState('full');
+  
 
   const fetch = () => {
-    axios.get("http://192.168.169.127:3000/api/order/getAll/1")
+    axios.get("http://192.168.234.127:3000/api/order/getAll/1")
       .then(res => {
         console.log(res.data);
         setData(res.data);
@@ -25,7 +28,7 @@ const Order = () => {
   };
 
   const remove = (id) => {
-    axios.delete(`http://192.168.169.127:3000/api/order/delete/${id}`)
+    axios.delete(`http://192.168.234.127:3000/api/order/delete/${id}`)
       .then(res => {
         console.log(res.data);
         fetch()
@@ -52,6 +55,22 @@ const Order = () => {
     setSelectedPayment(pay);
     paymentMethod();
   };
+
+  const handlePayments = (pay) => {
+    setSelectedPayment(pay);
+    if (pay === 'online') {
+      setShowSecondModal(true); 
+    } else {
+      paymentMethod();
+    }
+  };
+
+  const handlePayOnline = (percentage) => {
+    setSelectedPercentage(percentage);
+    setShowSecondModal(false);
+    paymentMethod(); 
+  };
+
   return (
 
     <ScrollView contentContainerStyle={styles.container}>
@@ -88,7 +107,7 @@ const Order = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.modalPaymentButton, selectedPayment === 'online' ? styles.selectedPayment : null]}
-            onPress={() => handlePayment('online')}
+            onPress={() => handlePayments('online')}
           >
             <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, selectedPayment === 'online' ? styles.selectedPaymentText : null , styles.cardIcon]} />
             <Text style={[styles.modalPaymentButtonText, selectedPayment === 'online' ? styles.selectedPaymentText : null]}>Card</Text>
@@ -99,6 +118,47 @@ const Order = () => {
         </View>
       </View>
     </Modal>
+    <Modal visible={showSecondModal} animationType="slide" transparent>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              style={[
+                styles.modalPaymentButton,
+                selectedPercentage === 'full' ? styles.selectedPayment : null,
+              ]}
+              onPress={() => handlePayOnline('full')}
+            >
+              <Text
+                style={[
+                  styles.modalPaymentButtonText,
+                  selectedPercentage === 'full' ? styles.selectedPaymentText : null,
+                ]}
+              >
+                Pay Full Amount
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.modalPaymentButton,
+                selectedPercentage === '25' ? styles.selectedPayment : null,
+              ]}
+              onPress={() => handlePayOnline('25')}
+            >
+              <Text
+                style={[
+                  styles.modalPaymentButtonText,
+                  selectedPercentage === '25' ? styles.selectedPaymentText : null,
+                ]}
+              >
+                Pay 25%
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeModalButton} onPress={() => setShowSecondModal(false)}>
+              <Text style={styles.closeModalButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
   </ScrollView>
   
 
