@@ -34,7 +34,6 @@ import ChichaSeller from './components/SellerComponents/Category/ChichaSeller';
 
 
 import {StripeProvider} from "@stripe/stripe-react-native"
-import Profil from './components/SellerComponents/profil';
 import Reservations from './components/SellerComponents/reservations';
 import NewPlace from './components/SellerComponents/Place';
 import Places from './components/SellerComponents/Places';
@@ -55,7 +54,7 @@ export default function App() {
 
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
-    {/* <Stack.Screen name="Profile" component={ProfilePayment} /> */}
+    <Stack.Screen name="Profile" component={ProfilePayment} /> 
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="SignIN" component={SignInScreen} />

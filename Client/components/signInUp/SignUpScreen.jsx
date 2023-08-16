@@ -36,14 +36,14 @@ const SignUpScreen = () => {
         registrationData.patentimage = patente
       }
 
-      const endpoint = userType === 'seller' ? 'http://172.20.10.8:3000/api/seller/register' : 'http://172.20.10.8  :3000/api/client/register';
+      const endpoint = userType === 'seller' ? 'http://192.168.104.9:3000/api/seller/register' : 'http://192.168.104.9:3000/api/client/register';
 console.log(registrationData)
       const response = await axios.post(endpoint, registrationData)
 
       if (response.data.message) {
         console.log(response.data)
         Alert.alert(
-          "login successfully"
+          "register successfully"
     )
         navigation.navigate('SignIN')
       } else {

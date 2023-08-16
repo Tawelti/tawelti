@@ -1,19 +1,17 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView , Modal} from 'react-native';
-import { faMoneyBillAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView , Modal,Alert} from 'react-native';
 import Navbar from '../NavBar';
-
+import { useStripe } from '@stripe/stripe-react-native';
 
 const Order = () => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [selectedPayment, setSelectedPayment] = useState('cash')
   const [showModel, setShowModel] = useState(false);
-
+  const {initPaymentSheet,presentPaymentSheet}=useStripe()
   const fetch = () => {
-    axios.get("http://192.168.169.127:3000/api/order/getAll/1")
+    axios.get("http://192.168.104.9:3000/api/order/getAll/1")
       .then(res => {
         console.log(res.data);
         setData(res.data);
@@ -23,9 +21,8 @@ const Order = () => {
         console.log(err);
       });
   };
-
   const remove = (id) => {
-    axios.delete(`http://192.168.169.127:3000/api/order/delete/${id}`)
+    axios.delete(`http://192.168.104.9:3000/api/order/delete/${id}`)
       .then(res => {
         console.log(res.data);
         fetch()
@@ -34,26 +31,60 @@ const Order = () => {
         console.log(err);
       });
   };
-
   const calculateTotal = (orderData) => {
     const sum = orderData.reduce((acc, el) => acc + el.Product.price, 0);
     setTotal(sum);
   };
-
   useEffect(() => {
     fetch();
   }, []);
-
   const paymentMethod = () => {
     setShowModel(!showModel);
   };
-
   const handlePayment = (pay) => {
     setSelectedPayment(pay);
     paymentMethod();
   };
+  const payment = () => {
+    if (total === 0) {
+      Alert.alert("Pass order", "Please pass your order package first.")
+      return
+    }
+   
+    axios.post(`http://192.168.104.9:3000/api/payment/pay/${total*100}`)
+    .then((response) => {
+        const { paymentIntent } = response.data;
+        console.log(paymentIntent)
+  const initResponse= initPaymentSheet({
+  merchantDisplayName:"Tawelti",
+  paymentIntentClientSecret:paymentIntent,
+})
+console.log(initResponse)
+presentPaymentSheet()
+.then((PaymentResponse) => {
+  if (PaymentResponse.error) {
+    console.log(PaymentResponse.error);
+    Alert.alert(
+      `Error code: ${PaymentResponse.error.code}`,
+      PaymentResponse.error.message
+    )
+  } else {
+    Alert.alert(
+      "Payment Successful",
+      "Your payment has been processed successfully!"
+    )
+    paymentMethod();
+  }
+})
+.catch((error) => {
+  console.log(error);
+});
+})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
-
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.contentContainer}>
         {data.map((el, i) => (
@@ -83,14 +114,14 @@ const Order = () => {
             style={[styles.modalPaymentButton, selectedPayment === 'cash' ? styles.selectedPayment : null]}
             onPress={() => handlePayment('cash')}
           >
-            <FontAwesomeIcon icon={faMoneyBillAlt} style={[styles.paymentIcon, selectedPayment === 'cash' ? styles.selectedPaymentText : null , styles.cashIcon]} />
+            
             <Text style={[styles.modalPaymentButtonText, selectedPayment === 'cash' ? styles.selectedPaymentText : null]}>Cash</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.modalPaymentButton, selectedPayment === 'online' ? styles.selectedPayment : null]}
-            onPress={() => handlePayment('online')}
+            onPress={() => payment()}
           >
-            <FontAwesomeIcon icon={faCreditCard} style={[styles.paymentIcon, selectedPayment === 'online' ? styles.selectedPaymentText : null , styles.cardIcon]} />
+            
             <Text style={[styles.modalPaymentButtonText, selectedPayment === 'online' ? styles.selectedPaymentText : null]}>Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.closeModalButton} onPress={paymentMethod}>
@@ -100,11 +131,8 @@ const Order = () => {
       </View>
     </Modal>
   </ScrollView>
-  
-
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -162,7 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    marginBottom: 40, 
+    marginBottom: 40,
   },
   totalText: {
     fontSize: 18,
@@ -226,8 +254,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   paymentOption: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   paymentIcon: {
     color: '#21A0AA',
@@ -235,5 +263,4 @@ const styles = StyleSheet.create({
     marginRight: 10,
   }
 });
-
 export default Order;
