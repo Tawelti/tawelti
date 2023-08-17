@@ -88,4 +88,18 @@ markAsPayed: async (req, res) => {
   }
 },
 
+getAll:(req,res)=>{
+  Seller.findAll()
+  .then((result) => {
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(404).json({ message: 'Seller not found' });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
+}
+
 }

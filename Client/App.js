@@ -31,8 +31,6 @@ import DrinksSeller from './components/SellerComponents/Category/DrinksSeller';
 import DessertSeller from './components/SellerComponents/Category/DessertSeller';
 import FoodSeller from './components/SellerComponents/Category/FoodSeller';
 import ChichaSeller from './components/SellerComponents/Category/ChichaSeller';
-
-
 import {StripeProvider} from "@stripe/stripe-react-native"
 import Reservations from './components/SellerComponents/reservations';
 import NewPlace from './components/SellerComponents/Place';
@@ -50,8 +48,6 @@ export default function App() {
    <Stack.Navigator
     screenOptions={{ headerShown: false  }}
     initialRouteName="Loading"
-    
-
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
     <Stack.Screen name="Profile" component={ProfilePayment} /> 
