@@ -9,7 +9,7 @@ function Comments() {
 
 
   const fetch =() => {
-    axios.get('http://192.168.208.127:3000/api/Comments/20')
+    axios.get('http://192.168.101.4:3000/api/Comments/20')
     .then(res => {
       setData(res.data); 
     })
@@ -20,7 +20,7 @@ function Comments() {
   }, []);
 
 const postComment=()=>{
-axios.post('http://192.168.208.127:3000/api/Comments/1/20/1',{comment:text})
+axios.post('http://192.168.101.4:3000/api/Comments/1/20/1',{comment:text})
 .then(() => {
   fetch()
 })

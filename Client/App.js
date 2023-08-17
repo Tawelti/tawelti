@@ -34,7 +34,7 @@ import ChichaSeller from './components/SellerComponents/Category/ChichaSeller';
 
 
 import {StripeProvider} from "@stripe/stripe-react-native"
-import Profil from './components/SellerComponents/profil';
+
 import Reservations from './components/SellerComponents/reservations';
 import NewPlace from './components/SellerComponents/Place';
 import Places from './components/SellerComponents/Places';
@@ -50,7 +50,7 @@ export default function App() {
   <StatusBar style="auto" /> 
    <Stack.Navigator
     screenOptions={{ headerShown: false  }}
-    initialRouteName="Loading"
+    initialRouteName="Comments"
     
 
   >
