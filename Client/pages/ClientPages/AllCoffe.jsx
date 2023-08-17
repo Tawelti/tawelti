@@ -11,6 +11,17 @@ function AllCoffe() {
   const [places, setPlaces] = useState([]);
   const [heartClicked, setHeartClicked] = useState(false);
 
+<<<<<<< HEAD
+const get = () => {
+  axios.get('http://192.168.11.229:3000/api/places/getApp&cat/coffe')
+    .then((res) => {
+      setPlaces(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+=======
   const get = () => {
     axios
       .get('http://192.168.234.127:3000/api/places/getApp&cat/coffe')
@@ -29,6 +40,7 @@ function AllCoffe() {
   const handleHeartClick = () => {
     setHeartClicked(!heartClicked);
   };
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
   return (
     <View style={styles.places}>

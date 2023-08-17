@@ -19,7 +19,7 @@ const ClentProfile = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.208.127:3000/api/client/get/1')
+      axios.get('http://192.168.11.229:3000/api/client/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -31,7 +31,7 @@ const ClentProfile = () => {
     };
   
     const updateProfile = (name , email) => {
-      axios.put('http://192.168.208.127:3000/api/client/update/1', {
+      axios.put('http://192.168.11.229:3000/api/client/update/1', {
           name: name,
           email: email,
          

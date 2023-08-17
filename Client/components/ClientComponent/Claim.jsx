@@ -23,7 +23,7 @@ function Claim() {
   }, []);
  
   const addClaim=()=>{
-    axios.post("http://192.168.208.127:3000/api/Claim/1/1",{content:text})
+    axios.post("http://192.168.11.229:3000/api/Claim/1/1",{content:text})
     .then ((res)=>{
       alert("your reclamation has been send it seccufully")
       console.log(res)

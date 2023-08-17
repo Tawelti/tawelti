@@ -8,7 +8,7 @@ function ALLResto() {
 const [places,setPlaces]=useState([])
 
 const get = () => {
-  axios.get('http://192.168.208.127:3000/api/places/getApp&cat/Restaurent')
+  axios.get('http://192.168.11.229:3000/api/places/getApp&cat/Restaurent')
     .then((res) => {
       console.log(res.data)
       setPlaces(res.data)
