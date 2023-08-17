@@ -4,21 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 
-<<<<<<< HEAD
-const MenuSeller = ({route}) => {
-  const navigation = useNavigation()
-  const [data , setData]=useState([])
-  const [isDialogOpen, setDialogOpen] = useState(false)
-  const [nameInput, setNameInput] = useState('')
-  const [price, setPrice] = useState('')
-  const [image, setImage] = useState('')
-  const { id } = route.params;
-  const [places_id, setPlaces_id] = useState(0);
-
-
-    const fetch = () => {
-      axios.get("http://192.168.11.229:3000/api/Product/getAllwhere/1") 
-=======
 const MenuSeller = () => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
@@ -30,7 +15,6 @@ const MenuSeller = () => {
 
     const fetch = () => {
       axios.get("http://192.168.169.127:3000/api/Product/getAllwhere/1") 
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       .then(res => {
         setData(res.data)
       })
@@ -58,112 +42,6 @@ const MenuSeller = () => {
 
 
   return (
-<<<<<<< HEAD
-    <View style={styles.containerCategory}>
-    {data && data.length > 0 ? (
-      data.map((e) => (
-        <View key={e.id}>
-          <View style={styles.divider}></View>
-          <View style={styles.tabContainer}>
-            <View style={styles.tab}>
-              <Text
-                style={styles.tabText}
-                onPress={() =>
-                  navigation.navigate('DessertSeller', {
-                    id: e.id,
-                    Places_id: e.Places_id,
-                  })
-                }
-              >
-                Dessert
-              </Text>
-            </View>
-            <View style={styles.tab}>
-              <Text
-                style={styles.tabText}
-                onPress={() =>
-                  navigation.navigate('FoodSeller', {
-                    id: e.id,
-                    Places_id: e.Places_id,
-                  })
-                }
-              >
-                Food
-              </Text>
-            </View>
-            <View style={styles.tab}>
-              <Text
-                style={styles.tabText}
-                onPress={() =>
-                  navigation.navigate('ChichaSeller', {
-                    id: e.id,
-                    Places_id: e.Places_id,
-                  })
-                }
-              >
-                Chicha
-              </Text>
-            </View>
-            <View style={styles.activeTab}>
-              <Text
-                style={styles.tabText}
-                onPress={() =>
-                  navigation.navigate('DrinksSeller', {
-                    id: e.id,
-                    Places_id: e.Places_id,
-                  })
-                }
-              >
-                Drinks
-              </Text>
-            </View>
-          </View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={isDialogOpen}
-            onRequestClose={closeDialog}
-            style={styles.model}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Add Product</Text>
-                <TextInput
-                  value={nameInput}
-                  style={styles.input}
-                  placeholder="Enter the product name"
-                  onChangeText={setNameInput}
-                />
-                <TextInput
-                  value={price}
-                  style={styles.input}
-                  placeholder="Enter the product price"
-                  onChangeText={setPrice}
-                />
-                <TouchableOpacity
-                  style={styles.Buttons}
-                  onPress={handleEditProfile}
-                >
-                  <Text
-                    style={styles.buttonText}
-                    onPress={() => {
-                      AddProduct(nameInput, price, image);
-                      closeDialog();
-                    }}
-                  >
-                    Add
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.Buttons} onPress={closeDialog}>
-                  <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-          <ScrollView style={styles.scrollViewContent}>
-            <View style={styles.container}>
-              {data.map((el) => (
-=======
 
     <View style={styles.containerCategory}>
 
@@ -226,7 +104,6 @@ const MenuSeller = () => {
           <ScrollView style={styles.scrollViewContent}>
             <View style={styles.container}>
               {data.map(el => (
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
                 <View key={el.id} style={styles.menuItem}>
                   <Image style={styles.image} source={{ uri: el.image }} />
                   <Text style={styles.itemName}>{el.productname}</Text>
@@ -239,17 +116,8 @@ const MenuSeller = () => {
             </View>
           </ScrollView>
         </View>
-<<<<<<< HEAD
-      ))
-    ) : null}
-  </View>
-);
-}
-
-=======
       );
     };
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
     const styles = StyleSheet.create({
       container: {
