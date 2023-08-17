@@ -1,106 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Places = () => {
-  const navigation = useNavigation();
-  const [id, setId] = useState(0);
+    const navigation = useNavigation();
+
   const [data, setData] = useState([]);
-  const [ref, setRef] = useState(false);
 
   useEffect(() => {
     fetch();
-    getemail();
-  }, [ref]);
-
-  const getemail = async () => {
-    try {
-      const email = await AsyncStorage.getItem('userEmail');
-      if (email) {
-        const response = await axios.get(
-          `http://192.168.11.229:3000/api/seller/email/${email}`
-        );
-        console.log(response.data);
-        setId(response.data.id);
-      } else {
-        console.log('User email not found in AsyncStorage');
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  }, []);
 
   const fetch = () => {
     axios
-<<<<<<< HEAD
-      .get(`http://192.168.11.229:3000/api/places/get/${id}`)
-=======
       .get('http://192.168.169.127:3000/api/places/get/1')
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       .then((res) => {
-        console.log('places', res.data.id);
+        console.log("places",res.data);
         setData(res.data);
       })
       .catch((err) => {
         console.log(err);
-      });
-  };
+      })
+  }
+
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-    {data && data.length > 0 ? (
-      data.map((e) => (
+    <View >
+      {data.map((e) => (
+      
         <View key={e.data} style={styles.card}>
           <View style={styles.all}>
             <Image source={{ uri: e.images }} style={styles.image} />
             <Text style={styles.title}>{e.name}</Text>
             <Image
-              source={{
-                uri: 'https://static.thenounproject.com/png/766721-200.png',
-              }}
+              source={{ uri: 'https://static.thenounproject.com/png/766721-200.png' }}
               style={styles.rating}
             />
-<<<<<<< HEAD
-            <TouchableOpacity
-              style={styles.ButtonMenu}
-              onPress={() => navigation.navigate('MenuSeller',{id:e.id})}
-            >
-=======
             <TouchableOpacity style={styles.ButtonMenu}   onPress={() => navigation.navigate('MenuSeller')}>
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
               <Text style={styles.buttonText}>Menu</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate('Reservations',{id:e.id})}
-            >
+            <TouchableOpacity style={styles.button}   onPress={() => navigation.navigate('Reservations')}>
               <Text style={styles.buttonText}>Reservations</Text>
             </TouchableOpacity>
           </View>
         </View>
-      ))
-    ) : (
-      <Text>No places available</Text>
-    )}
-  </ScrollView>
-);
+
+      ))}
+    </View>
+  );
 };
 
-
 const styles = StyleSheet.create({
-  scrollContainer: {
-    paddingVertical: 20,
-    alignItems: 'center',
-  },
+    containerPlaces: {
+        width: '90%',
+        height: '40%',
+        borderRadius : 40 ,
+        marginTop: 100,
+        marginLeft : 20,
+    
+        overflow: 'hidden',
+        background: 'linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%)',
+      },
+
   card: {
     width: 352,
     height: 154,

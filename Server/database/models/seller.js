@@ -39,6 +39,11 @@ const Seller = sequelize.define('Seller', {
     allowNull: false,
     defaultValue: 0,
   },
+  payed: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 0,
+  },
 },{ timestamps: false });
 
 

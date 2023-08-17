@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-<<<<<<< HEAD
-import CloudUpload from '../SellerComponents/Cloud';
-=======
 import Cloud from '../SellerComponents/Cloud';
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 const SignUpScreen = () => {
@@ -29,10 +25,6 @@ const SignUpScreen = () => {
   }
   
   const handleSignUp = async () => {
-<<<<<<< HEAD
-    console.log(handleSignUp);
-=======
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
     try {
       let registrationData = {
         name,
@@ -44,18 +36,14 @@ const SignUpScreen = () => {
         registrationData.patentimage = patente
       }
 
-<<<<<<< HEAD
-      const endpoint = userType === 'seller' ? 'http://192.168.11.229:3000/api/seller/register' : 'http://192.168.11.229:3000/api/client/register';
-=======
-      const endpoint = userType === 'seller' ? 'http://192.168.234.127:3000/api/seller/register' : 'http://192.168.234.127:3000/api/client/register';
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      const endpoint = userType === 'seller' ? 'http://192.168.104.9:3000/api/seller/register' : 'http://192.168.104.9:3000/api/client/register';
 console.log(registrationData)
       const response = await axios.post(endpoint, registrationData)
 
       if (response.data.message) {
         console.log(response.data)
         Alert.alert(
-          "login successfully"
+          "register successfully"
     )
         navigation.navigate('SignIN')
       } else {
@@ -148,17 +136,6 @@ console.log(registrationData)
 
               {userType === 'seller' && (
                 <View>
-<<<<<<< HEAD
-                {showUploadButton && (
-  <View style={styles.uploadContainer}>
-    <CloudUpload
-      buttonStyle={styles.uploadButton}
-      setImage={setPatente}
-      buttonText={patente ? 'Patent Image Uploaded' : 'Select Patent Image'}
-    />
-  </View>
-)}
-=======
                   {showUploadButton && (
                     <View style={styles.uploadContainer}>
                       <Cloud
@@ -168,7 +145,6 @@ console.log(registrationData)
                       />
                     </View>
                   )}
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
                   <View style={styles.button2}>
                   <Text style={styles.buttonText} onPress={() => handleSignUp()}>Sign up</Text>

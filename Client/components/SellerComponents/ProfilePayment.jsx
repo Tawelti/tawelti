@@ -22,14 +22,10 @@ const ProfilePayment = () => {
     const getemail = async () => {
       try {
         const email = await AsyncStorage.getItem('userEmail')
+        console.log("this the email",email);
         if (email) {
-<<<<<<< HEAD
-          const response = await axios.get(`http://192.168.11.229:3000/api/seller/email/${email}`);
-=======
-          const response = await axios.get(`http://172.20.10.8:3000/api/seller/email/${email}`);
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
-          console.log(response.data);
-          console.log(response.data.id);
+          const response = await axios.get(`http://192.168.104.9:3000/api/seller/email/${email}`)
+          console.log("this the data ",response.data);
           setData(response.data);
           setId(response.data.id)
         } else {
@@ -42,11 +38,7 @@ const ProfilePayment = () => {
 
 
     const fetch = () => {
-<<<<<<< HEAD
-      axios.get(`http://192.168.11.229:3000/api/seller/get/${id}`)
-=======
-      axios.get(`http://172.20.10.8:3000/api/seller/get/${id}`)
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      axios.get(`http://192.168.104.9:3000/api/seller/get/${id}`)
         .then((res) => {
           console.log(res.data)
           setData(res.data)
@@ -63,44 +55,49 @@ const ProfilePayment = () => {
     setAmount(3500)
   }
   console.log(amount)
+ 
   const pay = () => {
     if (amount === 0) {
       Alert.alert("Choose a Package", "Please choose a package first.")
-      return
+      return;
     }
-<<<<<<< HEAD
-    axios.post(`http://192.168.11.229:3000/api/payment/pay/${amount}`)
-=======
-    axios.post(`http://172.20.10.8:3000/api/payment/pay/${amount}`)
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+    
+    axios.post(`http://192.168.104.9:3000/api/payment/pay/${amount}`)
       .then((response) => {
         const { paymentIntent } = response.data;
-        console.log(paymentIntent)
-  const initResponse= initPaymentSheet({
-  merchantDisplayName:"Tawelti",
-  paymentIntentClientSecret:paymentIntent,
-})
-console.log(initResponse)
-presentPaymentSheet()
-.then((PaymentResponse) => {
-  if (PaymentResponse.error) {
-    console.log(PaymentResponse.error);
-    Alert.alert(
-      `Error code: ${PaymentResponse.error.code}`,
-      PaymentResponse.error.message
-    )
-  } else {
-    Alert.alert(
-      "Payment Successful",
-      "Your payment has been processed successfully!"
-    )
-    navigation.navigate("Profil")
-  }
-})
-.catch((error) => {
-  console.log(error);
-});
-})
+        
+        const initResponse = initPaymentSheet({
+          merchantDisplayName: "Tawelti",
+          paymentIntentClientSecret: paymentIntent,
+        });
+
+        presentPaymentSheet()
+          .then((PaymentResponse) => {
+            if (PaymentResponse.error) {
+              console.log(PaymentResponse.error);
+              Alert.alert(
+                `Error code: ${PaymentResponse.error.code}`,
+                PaymentResponse.error.message
+              );
+            } else {
+              // Payment successful, call your backend API to mark the seller as paid
+              axios.get(`http://192.168.104.9:3000/api/seller/payed/${id}`)
+                .then(() => {
+                  Alert.alert(
+                    "Payment Successful",
+                    "Your payment has been processed successfully!  ."
+                  );
+                  navigation.navigate("Profil");
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -197,11 +194,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '400',
+    wordWrap: 'break-word',
   },
   profileUsername: {
     marginTop: '1%',
     color: '#757575',
     fontSize: 12,
+    fontFamily: 'Hanuman',
     fontWeight: '400',
     marginLeft: '38%',
   },

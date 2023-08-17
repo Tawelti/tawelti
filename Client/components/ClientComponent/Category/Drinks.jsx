@@ -10,11 +10,7 @@ const Drinks = () => {
 
 
     const fetch = () => {
-<<<<<<< HEAD
-      axios.get("http://192.168.11.229:3000/api/Product/getAll/1/Drinks") 
-=======
       axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Drinks") 
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       .then(res => {
         setData(res.data)
       })
@@ -30,11 +26,7 @@ const Drinks = () => {
       paymentstatus: 'false',
     };
 
-<<<<<<< HEAD
-    axios.post("http://192.168.11.229:3000/api/order/create", Order)
-=======
     axios.post("http://192.168.169.127:3000/api/order/create", Order)
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       .then(response => {
         console.log(response)
       })
