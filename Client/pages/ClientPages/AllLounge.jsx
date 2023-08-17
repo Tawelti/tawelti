@@ -9,7 +9,7 @@ function AllLounge() {
 const [places,setPlaces]=useState([])
 
 const get = () => {
-  axios.get('http://192.168.208.127:3000/api/places/getApp&cat/Lounge')
+  axios.get('http://192.168.11.229:3000/api/places/getApp&cat/Lounge')
     .then((res) => {
       setPlaces(res.data)
     })

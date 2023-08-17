@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TextInput , But
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Places from './Places';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profil = () => {
   
@@ -12,16 +13,40 @@ const Profil = () => {
     const [nameInput, setNameInput] = useState('')
     const [emailInput, setEmailInput] = useState('')
     const [refresh , setRefresh] = useState(false)
+<<<<<<< HEAD
+    const [id,setId]=useState(0)
+=======
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
   
   
     useEffect(() => {
       fetch()
+      getemail()
     }, [])
   
+    const getemail = async () => {
+      try {
+        const email = await AsyncStorage.getItem('userEmail')
+        if (email) {
+          const response = await axios.get(`http://192.168.11.229:3000/api/seller/email/${email}`);
+          console.log(response.data);
+          console.log(response.data.id);
+          setId(response.data.id)
+        } else {
+          console.log('User email not found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
     const fetch = () => {
 
+<<<<<<< HEAD
+      axios.get(`http://192.168.11.229:3000:3000/api/seller/get/${id}`)
+=======
       axios.get('http://192.168.169.127:3000/api/seller/get/1')
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -33,7 +58,11 @@ const Profil = () => {
     };
   
     const updateProfile = (name , email) => {
+<<<<<<< HEAD
+      axios.put('http://192.168.11.229:3000:3000/api/seller/update/1', {
+=======
       axios.put('http://192.168.169.127:3000/api/seller/update/1', {
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
           name: name,
           email: email,
          
@@ -49,7 +78,11 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
+<<<<<<< HEAD
+      axios.put('http://192.168.11.229:3000/api/seller/updateImage/1', {
+=======
       axios.put('http://192.168.169.127/api/seller/updateImage/1', {
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
           name: name,
           email: email,
          
@@ -196,13 +229,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '400',
-    wordWrap: 'break-word',
   },
   profileUsername: {
     marginTop: '1%',
     color: '#757575',
     fontSize: 12,
-    fontFamily: 'Hanuman',
     fontWeight: '400',
     marginLeft: '38%',
   },
@@ -258,7 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: '100%',
-    marginTop : -470,
+    marginTop : -520,
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 24,
@@ -277,10 +308,8 @@ const styles = StyleSheet.create({
   dayText: {
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'Titillium Web',
     fontWeight: '700',
     letterSpacing: 0.28,
-    wordWrap: 'break-word',
   },
   selectedDayBox: {
     backgroundColor: '#0B0C1A',
@@ -296,10 +325,11 @@ const styles = StyleSheet.create({
   },
   containerCoverture: {
     width: '100%',
-    height: '25%',
+    height: '30%',
     backgroundColor: '#E7AF2F',
     borderRadius: 40,
     borderTopRightRadius: 40,
+    bottom:10
   },
   containerPlaces: {
     width: '90%',
@@ -312,7 +342,8 @@ const styles = StyleSheet.create({
     background: 'linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%)',
   },
   AddButton : {
-    marginTop : 170
+    marginTop : 150,
+    bottom:20
   }
 });
 

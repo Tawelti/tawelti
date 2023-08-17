@@ -12,7 +12,11 @@ console.log(email,Password)
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('http://172.20.10.8:3000/api/login', {
+<<<<<<< HEAD
+      const response = await axios.post('http://192.168.11.229:3000/api/login', {
+=======
+      const response = await axios.post('http://192.168.234.127:3000/api/login', {
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
         email,
         password: Password,   
       });
@@ -24,6 +28,10 @@ console.log(email,Password)
 
               "login successfully"
         )
+<<<<<<< HEAD
+        console.log('here',data.userType);
+=======
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
        await AsyncStorage.setItem('userEmail', data.email);
         if (data.userType === 'client') {
           navigation.navigate('home')

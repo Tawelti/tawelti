@@ -3,7 +3,7 @@ import { Image, StyleSheet, View, TouchableOpacity,Button } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Navbar from '../../components/NavBar';
-// import { Button } from '@chakra-ui/react';
+
 const Home=()=>{
   const navigation = useNavigation()
   const [currentImage, setCurrentImage] = useState(0);
@@ -16,7 +16,11 @@ const getImage =(arr)=>{
   })
 }
   const get = () => {
+<<<<<<< HEAD
+    axios.get('http://192.168.11.229:3000/api/places/getApp&type/vip')
+=======
     axios.get('http://192.168.169.127:3000/api/places/getApp&type/vip')
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       .then((res) => {
         setPlaces(res.data)
         setImages(getImage(res.data));

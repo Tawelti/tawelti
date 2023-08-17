@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import StarRating from "react-native-star-rating";
 import MapView, { Marker } from "react-native-maps";
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const PlaceProfil = () => {
-    const navigation = useNavigation()
+  const navigation = useNavigation();
+  const [placess, setPlacess] = useState([]);
 
+  useEffect(() => {
+    getPlacesByCategory();
+  }, []);
+
+  const getPlacesByCategory = async () => {
+    try {
+      const category = 'coffe,Restaurant,lounge'; 
+      const response = await axios.get(`http://192.168.11.229:3000/api/places/getApp&cat/coffe`);
+      console.log(category);
+      if(response.status ===200){
+        console.log('great');
+      }
+//setPlacess(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   const customMapStyle = [
     {
       elementType: "geometry",
@@ -44,16 +64,20 @@ const PlaceProfil = () => {
   ];
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>THE 716</Text>
+      {placess.map((e)=>{
+        <Text style={styles.headerText}>{e.name}</Text>
+
+      })}
+     
       <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 36.8418,
-          longitude: 10.273,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-        customMapStyle={customMapStyle} 
+      style={styles.mapLocation}
+      initialRegion={{
+        latitude: 36.8418,
+        longitude: 10.273,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      }}
+      customMapStyle={customMapStyle} 
       >
         <Marker
           coordinate={{
@@ -62,16 +86,16 @@ const PlaceProfil = () => {
           }}
           title="Tea Room"
           description="This is a Tea Room"
-        />
+          />
       </MapView>
+      {placess.map((e)=>(
       <View style={styles.circleTop}>
-        <Image
-          source={{
-            uri: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465870718.jpg?k=84c93fea49ada865f39ae1eb8f4c89600a8694e44fbee6f86c4acbc83f8d309f&o=&hp=1",
-          }}
-          style={styles.image}
-        />
+    <Image
+  source={{ uri: e.images }}
+  style={styles.image}
+/>
       </View>
+      ))}
       <View style={styles.circleBottom}></View>
       <StarRating
         disabled={false}
@@ -90,7 +114,7 @@ const PlaceProfil = () => {
         <Text style={styles.buttonText} onPress={()=>navigation.navigate("Claim")}>Claim</Text>
       </TouchableOpacity>
     </View>
-  );
+    );
 };
 const styles = StyleSheet.create({
   container: {
@@ -111,7 +135,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: 360,
     height: 200,
-    top: 550,
+    top: 600,
     left: 13,
     zIndex: 1,
   },

@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios'; 
-
 import Tables from './Tables'; 
 
 const ReservationDetails = ({ navigation }) => {
@@ -21,6 +20,7 @@ const ReservationDetails = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false); 
   const modalAnimation = useRef(new Animated.Value(0)).current;
+
 
   const handlenumberofpersonChange = (size) => {
     setNumberofperson(size);
@@ -36,7 +36,7 @@ const ReservationDetails = ({ navigation }) => {
 
     console.log(Client_id, Places_id);
 
-    axios.post('http://192.168.133.150:3000/api/Reservation/add/1/1', reservationData)
+    axios.post('http://192.168.11.229:3000/api/Reservation/add/1/1', reservationData)
       .then(response => {
         console.log('Reservation added successfully:', response.data);
       })
@@ -47,6 +47,8 @@ const ReservationDetails = ({ navigation }) => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+    animateModal();
+
   };
 
   const animateModal = () => {
@@ -89,7 +91,8 @@ const ReservationDetails = ({ navigation }) => {
           </Text>
         </View>
       </View>
-
+      <Text
+            style={styles.partySize} >  Party Size </Text>
       <View style={styles.numberofpersonContainer}>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((size) => (
           <TouchableOpacity
@@ -111,6 +114,7 @@ const ReservationDetails = ({ navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
+      <View style={styles.divider2}></View>
 
       <TouchableOpacity
         style={styles.confirmButton}
@@ -160,9 +164,9 @@ const ReservationDetails = ({ navigation }) => {
               },
             ]}
           >
-            <Text style={styles.popupText}>Table Selection Pop-up Content</Text>
+            <Text style={styles.popupText}>Table Selection</Text>
             
-            <Tables /> 
+            <Tables onClose={togglePopup} />
             
             <Button title="Close" onPress={togglePopup} />
           </Animated.View>
@@ -208,17 +212,23 @@ const styles = StyleSheet.create({
     borderColor: '#AAAAAA',
     borderWidth: 0.5,
   },
+  divider2:{
+    width: 320,
+    height: StyleSheet.hairlineWidth,
+    left: 35,
+    top: 350,
+    position: 'absolute',
+    borderColor: '#AAAAAA',
+    borderWidth: 0.5,
+  },
   tabContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    right: 0,
-    top: -650,
     paddingVertical: 10,
+    position: 'relative',
+    bottom:240
   },
   tab: {
     padding: 50,
@@ -235,12 +245,21 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     top: 200,
   },
+  partySize:{
+    color: '#313131',
+    fontSize: 15,
+    fontStyle: 'italic',
+    fontWeight: '500',
+    flexWrap: 'wrap',
+    bottom:75,
+    left:150
+  },
   numberofpersonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    top: 70,
+    bottom:60,
   },
   numberofpersonButton: {
     marginHorizontal: 5,
@@ -273,7 +292,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 20,
-    top: 350,
+    top: 200,
   },
   confirmButtonText: {
     color: '#313131',
@@ -286,8 +305,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+    bottom:90
   },
   chooseTableButtonText: {
     color: '#313131',
@@ -300,8 +318,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+bottom:50
   },
   toggleCalendarButtonText: {
     color: '#313131',
@@ -319,7 +336,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     elevation: 5,
-    bottom: 80,
+    bottom: 270,
   },
   popupText: {
     fontSize: 24,

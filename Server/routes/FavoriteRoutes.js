@@ -1,9 +1,10 @@
 const router=require("express").Router()
-const {createFavorite}=require("../controllers/FavoriteController")
+const {createFavorite , getAllFavoritesByClientId}=require("../controllers/FavoriteController")
 
 
 
-router.post("/create",createFavorite)
+router.post("/create/:clientId", createFavorite);
+router.get("/getAllFavorites/:clientId", getAllFavoritesByClientId);
 
 
 

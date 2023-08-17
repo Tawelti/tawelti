@@ -31,11 +31,15 @@ import DrinksSeller from './components/SellerComponents/Category/DrinksSeller';
 import DessertSeller from './components/SellerComponents/Category/DessertSeller';
 import FoodSeller from './components/SellerComponents/Category/FoodSeller';
 import ChichaSeller from './components/SellerComponents/Category/ChichaSeller';
+<<<<<<< HEAD
 
 
 import {StripeProvider} from "@stripe/stripe-react-native"
-
+import Reservations from './components/SellerComponents/Reservations';
+=======
+import {StripeProvider} from "@stripe/stripe-react-native"
 import Reservations from './components/SellerComponents/reservations';
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 import NewPlace from './components/SellerComponents/Place';
 import Places from './components/SellerComponents/Places';
 const STRIPE_KEY="pk_test_51NdUs4K6fT8eoEEp6JPAos9zSkBbl1ag3EbDAbkq4cDPlvmda1JpBFT1uRVs2koxHNlVIzNLeJvYQntDEMaMabih00FNGtROAs"
@@ -50,12 +54,20 @@ export default function App() {
   <StatusBar style="auto" /> 
    <Stack.Navigator
     screenOptions={{ headerShown: false  }}
-    initialRouteName="Comments"
+<<<<<<< HEAD
+    initialRouteName="Loading"
+=======
+    initialRouteName="Order"
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
     
 
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
+<<<<<<< HEAD
+     <Stack.Screen name="Profile" component={ProfilePayment} />
+=======
     {/* <Stack.Screen name="Profile" component={ProfilePayment} /> */}
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="SignIN" component={SignInScreen} />
@@ -81,6 +93,11 @@ export default function App() {
     <Stack.Screen name="DessertSeller" component={DessertSeller} />
     <Stack.Screen name="FoodSeller" component={FoodSeller} />
     <Stack.Screen name="ChichaSeller" component={ChichaSeller} />
+<<<<<<< HEAD
+    <Stack.Screen name="Reservations" component={Reservations} />
+
+=======
+>>>>>>> 576ae24696473f36d6391bdec7484f82370df033
     </Stack.Navigator> 
 </NavigationContainer>
 </StripeProvider>
