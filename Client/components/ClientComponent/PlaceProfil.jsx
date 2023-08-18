@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import StarRating from "react-native-star-rating";
 import MapView, { Marker } from "react-native-maps";
