@@ -4,17 +4,19 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Cloud from "../Cloud.jsx"; 
 
-const ChichaSeller = () => {
+const ChichaSeller = ({route}) => {
   const navigation = useNavigation()
   const [data , setData]=useState([])
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [nameInput, setNameInput] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
+  const { id } = route.params;
 
 
   const fetch = () => {
-    axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Chicha") 
+    console.log(id,'from chicha')
+    axios.get(`http://192.168.11.45:3000/api/Product/getAll/${id}/Chicha`) 
     .then(res => {
       setData(res.data)
     })
@@ -42,7 +44,7 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
-  axios.post('http://192.168.169.127:3000/api/Product/create/1/Chicha', {
+  axios.post(`http://192.168.11.45:3000/api/Product/create/${id}/Chicha`, {
     productname: productname,
     price: price,
     Immage : Immage   
@@ -58,22 +60,48 @@ const AddProduct = (productname , price , Immage) => {
 return (
 
   <View style={styles.containerCategory}>
-
-  <View style={styles.divider}></View>
-        <View style={styles.tabContainer}>
-          <View style={styles.tab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("DessertSeller")}>Dessert</Text>
-            </View>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("FoodSeller")}>Food</Text>
-            </View>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("ChichaSeller")}>Chicha</Text>
-            </View>
-            <View style={styles.activeTab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("DrinksSeller")}>Drinks</Text>
-          </View>
+<View>
+  {data.map((e) => (
+    <View style={{flex:1}} key={e.id}>
+      <View style={styles.divider}></View>
+      <View style={styles.tabContainer}>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DessertSeller", { id: e.id })}
+          >
+            Dessert
+          </Text>
         </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("FoodSeller", { id: e.id })}
+          >
+            Food
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("ChichaSeller", { id: e.id })}
+          >
+            Chicha
+          </Text>
+        </View>
+        <View style={styles.activeTab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DrinksSeller", { id: e.id })}
+          >
+            Drinks
+          </Text>
+        </View>
+      </View>
+    </View>
+  ))}
+</View>
+
         <TouchableOpacity style={styles.addButtonCategory}  >
       <Text style={styles.addButtonTextCategory} onPress={() => { openDialog() }}>+</Text>
     </TouchableOpacity>
@@ -140,6 +168,8 @@ return (
             ))}
           </View>
         </ScrollView>
+        
+      
       </View>
     );
   };

@@ -22,10 +22,10 @@ const ProfilePayment = () => {
     const getemail = async () => {
       try {
         const email = await AsyncStorage.getItem('userEmail')
-        console.log("this the email",email);
         if (email) {
-          const response = await axios.get(`http://192.168.104.9:3000/api/seller/email/${email}`)
-          console.log("this the data ",response.data);
+          const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
+          console.log(response.data);
+          console.log(response.data.id);
           setData(response.data);
           setId(response.data.id)
         } else {
@@ -38,7 +38,7 @@ const ProfilePayment = () => {
 
 
     const fetch = () => {
-      axios.get(`http://192.168.104.9:3000/api/seller/get/${id}`)
+      axios.get(`http://192.168.11.45:3000/api/seller/get/${id}`)
         .then((res) => {
           console.log(res.data)
           setData(res.data)

@@ -17,7 +17,7 @@ fetch()
 
     const fetch =() => {
         console.log(places_id);
-axios.get(`http:/192.168.11.229:3000/api/Reservation/getOne/${id}`)
+axios.get(`http://192.168.11.45:3000/api/Reservation/getOne/${id}`)
 .then(res => {
     console.log(res.data,'hi')
     setPlaces_id(res.data.id)
@@ -29,7 +29,7 @@ axios.get(`http:/192.168.11.229:3000/api/Reservation/getOne/${id}`)
     }
 
 const deleteRes = (id) => {
-    axios.delete(`http:/192.168.11.229:3000/api/Reservation/delete/${id}`)
+    axios.delete(`http:/192.168.11.7:3000/api/Reservation/delete/${id}`)
     .then(res => {
         console.log(res.data)
        fetch()

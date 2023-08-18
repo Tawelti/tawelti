@@ -11,55 +11,43 @@ function AllCoffe() {
   const [places, setPlaces] = useState([]);
   const [heartClicked, setHeartClicked] = useState(false);
 
-  const get = () => {
-    axios
-      .get('http://192.168.234.127:3000/api/places/getApp&cat/coffe')
-      .then((res) => {
-        setPlaces(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    get();
-  }, []);
-
-  const handleHeartClick = () => {
-    setHeartClicked(!heartClicked);
-  };
+const get = () => {
+  axios.get('http://192.168.11.45:3000/api/places/getApp&cat/coffe')
+    .then((res) => {
+      setPlaces(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
   return (
     <View style={styles.places}>
-      <View style={styles.pub}>
-        <Pub />
+    <View style={styles.pub}>
+    <Pub />
+    </View>
+    {places.map((e)=>(
+      <View style={styles.card}>
+      <View style={styles.all}>
+      <Image
+      source={{ uri: e.images }}
+      style={styles.image}
+      />
+      <Text style={styles.title}>{e.name}</Text>
+      <Image
+      source={{ uri: "https://static.thenounproject.com/png/766721-200.png" }}
+      style={styles.rating}
+      />
+      <Image
+      source={{ uri: "https://static.vecteezy.com/system/resources/previews/018/888/722/original/red-heart-icon-png.png" }}
+      style={styles.like}
+      />
+      <Text style={styles.category}>{e.category}</Text>
+      <TouchableOpacity style={styles.button}>
+      <Text style={styles.buttonText}  onPress={()=>navigation.navigate("PlaceProfil",{id:e.id})}>Book a table </Text>
+      </TouchableOpacity>
       </View>
-      {places.map((e) => (
-        <View style={styles.card} key={e.id}>
-          <View style={styles.all}>
-            <Image source={{ uri: e.images }} style={styles.image} />
-            <Text style={styles.title}>{e.name}</Text>
-            <Image
-              source={{ uri: 'https://static.thenounproject.com/png/766721-200.png' }}
-              style={styles.rating}
-            />
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText} onPress={() => navigation.navigate('PlaceProfil')}>
-                Book a table
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.likeIconContainer} onPress={handleHeartClick}>
-            <FontAwesome
-              name="heart"
-              size={44}
-              color={heartClicked ? 'white' : 'red'}
-              style={styles.likeIcon}
-            />
-          </TouchableOpacity>
-          <Text style={styles.category}>{e.category}</Text>
-        </View>
+      </View>
       ))}
       <Navbar />
     </View>

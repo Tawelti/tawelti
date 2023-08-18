@@ -89,6 +89,7 @@ module.exports = {
         res.status(500).json({ error: "Failed to delete place" });
       });
   },
+  //get places by seller id
   getAllPlacesWhereSellerId : (req , res) => {
     Places.findAll({where : {Seller_id : req.params.Seller_id } })
     .then((result) => {
@@ -97,5 +98,6 @@ module.exports = {
       .catch((err) => {
         res.status(500).send(err);
       });
- }
+ },
+
 };

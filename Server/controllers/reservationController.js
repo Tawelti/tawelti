@@ -24,6 +24,19 @@ const reservationDate=req.body;
           res.status(500).send(err);
         });
       },
+      //find reservation by clientID & PlaceID
+      getOne(req, res) {
+  
+        Reservation.findAll({where : {
+       //   Client_id : req.params.Client_id,
+          Places_id:req.params.Places_id} })
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((err) => {
+          res.status(500).send(err);
+        });
+      },
       //delete reservation by id
       deleteReservation (req, res)  {
         const id = req.params.id; 

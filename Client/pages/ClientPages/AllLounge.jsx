@@ -9,7 +9,7 @@ function AllLounge() {
 const [places,setPlaces]=useState([])
 
 const get = () => {
-  axios.get('http://192.168.11.229:3000/api/places/getApp&cat/Lounge')
+  axios.get('http://192.168.11.45:3000/api/places/getApp&cat/Lounge')
     .then((res) => {
       setPlaces(res.data)
     })
@@ -44,7 +44,7 @@ const get = () => {
       />
       <Text style={styles.category}>{e.category}</Text>
       <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}  onPress={()=>navigation.navigate("PlaceProfil")}>Book a table </Text>
+      <Text style={styles.buttonText}  onPress={()=>navigation.navigate("PlaceProfil",{id:e.id})}>Book a table </Text>
       </TouchableOpacity>
       </View>
       </View>

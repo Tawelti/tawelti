@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,20 +13,45 @@ import {
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios'; 
 import Tables from './Tables'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ReservationDetails = ({ navigation }) => {
+const ReservationDetails = ({ navigation,route }) => {
   const [numberofperson, setNumberofperson] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false); 
   const modalAnimation = useRef(new Animated.Value(0)).current;
+  const [idd, setIdd] = useState(0);
+  const { id } = route.params;
+  const [data, setData] = useState([]);
+console.log(data||'fares','reservationDetails');
 
+  useEffect(() => {
+    getemail();
+  }, []);
+
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail');
+      if (email) {
+        const response = await axios.get(
+          `http://192.168.11.45:3000/api/client/email/${email}`
+        );
+        console.log(response.data.id);
+        setIdd(response.data.id);
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const handlenumberofpersonChange = (size) => {
     setNumberofperson(size);
   };
 
-  const handleConfirmReservation = (Client_id, Places_id) => {
+  const handleConfirmReservation = () => {
     console.log(`Reservation confirmed for party size: ${numberofperson}`);
 
     const reservationData = {
@@ -34,9 +59,9 @@ const ReservationDetails = ({ navigation }) => {
       date: selectedDate, 
     };
 
-    console.log(Client_id, Places_id);
+    console.log(idd, id);
 
-    axios.post('http://192.168.11.229:3000/api/Reservation/add/1/1', reservationData)
+    axios.post(`http://192.168.11.45:3000/api/Reservation/add/${idd}/${id}`, reservationData)
       .then(response => {
         console.log('Reservation added successfully:', response.data);
       })
@@ -64,8 +89,26 @@ const ReservationDetails = ({ navigation }) => {
     setShowCalendar(!showCalendar);
   };
 
+  useEffect(() => {
+    fetchPlaceData();
+}, []);
+
+const fetchPlaceData = () => {
+    console.log(id,'id place');
+    axios.get(`http://192.168.11.45:3000/api/places/getOne/${id}`)
+        .then(res => {
+            console.log(res.data,'hi');
+            setData(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
   return (
     <ScrollView contentContainerStyle={styles.containerCategory}>
+      
+        
       <Image
         source={{ uri: "https://media-cdn.tripadvisor.com/media/photo-s/0f/2f/68/67/visite-716.jpg" }}
         style={styles.image}
@@ -82,13 +125,17 @@ const ReservationDetails = ({ navigation }) => {
             Booking
           </Text>
         </View>
-        <View style={styles.tab}>
+        <View style={{flex:1}}>
+        
+        <View  style={styles.tab}>
           <Text
             style={styles.tabText}
-            onPress={() => navigation.navigate('menu')}
+            onPress={() => navigation.navigate('menu',{idd:data[0].id})}
           >
             Menu
           </Text>
+        </View>
+         
         </View>
       </View>
       <Text
@@ -189,6 +236,7 @@ const ReservationDetails = ({ navigation }) => {
           />
         </View>
       )}
+    
     </ScrollView>
   );
 };
