@@ -1,67 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Places = () => {
-    const navigation = useNavigation();
-
+  const navigation = useNavigation();
+  const [id, setId] = useState(0);
   const [data, setData] = useState([]);
+  const [ref, setRef] = useState(false);
 
   useEffect(() => {
     fetch();
+    getemail();
   }, []);
+
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail');
+      if (email) {
+        const response = await axios.get(
+          `http://192.168.11.45:3000/api/seller/email/${email}`
+        );
+        console.log(response.data);
+        setId(response.data.id);
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetch = () => {
     axios
-      .get('http://192.168.208.127:3000/api/places/get/1')
+      .get(`http://192.168.11.45:3000/api/places/get/${id}`)
       .then((res) => {
-        console.log("places",res.data);
+        console.log('places', res.data.id);
+        setRef(!ref)
         setData(res.data);
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
-
+      });
+  };
 
   return (
-    <View >
-      {data.map((e) => (
-      
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    {data && data.length > 0 ? (
+      data.map((e) => (
         <View key={e.data} style={styles.card}>
           <View style={styles.all}>
             <Image source={{ uri: e.images }} style={styles.image} />
             <Text style={styles.title}>{e.name}</Text>
             <Image
-              source={{ uri: 'https://static.thenounproject.com/png/766721-200.png' }}
+              source={{
+                uri: 'https://static.thenounproject.com/png/766721-200.png',
+              }}
               style={styles.rating}
             />
-            <Text style={styles.category}>{e.category}</Text>
-
-            <TouchableOpacity style={styles.button}   onPress={() => navigation.navigate('Reservations')}>
+            <TouchableOpacity
+              style={styles.ButtonMenu}
+              onPress={() => navigation.navigate('MenuSeller',{id:e.id})}
+            >
+              <Text style={styles.buttonText}>Menu</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('Reservations',{id:e.id})}
+            >
               <Text style={styles.buttonText}>Reservations</Text>
             </TouchableOpacity>
           </View>
         </View>
-
-      ))}
-    </View>
-  );
+      ))
+    ) : (
+      <Text>No places available</Text>
+    )}
+  </ScrollView>
+);
 };
 
-const styles = StyleSheet.create({
-    containerPlaces: {
-        width: '90%',
-        height: '40%',
-        borderRadius : 40 ,
-        marginTop: 100,
-        marginLeft : 20,
-    
-        overflow: 'hidden',
-        background: 'linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%)',
-      },
 
+const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingVertical: 20,
+    alignItems: 'center',
+  },
   card: {
     width: 352,
     height: 154,
@@ -99,14 +131,24 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     zIndex: 1,
     height: 40,
-    marginLeft: -100,
+    marginLeft: -90,
     width: 122,
     top: 106,
   },
-  category: {
-    top: 70,
-    marginLeft: -80,
-    fontSize: 18,
+  ButtonMenu: {
+    paddingVertical: 10,
+    paddingHorizontal: 17,
+    backgroundColor: '#E7AF2F',
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'white',
+    zIndex: 1,
+    height: 40,
+    marginLeft: -100,
+    width: 122,
+    top: 65,
   },
   drawerContainer: {
     flex: 1,

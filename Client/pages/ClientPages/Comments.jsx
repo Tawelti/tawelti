@@ -2,28 +2,47 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList, TextInput, ScrollView } from 'react-native';
 import Ratings from '../../components/ClientComponent/Ratings';
-import IPurl from '../../IPurl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Comments() {
+function Comments({route}) {
   const [data, setData] = useState([]);
   const [text, setText] =useState('')
-console.log("env ", IPurl.url);
+  const { id } = route.params;
+  const [iddClient,setIddClient]=useState(0)
+  const{Seller_id}=route.params
+
+  useEffect(() => {
+    getemail()
+    fetch()
+  }, [])
+
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail')
+      if (email) {
+        const response = await axios.get(`http://192.168.11.45:3000/api/client/email/${email}`);
+       console.log(response.data.id);
+        setIddClient(response.data.id)
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   const fetch =() => {
-    axios.get(`http://${IPurl.url}:3000/api/Comments/1`)
+    axios.get(`http://192.168.11.45:3000/api/Comments/${id}`)
     .then(res => {
       setData(res.data); 
     })
     .catch(err => console.log(err));
   }
-  useEffect(() => {
-  fetch()
-  }, []);
+ 
 
 const postComment=()=>{
-axios.post(`http://${IPurl.url}:3000/api/Comments/1/1/1`,{comment:text})
+axios.post(`http://192.168.11.45:3000/api/Comments/${iddClient}/${id}/${Seller_id}`,{comment:text})
 .then(() => {
-  fetch()
   fetch()
 })
 .catch(err => console.log(err));
@@ -42,7 +61,6 @@ axios.post(`http://${IPurl.url}:3000/api/Comments/1/1/1`,{comment:text})
             <View style={styles.content}>
               <View style={styles.contentHeader}>
                 <Text style={styles.name}>{item. Client.name }</Text>
-                {/* <Text style={styles.time}>9:58 am</Text> */}
               </View>
               <Text rkType="primary3 mediumLine">  {item.comment}</Text>
             </View>
@@ -50,9 +68,7 @@ axios.post(`http://${IPurl.url}:3000/api/Comments/1/1/1`,{comment:text})
         )}
       />
       <View style={{position:'absolute',top:580 , left : 60}}>
-       <Ratings/>
-       </View>
-          <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
+       <Ratings client_id={iddClient}/>
        </View>
           <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
     

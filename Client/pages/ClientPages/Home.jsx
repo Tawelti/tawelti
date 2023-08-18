@@ -3,7 +3,7 @@ import { Image, StyleSheet, View, TouchableOpacity,Button } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Navbar from '../../components/NavBar';
-// import { Button } from '@chakra-ui/react';
+
 const Home=()=>{
   const navigation = useNavigation()
   const [currentImage, setCurrentImage] = useState(0);
@@ -16,7 +16,7 @@ const getImage =(arr)=>{
   })
 }
   const get = () => {
-    axios.get('http://192.168.208.127:3000/api/places/getApp&type/vip')
+    axios.get('http://192.168.11.45:3000/api/places/getApp&type/vip')
       .then((res) => {
         setPlaces(res.data)
         setImages(getImage(res.data));
@@ -30,7 +30,6 @@ const getImage =(arr)=>{
   // 192.168.104.5
   const changeImage = (direction) => {
     setCurrentImage((prevIndex) => {
-      console.log(prevIndex);
       let newIndex = prevIndex;
       if (direction === 'next') {
         newIndex = (prevIndex + 1) % images.length
@@ -49,6 +48,7 @@ useEffect(()=>{
 },[ref])
   return (
     <View style={styles.home}>
+       <Navbar/>
     <View style={styles.leftright}>
     <TouchableOpacity onPress={() => changeImage('next')}>
     <Image
@@ -87,7 +87,7 @@ useEffect(()=>{
         />
         </TouchableOpacity>
       </View>
-      <Navbar/>
+     
     </View>
   );
 }

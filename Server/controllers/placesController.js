@@ -2,31 +2,42 @@ const { Places } = require("../database/models/places");
 
 module.exports = {
     //Add Place
-  addPlace(req, res) {
-    console.log(req.body);
-    const placeData = req.body;
-  // if(req.body.patentimage) throw new Error('hi')
-    Places.create({ ...placeData, Seller_id: req.params.Seller_id })
-      .then((newPlace) => {
-        res.status(201).json({ message: "New place added successfully", place: newPlace });
+    addPlace(req, res) {
+      console.log(req.body);
+      const placeData = req.body;
+    // if(req.body.patentimage) throw new Error('hi')
+      Places.create({ ...placeData, Seller_id: req.params.Seller_Id })
+        .then((newPlace) => {
+          res.status(201).json({ message: "New place added successfully", place: newPlace });
+        })
+        .catch((error) => {
+          console.log(error); 
+          console.error(error.stack);   
+          res.status(500).json({ error: "Failed to add a new place" });
+        });;
+    },
+    //Get all places
+    getAllPlaces(req, res) {
+      Places.findAll()
+        .then((places) => {
+          res.status(200).json(places);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ error: "Failed to get places" });
+        });
+    },
+    //get one
+    getOne(req, res) {
+  
+      Places.findAll({where : {id : req.params.id } })
+      .then((result) => {
+        res.json(result);
       })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({ error: "Failed to add a new place" });
+      .catch((err) => {
+        res.status(500).send(err);
       });
-  },
-//Get all places
-  getAllPlaces(req, res) {
-    Places.findAll()
-      .then((places) => {
-        res.status(200).json(places);
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({ error: "Failed to get places" });
-      });
-  },
-
+    },
   
   //Get all vip and approved places
   getAllApprovedAndVipPlaces(req, res) {
@@ -78,6 +89,7 @@ module.exports = {
         res.status(500).json({ error: "Failed to delete place" });
       });
   },
+  //get places by seller id
   getAllPlacesWhereSellerId : (req , res) => {
     Places.findAll({where : {Seller_id : req.params.Seller_id } })
     .then((result) => {
@@ -86,5 +98,6 @@ module.exports = {
       .catch((err) => {
         res.status(500).send(err);
       });
- }
+ },
+
 };

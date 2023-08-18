@@ -13,6 +13,7 @@ const NewPlace = () => {
   const [images, setImages] = useState("");
   const [patentImage, setPatentImage] = useState("");
 
+
   const AddButton = async () => {
     try {
       const data = {
@@ -27,7 +28,7 @@ const NewPlace = () => {
       };
 
       const response = await axios.post(
-        "http://192.168.1.77:3000/api/places/create/:Seller_id",
+        "http://192.168.11.7:3000/api/places/create/:Seller_id",
         data
       );
       console.log("Response from server:", response.data);
@@ -96,7 +97,6 @@ const NewPlace = () => {
         buttonText={patentImage ? "Patent Image Uploaded" : "Select Patent Image"}
       />
 
-      <Button title="Add" onPress={AddButton} />
     </View>
   );
 };

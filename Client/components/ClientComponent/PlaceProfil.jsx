@@ -1,94 +1,119 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import StarRating from "react-native-star-rating";
 import MapView, { Marker } from "react-native-maps";
 import { useNavigation } from '@react-navigation/native';
+import axios from "axios";
 
-const PlaceProfil = () => {
-    const navigation = useNavigation()
+const PlaceProfil = ({route}) => {
+    const navigation = useNavigation();
+   // const [idd, setIdd] = useState(0);
+    const [data, setData] = useState([]);
+    const { id } = route.params;
 
+
+    useEffect(() => {
+        fetchPlaceData();
+    }, []);
+
+    const fetchPlaceData = () => {
+        console.log(id,'id place');
+        axios.get(`http://192.168.11.45:3000/api/places/getOne/${id}`)
+            .then(res => {
+                console.log(res.data);
+                setData(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
   const customMapStyle = [
     {
       elementType: "geometry",
-      stylers: [
-        {
-          color: "#242F3E", 
-        },
-      ],
     },
     {
       elementType: "labels.text.stroke",
-      stylers: [
-        {
-          color: "#242F3E",
-        },
-      ],
+     
     },
     {
       elementType: "labels.text.fill",
       stylers: [
-        {
-          color: "#FFFFFF", 
-        },
+       
       ],
     },
     {
       featureType: "road", 
       elementType: "geometry",
-      stylers: [
-        {
-          color: "#FFFFFF", 
-        },
-      ],
     },
   ];
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>THE 716</Text>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 36.8418,
-          longitude: 10.273,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-        customMapStyle={customMapStyle} 
-      >
-        <Marker
-          coordinate={{
-            latitude: 36.8418,
-            longitude: 10.273,
-          }}
-          title="Tea Room"
-          description="This is a Tea Room"
-        />
-      </MapView>
-      <View style={styles.circleTop}>
-        <Image
-          source={{
-            uri: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465870718.jpg?k=84c93fea49ada865f39ae1eb8f4c89600a8694e44fbee6f86c4acbc83f8d309f&o=&hp=1",
-          }}
-          style={styles.image}
-        />
-      </View>
-      <View style={styles.circleBottom}></View>
-      <StarRating
-        disabled={false}
-        maxStars={5}
-        rating={3.5}
-        starSize={30}
-        fullStarColor="#FFD700"
-      />
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}  onPress={()=>navigation.navigate("Comments")}>Comments</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Reserve Now</Text>
-      </TouchableOpacity>
+    <View style={{flex:1}}>
+      {data[0] ? (
+        <View key={data[0].id} style={styles.container}>
+          <Text style={styles.headerText}>{data[0].name}</Text>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 36.8418,
+              longitude: 10.273,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            }}
+            customMapStyle={customMapStyle}
+          >
+            <Marker
+              coordinate={{
+                latitude: 36.8418,
+                longitude: 10.273,
+              }}
+              title="Tea Room"
+              description="This is a Tea Room"
+            />
+          </MapView>
+          <View style={styles.circleTop}>
+            <Image
+              source={{
+                uri: data[0].images,
+              }}
+              style={styles.image}
+            />
+          </View>
+          <View style={styles.circleBottom}></View>
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={3.5}
+            starSize={30}
+            fullStarColor="#FFD700"
+          />
+  
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Comments",{id:data[0].id, Seller_id:data[0].Seller_id})}
+          >
+            <Text style={styles.buttonText}>Comments</Text>
+          </TouchableOpacity>
+  
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("ReservationDetails",{id:data[0].id})}
+          >
+            <Text style={styles.buttonText}>Reserve Now</Text>
+          </TouchableOpacity>
+  
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Claim",{idPlace:data[0].id})}
+          >
+            <Text style={styles.buttonText}>Claim</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
-};
+  
+        }  
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "bold",
     marginBottom: 20,
-    bottom: 250,
+    bottom: 200,
     zIndex: 1,
   
   },
@@ -108,8 +133,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: 360,
     height: 200,
-    top: 550,
-    left: 13,
+    top: 600,
+    left: 17,
     zIndex: 1,
   },
   circleTop: {

@@ -1,12 +1,47 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView , Button } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';  // Replace 'FontAwesome' with the icon library you want to use
+import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView , Button,Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';  
 import { useNavigation } from '@react-navigation/native';
-
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SignInScreen = () => {
   const navigation = useNavigation()
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+console.log(email,Password)
+
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post('http://192.168.11.45:3000/api/login', {
+        email,
+        password: Password,   
+      });
+
+      const data = response.data;
+
+      if (data.success) {
+        Alert.alert(
+
+              "login successfully"
+        )
+        console.log('here',data.userType);
+       await AsyncStorage.setItem('userEmail', data.email);
+        if (data.userType === 'client') {
+          navigation.navigate('home')
+        } else if (data.userType === 'seller') {
+          navigation.navigate('Profile')
+        }
+      } else {
+        console.log(data.message)
+        Alert.alert(
+
+          "  Invalid credentials"
+    )
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -28,14 +63,14 @@ const SignInScreen = () => {
           <View>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>
-                <Icon name="user" size={18} color="black" /> User Name
+                <Icon name="user" size={18} color="black" /> Email
               </Text>
               <View style={styles.inputWrapper}>
                 <TextInput
                   style={styles.input}
-                  value={name}
-                  onChangeText={(text) => setName(text)}
-                  placeholder="Enter your username"
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
+                  placeholder="Enter your email"
                   placeholderTextColor="#B6B6B6"
                 />
               </View>
@@ -61,7 +96,7 @@ const SignInScreen = () => {
           <Text style={styles.passwordForget}>Forgot Password?</Text>
 
           <View style={styles.button}>
-            <Text style={styles.buttonText} onPress={()=>navigation.navigate("home")}>Sign in</Text>
+            <Text style={styles.buttonText} onPress={()=>handleSignIn()}>Sign in</Text>
           </View>
 
           <Text style={styles.orText}>Or continue with</Text>
