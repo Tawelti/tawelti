@@ -17,7 +17,9 @@ module.exports= {
           console.error('Error adding table:', error);
           res.status(500).json({ error: 'Failed to add table' });
         });
-      } ,
+      }
+      
+      ,
       
       findTablesByID(req, res) {
         Tables.findAll({ where: { number: req.params.number } })

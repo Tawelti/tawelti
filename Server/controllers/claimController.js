@@ -1,4 +1,6 @@
-const Claim = require("../database/models/claim")
+const Claim = require("../database/models/claim");
+const { Client } = require("../database/models/client");
+const { Places } = require("../database/models/places");
 
 module.exports= {
     createClaim : (req , res) => {
@@ -14,6 +16,25 @@ module.exports= {
          });
          
       },
+      getAllClaim:(req,res)=>{
+        Claim.findAll({
+          include:[
+            {
+              model:Places,
+              attributes:['id','name','images']
+            },
+            {
+              model:Client,
+              attributes:['id','name','image']
+            }
+          ]
+        })
+        .then((result)=>{
+          res.status(200).send(result)
+        }).catch((err)=>{
+          return res.status(400).send(err)
+        })
+      }
    
  
 }

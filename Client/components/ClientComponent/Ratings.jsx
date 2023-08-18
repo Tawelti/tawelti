@@ -39,10 +39,12 @@ const Ratings = ({client_id}) => {
     
       <SafeAreaView style={styles.container}>
         <Image source={{uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png'}}/>
+        {/* <Text style={styles.textStyle}>Please rate:</Text> */}
         <CustomRatingBar />
       
 
               <Image source={{uri: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2RPnZYAhkji98gWkSS6yuNFYPxxiszp85YrR04OsLB8zoqqBz"}}
+            //   onError={(error) => console.log('Image loading error:', error)}
             />
             
       </SafeAreaView>

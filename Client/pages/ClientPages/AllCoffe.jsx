@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Navbar from '../../components/NavBar';
 import Pub from '../../components/ClientComponent/pubCoffe';
 
 function AllCoffe() {
-  const navigation = useNavigation()
-const [places,setPlaces]=useState([])
+  const navigation = useNavigation();
+  const [places, setPlaces] = useState([]);
+  const [heartClicked, setHeartClicked] = useState(false);
 
 const get = () => {
   axios.get('http://192.168.11.45:3000/api/places/getApp&cat/coffe')
@@ -19,11 +21,7 @@ const get = () => {
     })
   }
 
-  useEffect(()=>{
-    get()
-  },[])
   return (
-
     <View style={styles.places}>
     <View style={styles.pub}>
     <Pub />
@@ -51,21 +49,20 @@ const get = () => {
       </View>
       </View>
       ))}
-    
-    <Navbar/>
+      <Navbar />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-pub : {
-marginTop : -180,
-},
+  pub: {
+    marginTop: -180,
+  },
   places: {
     flex: 1,
     backgroundColor: '#E7AF2F',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   card: {
     width: 352,
@@ -84,7 +81,7 @@ marginTop : -180,
     flexDirection: 'row',
   },
   title: {
-    fontSize: 25
+    fontSize: 25,
   },
   rating: {
     top: 10,
@@ -96,29 +93,28 @@ marginTop : -180,
     paddingVertical: 10,
     paddingHorizontal: 17,
     backgroundColor: '#E7AF2F',
-    borderRadius: 14,
-    justifyContent: 'center', // Align the text content vertically
-    alignItems: 'center', // Align the text content horizontally
-    borderWidth: 1,
-    borderColor: 'white', // Change this color
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 1,
-    left:-259,
-    height:40,
-    width:122,
-    top:106
+    left: -159,
+    height: 40,
+    width: 122,
+    top: 106,
   },
   category: {
     top: 70,
     left: -205,
-    fontSize: 18
+    fontSize: 18,
   },
-  like: {
-    top: 105,
-    left: -226,
+  likeIconContainer: {
+    top: 15, 
+    left: 15, 
     width: 44,
     height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
   },
-
 });
 
 export default AllCoffe;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView , Button,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';  
 import { useNavigation } from '@react-navigation/native';
@@ -8,28 +8,54 @@ const SignInScreen = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-console.log(email,Password)
-
+  const [approved,setApproved]=useState(0)
+  const [payed,setPayed]=useState(null)
+  
+  
+  console.log(email,Password)
+  
+  const getemail = async () => {
+    try {
+      const response = await axios.get(`http://192.168.104.9:3000/api/seller/email/${email}`)
+      console.log("this the data ",response.data)
+      setApproved(response.data.approved)
+      console.log("app",response.data.approved);
+      setPayed(response.data.payed)
+      console.log("payed",response.data.payed);
+      
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+  useEffect(() => {
+    getemail()
+  }, [email])
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('http://192.168.11.45:3000/api/login', {
+      const response = await axios.post('http://192.168.104.9:3000/api/login', {
         email,
         password: Password,   
       });
 
-      const data = response.data;
+      const data = response.data
 
       if (data.success) {
         Alert.alert(
 
               "login successfully"
         )
-        console.log('here',data.userType);
-       await AsyncStorage.setItem('userEmail', data.email);
+       await AsyncStorage.setItem('userEmail', data.email)
         if (data.userType === 'client') {
           navigation.navigate('home')
         } else if (data.userType === 'seller') {
-          navigation.navigate('Profile')
+          if(approved==1 && payed==1){
+            navigation.navigate("Profil")
+          } else if(approved==1 && payed==0){
+            navigation.navigate('Profile')
+          } else if(approved== 0){
+            navigation.navigate('home')
+          }
+
         }
       } else {
         console.log(data.message)

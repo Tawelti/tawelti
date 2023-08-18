@@ -9,6 +9,6 @@ router.get("/getApp&type/:type", getAllApprovedAndVipPlaces);
 router.get("/getApp&cat/:category", getAllAppCategoryPlaces);
 router.delete("/deletePlace/:id",deletePlace)
 router.get("/get/:Seller_id",getAllPlacesWhereSellerId)
-router.get("/getOne/:id",getOne)
+router.get("/get/:id",getOne)
 
 module.exports = router;

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import StarRating from "react-native-star-rating";
@@ -11,7 +12,26 @@ const PlaceProfil = ({route}) => {
     const [data, setData] = useState([]);
     const { id } = route.params;
 
+  const [placess, setPlacess] = useState([]);
 
+  useEffect(() => {
+    getPlacesByCategory();
+  }, []);
+
+  const getPlacesByCategory = async () => {
+    try {
+      const category = 'coffe,Restaurant,lounge'; 
+      const response = await axios.get(`http://192.168.11.229:3000/api/places/getApp&cat/coffe`);
+      console.log(category);
+      if(response.status ===200){
+        console.log('great');
+      }
+//setPlacess(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
     useEffect(() => {
         fetchPlaceData();
     }, []);
