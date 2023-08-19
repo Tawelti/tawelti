@@ -11,22 +11,44 @@ import {
   TextInput,
   View,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Claim() {
+function Claim({route}) {
   const navigation = useNavigation()
-
+  const { idPlace} = route.params;
+  const [idClient, setIdClient] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState("");
 
   useEffect(() => {
+    getemail();
     setModalVisible(true);
+    console.log('jerba',idPlace)
   }, []);
+
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail');
+      if (email) {
+        const response = await axios.get(
+          `http://192.168.11.45:3000/api/client/email/${email}`
+        );
+        console.log(response.data.id);
+        setIdClient(response.data.id);
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
  
   const addClaim=()=>{
-    axios.post("http://192.168.11.229:3000/api/Claim/1/1",{content:text})
-    .then ((res)=>{
+    console.log(idClient,idPlace)
+    axios.post(`http://192.168.11.45:3000/api/Claim/${idClient}/${idPlace}`,{content:text})
+    .then (()=>{
       alert("your reclamation has been send it seccufully")
-      console.log(res)
+      //navigation.goBack()
     })
     .catch((err)=>console.log(err))
   }
@@ -62,7 +84,7 @@ function Claim() {
                     onPress={() => 
                     {
                     setModalVisible(!modalVisible)
-                    navigation.navigate("PlaceProfil")
+                    navigation.navigate("PlaceProfil",{id:idPlace})
                      } }
                     >
                     <Text style={styles.textStyle}>Cancel</Text>
@@ -73,7 +95,7 @@ function Claim() {
             
                    { 
                     addClaim()
-                    navigation.navigate("PlaceProfil")
+                    navigation.navigate("PlaceProfil",{id:idPlace})
                     
                    }}
                     >

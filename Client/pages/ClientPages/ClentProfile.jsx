@@ -19,7 +19,7 @@ const ClentProfile = () => {
     }, [])
   
     const fetch = () => {
-      axios.get('http://192.168.11.229:3000/api/client/get/1')
+      axios.get('http://192.168.11.45:3000/api/client/get/1')
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -31,7 +31,7 @@ const ClentProfile = () => {
     };
   
     const updateProfile = (name , email) => {
-      axios.put('http://192.168.11.229:3000/api/client/update/1', {
+      axios.put('http://192.168.11.45:3000/api/client/update/1', {
           name: name,
           email: email,
          
@@ -145,13 +145,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '400',
-    wordWrap: 'break-word',
   },
   profileUsername: {
     marginTop: '1%',
     color: '#757575',
     fontSize: 12,
-    fontFamily: 'Hanuman',
     fontWeight: '400',
     marginLeft: '38%',
   },
@@ -226,10 +224,8 @@ const styles = StyleSheet.create({
   dayText: {
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'Titillium Web',
     fontWeight: '700',
     letterSpacing: 0.28,
-    wordWrap: 'break-word',
   },
   selectedDayBox: {
     backgroundColor: '#0B0C1A',

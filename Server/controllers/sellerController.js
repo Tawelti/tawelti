@@ -67,6 +67,28 @@ getByEmail: (req, res) => {
       res.status(500).send(err);
     });
 },
+markAsPayed: async (req, res) => {
+  const sellerId = req.params.id;
+
+  try {
+    // Find the seller by ID
+    const seller = await Seller.findByPk(sellerId);
+
+    if (!seller) {
+      return res.status(404).json({ message: 'Seller not found' });
+    }
+
+    
+    seller.payed = 1;
+    await seller.save();
+
+    res.status(200).json({ message: 'Seller marked as payed', seller });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+},
+
 getAll:(req,res)=>{
   Seller.findAll({
     include:[
@@ -87,4 +109,5 @@ getAll:(req,res)=>{
     res.status(500).send(err);
   });
 }
+
 }

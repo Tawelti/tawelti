@@ -13,10 +13,7 @@ const Profil = () => {
     const [nameInput, setNameInput] = useState('')
     const [emailInput, setEmailInput] = useState('')
     const [refresh , setRefresh] = useState(false)
-<<<<<<< HEAD
     const [id,setId]=useState(0)
-=======
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
   
   
@@ -29,7 +26,7 @@ const Profil = () => {
       try {
         const email = await AsyncStorage.getItem('userEmail')
         if (email) {
-          const response = await axios.get(`http://192.168.11.229:3000/api/seller/email/${email}`);
+          const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
           console.log(response.data);
           console.log(response.data.id);
           setId(response.data.id)
@@ -42,11 +39,7 @@ const Profil = () => {
     }
     const fetch = () => {
 
-<<<<<<< HEAD
-      axios.get(`http://192.168.11.229:3000:3000/api/seller/get/${id}`)
-=======
-      axios.get('http://192.168.169.127:3000/api/seller/get/1')
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      axios.get(`http://192.168.11.45:3000:3000/api/seller/get/${id}`)
         .then((res) => {
           console.log(res.data[0])
           setData(res.data[0]);
@@ -58,11 +51,7 @@ const Profil = () => {
     };
   
     const updateProfile = (name , email) => {
-<<<<<<< HEAD
-      axios.put('http://192.168.11.229:3000:3000/api/seller/update/1', {
-=======
-      axios.put('http://192.168.169.127:3000/api/seller/update/1', {
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      axios.put(`http://192.168.11.45:3000:3000/api/seller/update/${id}`, {
           name: name,
           email: email,
          
@@ -70,7 +59,6 @@ const Profil = () => {
         .then((res) => {
          setRefresh(!refresh)
          fetch()
-          console.log("here");
           console.log(res)
         })
         .then((err) => {
@@ -78,11 +66,7 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
-<<<<<<< HEAD
-      axios.put('http://192.168.11.229:3000/api/seller/updateImage/1', {
-=======
-      axios.put('http://192.168.169.127/api/seller/updateImage/1', {
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      axios.put(`http://192.168.11.45:3000/api/seller/updateImage/${id}`, {
           name: name,
           email: email,
          

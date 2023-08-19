@@ -16,11 +16,7 @@ const getImage =(arr)=>{
   })
 }
   const get = () => {
-<<<<<<< HEAD
-    axios.get('http://192.168.11.229:3000/api/places/getApp&type/vip')
-=======
-    axios.get('http://192.168.169.127:3000/api/places/getApp&type/vip')
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+    axios.get('http://192.168.11.45:3000/api/places/getApp&type/vip')
       .then((res) => {
         setPlaces(res.data)
         setImages(getImage(res.data));
@@ -52,6 +48,7 @@ useEffect(()=>{
 },[ref])
   return (
     <View style={styles.home}>
+       <Navbar/>
     <View style={styles.leftright}>
     <TouchableOpacity onPress={() => changeImage('next')}>
     <Image
@@ -90,7 +87,7 @@ useEffect(()=>{
         />
         </TouchableOpacity>
       </View>
-      <Navbar/>
+     
     </View>
   );
 }

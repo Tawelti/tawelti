@@ -28,7 +28,7 @@ const NewPlace = () => {
       };
 
       const response = await axios.post(
-        "http://192.168.11.229:3000/api/places/create/:Seller_id",
+        "http://192.168.11.7:3000/api/places/create/:Seller_id",
         data
       );
       console.log("Response from server:", response.data);

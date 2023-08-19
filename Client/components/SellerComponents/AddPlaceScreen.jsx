@@ -3,14 +3,10 @@ import { View, StyleSheet, TextInput, Alert, Button, Text, Image, ActivityIndica
 import axios from 'axios';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
-<<<<<<< HEAD
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReservationDetails from '../ClientComponent/ReservationDetails';
 //require('dotenv').config()
-=======
-// require ('dotenv').config()
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
 
 const categories = [
   { label: 'Coffee', value: 'coffe' },
@@ -188,7 +184,7 @@ const apiKey = 'AIzaSyDU7Z_rvxCYiZlr4FS7O9dsoMEohohka64'
     try {
       const email = await AsyncStorage.getItem('userEmail')
       if (email) {
-        const response = await axios.get(`http://192.168.11.229:3000/api/seller/email/${email}`);
+        const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
         console.log(response.data);
         console.log(response.data.id);
         setId(response.data.id)
@@ -217,13 +213,8 @@ const apiKey = 'AIzaSyDU7Z_rvxCYiZlr4FS7O9dsoMEohohka64'
       };
       console.log('Sending place data:', placeData);
 
-<<<<<<< HEAD
-      const apiUrl = `http://192.168.11.229:3000/api/places/create/${id}`;
+      const apiUrl = `http://192.168.11.45:3000/api/places/create/${id}`;
 console.log(id,'id here');
-=======
-      const apiUrl = 'http://192.168.169.127:3000/api/places/create/1';
-
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
       const response = await axios.post(apiUrl, placeData);
 
       if (response.status === 201) {

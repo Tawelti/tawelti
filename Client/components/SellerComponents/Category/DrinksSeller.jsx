@@ -4,21 +4,18 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Cloud from "../Cloud.jsx"; 
 
-const DrinksSeller = () => {
+const DrinksSeller = ({route}) => {
   const navigation = useNavigation()
   const [data , setData]=useState([])
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [nameInput, setNameInput] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
+  const { id } = route.params;
 
 
   const fetch = () => {
-<<<<<<< HEAD
-    axios.get("http://192.168.11.229:3000/api/Product/getAll/1/Drinks") 
-=======
-    axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Drinks") 
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+    axios.get(`http://192.168.11.45:3000/api/Product/getAll/${id}/Drinks`) 
     .then(res => {
       setData(res.data)
     })
@@ -45,11 +42,7 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
-<<<<<<< HEAD
-  axios.post('http://192.168.11.149:3000/api/Product/create/1/Drinks', {
-=======
-  axios.post('http://192.168.169.127:3000/api/Product/create/1/Drinks', {
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+  axios.post(`http://192.168.11.45:3000/api/Product/create/${id}/Drinks`, {
     productname: productname,
     price: price,
     Immage : Immage   
@@ -66,21 +59,47 @@ return (
 
   <View style={styles.containerCategory}>
 
-  <View style={styles.divider}></View>
-        <View style={styles.tabContainer}>
-          <View style={styles.tab}>
-          <Text style={styles.tabText} onPress={()=>navigation.navigate("DessertSeller")}>Dessert</Text>
-            </View>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("FoodSeller")}>Food</Text>
-            </View>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("ChichaSeller")}>Chicha</Text>
-            </View>
-            <View style={styles.activeTab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("DrinksSeller")}>Drinks</Text>
-          </View>
+<View>
+  {data.map((e) => (
+    <View style={{flex:1}} key={e.id}>
+      <View style={styles.divider}></View>
+      <View style={styles.tabContainer}>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DessertSeller", { id: e.id })}
+          >
+            Dessert
+          </Text>
         </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("FoodSeller", { id: e.id })}
+          >
+            Food
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("ChichaSeller", { id: e.id })}
+          >
+            Chicha
+          </Text>
+        </View>
+        <View style={styles.activeTab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DrinksSeller", { id: e.id })}
+          >
+            Drinks
+          </Text>
+        </View>
+      </View>
+    </View>
+  ))}
+</View>
         <TouchableOpacity style={styles.addButtonCategory}  >
       <Text style={styles.addButtonTextCategory} onPress={() => { openDialog() }}>+</Text>
     </TouchableOpacity>

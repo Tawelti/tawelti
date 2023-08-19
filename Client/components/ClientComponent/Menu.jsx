@@ -6,17 +6,13 @@ import Navbar from '../NavBar';
 
 
 
-const Menu = () => {
+const Menu = ({route}) => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
-
-
+    const { idd } = route.params;
+console.log(idd,'MenuClient');
     const fetch = () => {
-<<<<<<< HEAD
-      axios.get("http://192.168.11.229:3000/api/Product/getAllwhere/1") 
-=======
-      axios.get("http://192.168.169.127:3000/api/Product/getAllwhere/1") 
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      axios.get(`http://192.168.11.45:3000/api/Product/getAllwhere/${idd}`) 
       .then(res => {
         setData(res.data)
       })
@@ -32,11 +28,7 @@ const Menu = () => {
       paymentstatus: 'false',
     };
 
-<<<<<<< HEAD
-    axios.post("http://192.168.171.150:3000/api/order/create", Order)
-=======
-    axios.post("http://192.168.169.127:3000/api/order/create", Order)
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+    axios.post("http://192.168.11.45:3000/api/order/create", Order)
       .then(response => {
         console.log(response)
       })
@@ -52,21 +44,47 @@ const Menu = () => {
   return (
 
     <View >
-    <View style={styles.divider}></View>
-          <View style={styles.tabContainer}>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Dessert")}>Dessert</Text>
-            </View>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Food")}>Food</Text>
-            </View>
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Chicha")}>Chicha</Text>
-            </View>
-            <View style={styles.activeTab}>
-              <Text style={styles.tabText} onPress={()=>navigation.navigate("Drinks")}>Drinks</Text>
-            </View>
-          </View>
+<View style={{flex:1}}>
+  {data.map((e) => (
+    <View  key={e.id}>
+      <View style={styles.divider}></View>
+      <View style={styles.tabContainer}>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DessertSeller", { id: e.id })}
+          >
+            Dessert
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("FoodSeller", { id: e.id })}
+          >
+            Food
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("ChichaSeller", { id: e.id })}
+          >
+            Chicha
+          </Text>
+        </View>
+        <View style={styles.activeTab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DrinksSeller", { id: e.id })}
+          >
+            Drinks
+          </Text>
+        </View>
+      </View>
+    </View>
+  ))}
+</View>
           <ScrollView style={styles.scrollViewContent}>
             <View style={styles.container}>
               {data.map(el => (

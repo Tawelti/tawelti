@@ -2,13 +2,14 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 
-const Ratings = () => {
+const Ratings = ({client_id}) => {
   const [defaultRating, setDefaultRating] = useState(3);
   const maxRating = [1, 2, 3, 4, 5];
 
   const updateRate=()=>{
-    axios.put(`http:/192.168.11.229:3000/api/Comments/1`,{rating:defaultRating})
-    .then(()=>alert(defaultRating))
+    axios.put(`http://192.168.11.45:3000/api/Comments/${client_id}`,{rating:defaultRating})
+    .then(()=>console.log(client_id)
+    )
     .catch((err)=>console.log(err))
   }
   const CustomRatingBar = () => {
@@ -40,9 +41,7 @@ const Ratings = () => {
         <Image source={{uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png'}}/>
         {/* <Text style={styles.textStyle}>Please rate:</Text> */}
         <CustomRatingBar />
-        {/* <Text style={styles.textStyle}>
-                        {defaultRating+'/'+ maxRating.length}
-              </Text> */}
+      
 
               <Image source={{uri: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2RPnZYAhkji98gWkSS6yuNFYPxxiszp85YrR04OsLB8zoqqBz"}}
             //   onError={(error) => console.log('Image loading error:', error)}

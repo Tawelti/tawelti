@@ -20,14 +20,14 @@ const Places = () => {
   useEffect(() => {
     fetch();
     getemail();
-  }, [ref]);
+  }, []);
 
   const getemail = async () => {
     try {
       const email = await AsyncStorage.getItem('userEmail');
       if (email) {
         const response = await axios.get(
-          `http://192.168.11.229:3000/api/seller/email/${email}`
+          `http://192.168.11.45:3000/api/seller/email/${email}`
         );
         console.log(response.data);
         setId(response.data.id);
@@ -41,13 +41,10 @@ const Places = () => {
 
   const fetch = () => {
     axios
-<<<<<<< HEAD
-      .get(`http://192.168.11.229:3000/api/places/get/${id}`)
-=======
-      .get('http://192.168.169.127:3000/api/places/get/1')
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
+      .get(`http://192.168.11.45:3000/api/places/get/${id}`)
       .then((res) => {
         console.log('places', res.data.id);
+        setRef(!ref)
         setData(res.data);
       })
       .catch((err) => {
@@ -69,14 +66,10 @@ const Places = () => {
               }}
               style={styles.rating}
             />
-<<<<<<< HEAD
             <TouchableOpacity
               style={styles.ButtonMenu}
               onPress={() => navigation.navigate('MenuSeller',{id:e.id})}
             >
-=======
-            <TouchableOpacity style={styles.ButtonMenu}   onPress={() => navigation.navigate('MenuSeller')}>
->>>>>>> 576ae24696473f36d6391bdec7484f82370df033
               <Text style={styles.buttonText}>Menu</Text>
             </TouchableOpacity>
             <TouchableOpacity
