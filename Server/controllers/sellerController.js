@@ -2,6 +2,7 @@ const {Seller}= require('../database/models/seller')
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Places } = require('../database/models/places');
 module.exports= {
   register: async (req, res) => {
     try {
@@ -67,7 +68,14 @@ getByEmail: (req, res) => {
     });
 },
 getAll:(req,res)=>{
-  Seller.findAll()
+  Seller.findAll({
+    include:[
+      {
+        model:Places,
+        attributes:['id','name','images','phone','patentimage','approved','category','type']
+      }
+    ]
+  })
   .then((result) => {
     if (result) {
       res.json(result);

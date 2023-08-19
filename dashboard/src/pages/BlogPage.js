@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
 // @mui
 import { Grid, Container, Stack, Typography } from '@mui/material';
 // components
@@ -17,14 +17,14 @@ import { BlogPostCard} from '../sections/@dashboard/blog';
 
 // ----------------------------------------------------------------------
 
-export default function BlogPage() {
-    const [claim,setClaim]=useState([])
-    useEffect(()=>{
-        axios.get('http://127.0.0.1:3000/api/Claim/getAllClaim')
-        .then((response)=>setClaim(response.data))
-        .catch((err)=>{console.log(err)})
-    },[])
-    console.log('claim',claim)
+export default function BlogPage({claim}) {
+    // const [claim,setClaim]=useState([])
+    // useEffect(()=>{
+    //     axios.get('http://127.0.0.1:3000/api/Claim/getAllClaim')
+    //     .then((response)=>setClaim(response.data))
+    //     .catch((err)=>{console.log(err)})
+    // },[])
+    // console.log('claim',claim)
 
     const POSTS = claim.map((e ) => ({
         id: e.id,

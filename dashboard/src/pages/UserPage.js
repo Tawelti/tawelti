@@ -1,8 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter,sample } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 // @mui
 import {
   Card,
@@ -74,7 +73,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
+export default function UserPage({sellers}) {
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -89,33 +88,22 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [sellers,setSellers]=useState([])
-useEffect(()=>{
-  axios.get('http://127.0.0.1:3000/api/seller/all')
-  .then((response)=>{setSellers(response.data)  }) 
-  .catch((err)=>{console.log(err)})
+//   const [sellers,setSellers]=useState([])
+// useEffect(()=>{
+//   axios.get('http://127.0.0.1:3000/api/seller/all')
+//   .then((response)=>{setSellers(response.data)  }) 
+//   .catch((err)=>{console.log(err)})
   
-},[])
-console.log('farz',sellers)
+// },[])
+console.log('farz',sellers[0].Places[0].type)
 const USERLIST = sellers.map((e) => ({
   id: e.id,
   avatarUrl: e.image,
   name: e.name,
   company: e.email,
   isVerified:e.approved,
-  status: sample(['active', 'banned']),
-  role: sample([
-    'Leader',
-    'Hr Manager',
-    'UI Designer',
-    'UX Designer',
-    'UI/UX Designer',
-    'Project Manager',
-    'Backend Developer',
-    'Full Stack Designer',
-    'Front End Developer',
-    'Full Stack Developer',
-  ]),
+  status: e.Places[0].type,
+  role:e.Places[0].category,
 }));
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -178,7 +166,7 @@ const USERLIST = sellers.map((e) => ({
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User </title>
       </Helmet>
 
       <Container>
@@ -231,7 +219,7 @@ const USERLIST = sellers.map((e) => ({
                         <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                          <Label color={(status === 'normal' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell>
 
                         <TableCell align="right">

@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
+import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
@@ -19,9 +20,20 @@ import {
 
 // ----------------------------------------------------------------------
 
-export default function DashboardAppPage() {
+export default function DashboardAppPage({claim,places,sellers,clients}) {
   const theme = useTheme();
-
+  const [cafes,setCafes]=useState([])
+  const [restaurants,setRestaurants]=useState([])
+  const [lounges,setLounges]=useState([])
+  useEffect(()=>{
+    setCafes(filteredPlace('coffe'))
+    setRestaurants(filteredPlace('Restaurent'))
+    setLounges(filteredPlace('Lounge'))
+  },[places])
+   const filteredPlace = (category) => {
+    return places.filter((e) => e.category ===category);
+  }
+  console.log(cafes,restaurants,lounges)
   return (
     <>
       <Helmet>
@@ -35,56 +47,56 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Sellers" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Sellers" total={sellers.length} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title=" Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title=" Users" total={clients.length} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Places" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Places" total={places.length} color="warning" icon={'ant-design:windows-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Claims" total={22} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Claims" total={claim.length} color="error" icon={'ant-design:bug-filled'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
-              subheader="(+43%) than last year"
+              subheader="(+43%) than last month "
               chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/01/2023',
+                '02/01/2023',
+                '03/01/2023',
+                '04/01/2023',
+                '05/01/2023',
+                '06/01/2023',
+                '07/01/2023',
+                '08/01/2023',
+                '09/01/2023',
+                '10/01/2023',
+                '11/01/2023',
               ]}
               chartData={[
                 {
-                  name: 'Team A',
+                  name: 'lounges',
                   type: 'column',
                   fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
+                  data: [23, 11, 22, 27, 13, 22, 30, 21, 30, 22, 30],
                 },
                 {
-                  name: 'Team B',
+                  name: 'Restaurants',
                   type: 'area',
                   fill: 'gradient',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
+                  data: [23, 23, 12, 23, 22, 28, 21, 19, 30, 27, 28],
                 },
                 {
-                  name: 'Team C',
+                  name: 'Cafes',
                   type: 'line',
                   fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                  data: [30, 25, 30, 30, 5, 16, 12, 14, 30, 2, 10],
                 },
               ]}
             />
@@ -92,12 +104,12 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
-              title="Current Visits"
+              title="Category of places"
               chartData={[
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: 'lounges', value: lounges.length },
+                { label: 'Restaurants', value: (restaurants.length) },
+                { label: 'Cafes', value:cafes.length},
+                
               ]}
               chartColors={[
                 theme.palette.primary.main,

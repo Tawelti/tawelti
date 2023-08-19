@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+// import { useEffect, useState } from 'react';
+// import axios from 'axios';
 // @mui
 import { Container,Typography } from '@mui/material';
 // components
@@ -11,14 +11,14 @@ import { ProductList } from '../sections/@dashboard/products';
 
 // ----------------------------------------------------------------------
 
-export default function ProductsPage() {
-const [places,setPlaces]=useState([])
-useEffect(()=>{
-  axios.get('http://127.0.0.1:3000/api/places/getPlaces')
-  .then((respons)=>{setPlaces(respons.data)})
-  .catch((err)=>console.log(err))
+export default function ProductsPage({places}) {
+// const [places,setPlaces]=useState([])
+// useEffect(()=>{
+//   axios.get('http://127.0.0.1:3000/api/places/getPlaces')
+//   .then((respons)=>{setPlaces(respons.data)})
+//   .catch((err)=>console.log(err))
   
-},[])
+// },[])
 const PRODUCTS = places.map(e => ({
   id: e.id,
   cover: e.images,

@@ -61,4 +61,13 @@ updateClientImage:(req,res)=>{
   res.status(500).json(error)
   )
 },
+getAllClients:(req,res)=>{
+  Client.findAll()
+  .then(result =>
+    res.status(201).json(result)
+    )
+   .catch(error=> 
+   res.status(500).json(error)
+   )
+}
 }
