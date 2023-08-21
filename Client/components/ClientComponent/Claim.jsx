@@ -12,27 +12,47 @@ import {
   Image,
 } from "react-native";
 import LogoImage from '../../assets/logo.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Claim() {
-  const navigation = useNavigation();
-
+function Claim({route}) {
+  const navigation = useNavigation()
+  const { idPlace} = route.params;
+  const [idClient, setIdClient] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState("");
 
   useEffect(() => {
+    getemail();
     setModalVisible(true);
+    console.log('jerba',idPlace)
   }, []);
 
-  const addClaim = () => {
-    axios
-      .post("http://192.168.208.127:3000/api/Claim/1/1", { content: text })
-      .then((res) => {
-        alert("Your reclamation has been sent successfully");
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail');
+      if (email) {
+        const response = await axios.get(
+          `http://192.168.11.45:3000/api/client/email/${email}`
+        );
+        console.log(response.data.id);
+        setIdClient(response.data.id);
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
-
+ 
+  const addClaim=()=>{
+    console.log(idClient,idPlace)
+    axios.post(`http://192.168.11.45:3000/api/Claim/${idClient}/${idPlace}`,{content:text})
+    .then (()=>{
+      alert("your reclamation has been send it seccufully")
+      //navigation.goBack()
+    })
+    .catch((err)=>console.log(err))
+  }
   return (
     <View style={styles.container}>
       <Modal

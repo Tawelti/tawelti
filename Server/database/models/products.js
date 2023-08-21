@@ -28,8 +28,16 @@ const Products = sequelize.define('Products', {
   },{ timestamps: false })
 
 
-  Places.hasMany(Products, { foreignKey: 'Places_id' })
-  Products.belongsTo(Places, { foreignKey: 'Places_id' })
+  Places.hasMany(Products, { foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
+  Products.belongsTo(Places, { foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
 
 
 

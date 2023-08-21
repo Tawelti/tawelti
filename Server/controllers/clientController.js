@@ -61,4 +61,27 @@ updateClientImage:(req,res)=>{
   res.status(500).json(error)
   )
 },
+getByEmail: (req, res) => {
+  const { email } = req.params;
+  Client.findOne({ where: { email } })
+    .then((result) => {
+      if (result) {
+        res.json(result);
+      } else {
+        res.status(404).json({ message: 'Client not found' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+},
+getAllClients:(req,res)=>{
+  Client.findAll()
+  .then(result =>
+    res.status(201).json(result)
+    )
+   .catch(error=> 
+   res.status(500).json(error)
+   )
+}
 }

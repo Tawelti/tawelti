@@ -39,10 +39,23 @@ const Seller = sequelize.define('Seller', {
     allowNull: false,
     defaultValue: 0,
   },
+  payed: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 0,
+  },
 },{ timestamps: false });
 
 
-Seller.hasMany(Places , { foreignKey: 'Seller_id' })
-Places.belongsTo(Seller , { foreignKey: 'Seller_id' })
+Seller.hasMany(Places , { foreignKey: {
+  name: 'Seller_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
+Places.belongsTo(Seller , { foreignKey: {
+  name: 'Seller_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
 
 module.exports = { Seller };

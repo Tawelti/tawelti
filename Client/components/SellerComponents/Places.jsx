@@ -2,28 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity , ScrollView} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Places = () => {
-    const navigation = useNavigation();
-
+  const navigation = useNavigation();
+  const [id, setId] = useState(0);
   const [data, setData] = useState([]);
+  const [ref, setRef] = useState(false);
 
   useEffect(() => {
     fetch();
+    getemail();
   }, []);
+
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail');
+      if (email) {
+        const response = await axios.get(
+          `http://192.168.11.45:3000/api/seller/email/${email}`
+        );
+        console.log(response.data);
+        setId(response.data.id);
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetch = () => {
     axios
       .get('http://192.168.234.127:3000/api/places/get/1')
       .then((res) => {
-        console.log("places",res.data);
+        console.log('places', res.data.id);
+        setRef(!ref)
         setData(res.data);
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
-
+      });
+  };
 
   return (
     <View style={styles.scrollContainer}>
@@ -59,6 +79,7 @@ const Places = () => {
         </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

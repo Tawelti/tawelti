@@ -12,7 +12,7 @@ const Drinks = () => {
 
 
     const fetch = () => {
-      axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Drinks") 
+      axios.get("http://192.168.11.45:3000/api/Product/getAll/1/Drinks") 
       .then(res => {
         setData(res.data)
       })

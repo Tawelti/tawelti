@@ -12,7 +12,7 @@ const Chicha = () => {
 
 
     const fetch = () => {
-      axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Chicha") 
+      axios.get("http://192.168.11.45:3000/api/Product/getAll/1/Chicha") 
       .then(res => {
         setData(res.data)
       })

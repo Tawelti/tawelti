@@ -25,7 +25,7 @@ const ProfilePayment = () => {
       try {
         const email = await AsyncStorage.getItem('userEmail')
         if (email) {
-          const response = await axios.get(`http://172.20.10.8:3000/api/seller/email/${email}`);
+          const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
           console.log(response.data);
           console.log(response.data.id);
           setData(response.data);
@@ -40,7 +40,7 @@ const ProfilePayment = () => {
 
 
     const fetch = () => {
-      axios.get(`http://192.168.234.127:3000/api/seller/get/${id}`)
+      axios.get(`http://192.168.11.45:3000/api/seller/get/${id}`)
         .then((res) => {
           console.log(res.data)
           setData(res.data)
@@ -57,39 +57,49 @@ const ProfilePayment = () => {
     setAmount(3500)
   }
   console.log(amount)
-  const pay = (price) => {
-    if (price === 0) {
-      return
+ 
+  const pay = () => {
+    if (amount === 0) {
+      Alert.alert("Choose a Package", "Please choose a package first.")
+      return;
     }
-    axios.post(`http://192.168.234.127:3000/api/payment/pay/${price}`)
+    
+    axios.post(`http://192.168.104.9:3000/api/payment/pay/${amount}`)
       .then((response) => {
         const { paymentIntent } = response.data;
-        console.log(paymentIntent)
-  const initResponse= initPaymentSheet({
-  merchantDisplayName:"Tawelti",
-  paymentIntentClientSecret:paymentIntent,
-})
-console.log(initResponse)
-presentPaymentSheet()
-.then((PaymentResponse) => {
-  if (PaymentResponse.error) {
-    console.log(PaymentResponse.error);
-    alert(
-      `Error code: ${PaymentResponse.error.code}`,
-      PaymentResponse.error.message
-    )
-  } else {
-    alert(
-      "Payment Successful",
-      "Your payment has been processed successfully!"
-    )
-    navigation.navigate("Profil")
-  }
-})
-.catch((error) => {
-  console.log(error);
-});
-})
+        
+        const initResponse = initPaymentSheet({
+          merchantDisplayName: "Tawelti",
+          paymentIntentClientSecret: paymentIntent,
+        });
+
+        presentPaymentSheet()
+          .then((PaymentResponse) => {
+            if (PaymentResponse.error) {
+              console.log(PaymentResponse.error);
+              Alert.alert(
+                `Error code: ${PaymentResponse.error.code}`,
+                PaymentResponse.error.message
+              );
+            } else {
+              // Payment successful, call your backend API to mark the seller as paid
+              axios.get(`http://192.168.104.9:3000/api/seller/payed/${id}`)
+                .then(() => {
+                  Alert.alert(
+                    "Payment Successful",
+                    "Your payment has been processed successfully!  ."
+                  );
+                  navigation.navigate("Profil");
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
       .catch((error) => {
         console.log(error);
       });

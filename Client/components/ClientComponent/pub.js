@@ -57,10 +57,8 @@ const styles = StyleSheet.create({
     },
     text: {
       fontSize: 15,
-      fontFamily: 'Poppins',
       fontWeight: '700',
       lineHeight: 26,
-      wordWrap: 'break-word',
       marginTop : -50
     },
     largeText: {

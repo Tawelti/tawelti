@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Cloud from '../SellerComponents/Cloud';
+import CloudUpload from '../SellerComponents/Cloud';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 const SignUpScreen = () => {
@@ -25,6 +25,7 @@ const SignUpScreen = () => {
   }
   
   const handleSignUp = async () => {
+    console.log(handleSignUp);
     try {
       let registrationData = {
         name,
@@ -36,7 +37,7 @@ const SignUpScreen = () => {
         registrationData.patentimage = patente
       }
 
-      const endpoint = userType === 'seller' ? 'http://192.168.234.127:3000/api/seller/register' : 'http://192.168.234.127:3000/api/client/register';
+      const endpoint = userType === 'seller' ? 'http://192.168.0.4:3000/api/seller/register' : 'http://192.168.0.4:3000/api/client/register';
 console.log(registrationData)
       const response = await axios.post(endpoint, registrationData)
 
@@ -136,15 +137,15 @@ console.log(registrationData)
 
               {userType === 'seller' && (
                 <View>
-                  {showUploadButton && (
-                    <View style={styles.uploadContainer}>
-                      <Cloud
-                        buttonStyle={styles.uploadButton}
-                        setImage={setPatente}
-                        buttonText={patente ? 'Patent Image Uploaded' : 'Select Patent Image'}
-                      />
-                    </View>
-                  )}
+                {showUploadButton && (
+  <View style={styles.uploadContainer}>
+    <CloudUpload
+      buttonStyle={styles.uploadButton}
+      setImage={setPatente}
+      buttonText={patente ? 'Patent Image Uploaded' : 'Select Patent Image'}
+    />
+  </View>
+)}
 
                   <View style={styles.button2}>
                   <Text style={styles.buttonText} onPress={() => handleSignUp()}>Sign up</Text>

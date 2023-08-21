@@ -2,6 +2,7 @@ const {Seller}= require('../database/models/seller')
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Places } = require('../database/models/places');
 module.exports= {
   register: async (req, res) => {
     try {
@@ -65,6 +66,60 @@ getByEmail: (req, res) => {
     .catch((err) => {
       res.status(500).send(err);
     });
+},
+markAsPayed: async (req, res) => {
+  const sellerId = req.params.id;
+
+  try {
+    // Find the seller by ID
+    const seller = await Seller.findByPk(sellerId);
+
+    if (!seller) {
+      return res.status(404).json({ message: 'Seller not found' });
+    }
+
+    
+    seller.payed = 1;
+    await seller.save();
+
+    res.status(200).json({ message: 'Seller marked as payed', seller });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+},
+
+getAll:(req,res)=>{
+  Seller.findAll({
+    include:[
+      {
+        model:Places,
+        attributes:['id','name','images','phone','patentimage','approved','category','type']
+      }
+    ]
+  })
+  .then((result) => {
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(404).json({ message: 'Seller not found' });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
+},
+acceptSeller:(req,res)=>{
+  const Updated = {
+    approved:1
+    }
+  Seller.update(Updated , {where:{id:req.params.id}})
+  .then(result =>
+   res.status(201).json(result)
+   )
+  .catch(error=> 
+  res.status(500).json(error)
+  )
 },
 
 }

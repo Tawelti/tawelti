@@ -24,6 +24,10 @@ const Menu = sequelize.define('Menu', {
 
 }, { timestamps: false });
 
-Places.hasMany(Menu , {foreignKey: 'Places_id'})
+Places.hasMany(Menu , {foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
 
 module.exports = Menu;

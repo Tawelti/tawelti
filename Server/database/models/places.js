@@ -65,12 +65,29 @@ const Places = sequelize.define('Places', {
   
 
 
-Places.hasMany(  Favorite ,  { foreignKey : "Places_id"})
-Favorite.belongsTo( Places, {foreignKey : "Places_id"})
+Places.hasMany(  Favorite ,  { foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
+Favorite.belongsTo( Places, {foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
 
 
-Client.belongsToMany(Places, { through: 'ClientPlaces', foreignKey: 'Client_id' });
-Places.belongsToMany(Client, { through: 'ClientPlaces', foreignKey: 'Place_id' });
+
+Client.belongsToMany(Places, { through: 'ClientPlaces', foreignKey: {
+  name: 'Client_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
+Places.belongsToMany(Client, { through: 'ClientPlaces', foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}});
 
 
 

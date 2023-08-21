@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TextInput , But
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Places from './Places';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profil = () => {
   
@@ -17,9 +18,30 @@ const Profil = () => {
 
   
   
+    useEffect(() => {
+      fetch()
+      getemail()
+    }, [])
+  
+    const getemail = async () => {
+      try {
+        const email = await AsyncStorage.getItem('userEmail')
+        if (email) {
+          const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
+          console.log(response.data);
+          console.log(response.data.id);
+          setId(response.data.id)
+        } else {
+          console.log('User email not found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
 
     const fetch = () => {
 
+      axios.get(`http://192.168.11.45:3000:3000/api/seller/get/${id}`)
       axios.get('http://192.168.234.127:3000/api/seller/get/1')
         .then((res) => {
           console.log(res.data[0])
@@ -35,6 +57,7 @@ const Profil = () => {
     }, [])
   
     const updateProfile = (name , email) => {
+      axios.put(`http://192.168.11.45:3000:3000/api/seller/update/${id}`, {
       axios.put('http://192.168.234.127:3000/api/seller/update/1', {
           name: name,
           email: email,
@@ -43,7 +66,6 @@ const Profil = () => {
         .then((res) => {
           setRefresh(!refresh)
          fetch()
-          console.log("here");
           console.log(res)
         })
         .then((err) => {
@@ -51,6 +73,7 @@ const Profil = () => {
         });
     };
     const updateProfileImage = (name , email) => {
+      axios.put(`http://192.168.11.45:3000/api/seller/updateImage/${id}`, {
       axios.put('http://192.168.234.127/api/seller/updateImage/1', {
           name: name,
           email: email,
@@ -269,7 +292,6 @@ width : "100%" ,
     marginTop: 2,
     color: '#757575',
     fontSize: 12,
-    fontFamily: 'Hanuman',
     fontWeight: '400',
   },
 
@@ -397,7 +419,6 @@ width : "100%" ,
   dayText: {
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'Titillium Web',
     fontWeight: '700',
     letterSpacing: 0.28,
   },

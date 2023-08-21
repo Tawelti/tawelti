@@ -23,7 +23,7 @@ const FoodSeller = () => {
 
 
   const fetch = () => {
-    axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Food") 
+    axios.get(`http://192.168.11.45:3000/api/Product/getAll/${id}/Food`) 
     .then(res => {
       setData(res.data)
     })
@@ -64,7 +64,7 @@ fetch()
 },[])
 
 const AddProduct = (productname , price , Immage) => {
-  axios.post('http://192.168.169.127:3000/api/Product/create/1/Food', {
+  axios.post(`http://192.168.11.45:3000/api/Product/create/${id}/Food`, {
     productname: productname,
     price: price,
     Immage : Immage   

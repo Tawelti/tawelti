@@ -3,9 +3,6 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Modal  , I
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-
-
-
 const Dessert = () => {
 
   const navigation = useNavigation()
@@ -17,23 +14,25 @@ const Dessert = () => {
   const fetch = () => {
       axios.get("http://192.168.169.127:3000/api/Product/getAll/1/Dessert") 
       .then(res => {
-        setData(res.data)
+        setData(res.data);
       })
       .catch(err => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
+
   const createOrder = (productId) => {
     const Order = {
       ClientId: 1,
       Products_id: productId,
-      Reservation_id: 1, 
+      Reservation_id: 1,
       paymentstatus: 'false',
     };
 
+    axios.post("http://192.168.11.45:3000/api/order/create", Order)
     axios.post("http://192.168.234.127:3000/api/order/create", Order)
       .then(response => {
-        console.log(response)
+        console.log(response);
       })
       .catch(error => {
         console.error(error);

@@ -48,10 +48,10 @@ export default function App() {
   <StatusBar style="auto" /> 
    <Stack.Navigator
     screenOptions={{ headerShown: false  }}
-    initialRouteName="ClientProfile"
+    initialRouteName="Loading"
   >
     <Stack.Screen name="Loading" component={LoadingScreen }  />
-    <Stack.Screen name="ProfilePayment" component={ProfilePayment} />
+    <Stack.Screen name="Profile" component={ProfilePayment} /> 
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="SignIN" component={SignInScreen} />

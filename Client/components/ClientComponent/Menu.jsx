@@ -5,14 +5,14 @@ import axios from 'axios';
 
 
 
-const Menu = () => {
+const Menu = ({route}) => {
     const navigation = useNavigation()
     const [data , setData]=useState([])
     const [activeCategory, setActiveCategory] = useState(null);
-    const categories = ['Food', 'Drinks', 'Chicha', 'Dessert'];
-
+    const categories = ['Food', 'Drinks', 'Chicha', 'Dessert'];    const { idd } = route.params;
+console.log(idd,'MenuClient');
     const fetch = () => {
-      axios.get("http://192.168.234.127:3000/api/Product/getAllwhere/2") 
+      axios.get(`http://192.168.11.45:3000/api/Product/getAllwhere/${idd}`) 
       .then(res => {
         setData(res.data)
       })
@@ -28,7 +28,7 @@ const Menu = () => {
       paymentstatus: 'false',
     };
 
-    axios.post("http://192.168.234.127:3000/api/order/create", Order)
+    axios.post("http://192.168.11.45:3000/api/order/create", Order)
       .then(response => {
         console.log(response)
           alert('added to card')

@@ -10,8 +10,10 @@ import {
   Modal,
 } from 'react-native';
 import Ratings from '../../components/ClientComponent/Ratings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+function Comments({route}) {
 const Comments = () => {
   const [data, setData] = useState([]);
   const [text, setText] = useState('');
@@ -21,6 +23,29 @@ const Comments = () => {
   const [userLikedComments, setUserLikedComments] = useState({});
   const [placeImage, setPlaceImage] = useState(''); 
 
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail')
+      if (email) {
+        const response = await axios.get(`http://192.168.11.45:3000/api/client/email/${email}`);
+       console.log(response.data.id);
+        setIddClient(response.data.id)
+      } else {
+        console.log('User email not found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  const fetch =() => {
+    axios.get(`http://192.168.11.45:3000/api/Comments/${id}`)
+    .then(res => {
+      setData(res.data); 
+    })
+    .catch(err => console.log(err));
+  }
+ 
   const fetchComments = () => {
     axios
       .get('http://192.168.234.127:3000/api/Comments/1')
@@ -103,6 +128,15 @@ const Comments = () => {
 
       <FlatList
         data={data}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.container}>
+            <TouchableOpacity onPress={() => {}}>
+              <Image style={styles.image} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }}   />
+            </TouchableOpacity>
+            <View style={styles.content}>
+              <View style={styles.contentHeader}>
+                <Text style={styles.name}>{item. Client.name }</Text>
         renderItem={({ item, index }) => (
           <View style={styles.commentContainer}>
             <Image source={{ uri: item.Client.image }} style={styles.profilePicture} />
@@ -125,6 +159,27 @@ const Comments = () => {
         )}
         keyExtractor={(item) => item.id.toString()}
       />
+      <View style={{position:'absolute',top:580 , left : 60}}>
+       <Ratings client_id={iddClient}/>
+       </View>
+          <View style={{flex:2,flexDirection:'row',marginBottom:120,position:'absolute',top:650}}>
+    
+              <TextInput
+        style={styles.input}
+        placeholder="write your comment here "
+        onChangeText={setText}
+        value={text}
+      />
+        <TouchableOpacity
+              activeOpacity={0.7}
+              
+              onPress={() => postComment()}>
+              <Image
+                style={styles.sendIcon}
+                source={require("../../assets/sendIcon.png")}
+              />
+                
+            </TouchableOpacity>
 
       <View style={styles.commentInputContainer}>
         <View style={styles.commentInputWrapper}>
@@ -294,4 +349,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Comments;
+export default Comments

@@ -1,6 +1,57 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet ,  Animated, Modal , TextInput} from 'react-native';
 import axios from 'axios';
+import Navbar from '../../components/NavBar';
+
+
+const ClentProfile = () => {
+
+    const [data , setData] = useState([])
+    const [isDialogOpen, setDialogOpen] = useState(false)
+    const [nameInput, setNameInput] = useState('')
+    const [emailInput, setEmailInput] = useState('')
+    const [refresh , setRefresh] = useState(false)
+ 
+  
+  
+    useEffect(() => {
+      fetch()
+    }, [])
+  
+    const fetch = () => {
+      axios.get('http://192.168.11.45:3000/api/client/get/1')
+        .then((res) => {
+          console.log(res.data[0])
+          setData(res.data[0]);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+  
+    const updateProfile = (name , email) => {
+      axios.put('http://192.168.11.45:3000/api/client/update/1', {
+          name: name,
+          email: email,
+         
+        })
+        .then((res) => {
+         setRefresh(!refresh)
+         fetch()
+          console.log("here");
+          console.log(res)
+        })
+        .then((err) => {
+          console.log(err);
+        });
+    };
+  
+    const openDialog = () => {
+      setDialogOpen(true);
+    };
+  
+    const closeDialog = () => {
 
 const ClientProfil = () => {
   const [data, setData] = useState([]);

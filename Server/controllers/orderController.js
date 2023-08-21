@@ -4,9 +4,9 @@ const { Products } = require('../database/models/products')
 
 module.exports = {
    createOrder: (req, res) => {
-      const clientId = req.body.ClientId
-      const productId = req.body.Products_id 
-      const reservationId = req.body.Reservation_id
+      const clientId = req.params.ClientId
+      const productId = req.params.Products_id 
+      const reservationId = req.params.Reservation_id
     
       Products.findOne({
         where: { id: productId },
