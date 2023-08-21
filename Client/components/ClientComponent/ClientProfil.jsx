@@ -2,16 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet ,  Animated, Modal , TextInput} from 'react-native';
 import axios from 'axios';
 
-const ClientProfil = () => {
+const PinterestCloneProfile = () => {
   const [data, setData] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [nameInput, setNameInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
-  const [favoritePlaces , setFavoritePlaces] = useState([])
   const fadeAnim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     fetchData();
-    getFavorite()
   }, []);
 
   const fetchData = () => {
@@ -39,18 +37,6 @@ const ClientProfil = () => {
         console.log(err);
       });
   };
-
-
-  const getFavorite = () => {
-    axios.get("http://192.168.234.127:3000/api/Favorite/getAllFavorites/1")
-    .then(res => {
-      console.log(res.data)
-      setFavoritePlaces(res.data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
 
   const openDialog = () => {
     setDialogOpen(true);
@@ -129,7 +115,7 @@ const ClientProfil = () => {
       </Modal>
       <View style={styles.statsContainer}>
   <View style={styles.tabItem}>
-    <Text style={styles.tabText}>Favorites</Text>
+    <Text style={styles.tabText}>Reservations</Text>
   </View>
 </View>
 
@@ -163,7 +149,7 @@ const ClientProfil = () => {
   
 </ScrollView>
 <View style={styles.tabBar}>
-<Text style={styles.tabText}>Reservations</Text>
+<Text style={styles.tabText}>Favorites</Text>
 </View>
 
 <ScrollView contentContainerStyle={styles.pinsContainer} horizontal>
@@ -370,4 +356,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClientProfil;
+export default PinterestCloneProfile;

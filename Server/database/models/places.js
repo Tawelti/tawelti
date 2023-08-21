@@ -1,7 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../configdb');
 
-
 const { Favorite } = require('./Favorite');
 const { Client } = require('./client');
 
@@ -68,7 +67,6 @@ const Places = sequelize.define('Places', {
 
 Places.hasMany(  Favorite ,  { foreignKey : "Places_id"})
 Favorite.belongsTo( Places, {foreignKey : "Places_id"})
-
 
 
 Client.belongsToMany(Places, { through: 'ClientPlaces', foreignKey: 'Client_id' });

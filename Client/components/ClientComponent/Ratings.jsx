@@ -7,7 +7,7 @@ const Ratings = () => {
   const maxRating = [1, 2, 3, 4, 5];
 
   const updateRate=()=>{
-    axios.put(`http://192.168.101.8:3000/api/Comments/1`,{rating:defaultRating})
+    axios.put(`http://192.168.100.12:3000/api/Comments/1`,{rating:defaultRating})
     .then(()=>alert(defaultRating))
     .catch((err)=>console.log(err))
   }
@@ -38,54 +38,33 @@ const Ratings = () => {
     
       <SafeAreaView style={styles.container}>
         <Image source={{uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png'}}/>
-        {/* <Text style={styles.textStyle}>Please rate:</Text> */}
         <CustomRatingBar />
-        {/* <Text style={styles.textStyle}>
-                        {defaultRating+'/'+ maxRating.length}
-              </Text> */}
-
-              <Image source={{uri: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2RPnZYAhkji98gWkSS6yuNFYPxxiszp85YrR04OsLB8zoqqBz"}}
-            //   onError={(error) => console.log('Image loading error:', error)}
-            />
-            
+        <Image source={{uri: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2RPnZYAhkji98gWkSS6yuNFYPxxiszp85YrR04OsLB8zoqqBz"}} />      
       </SafeAreaView>
-   
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     padding: 5,
     justifyContent:'flex-start',
     alignItems: 'center',
-    
     borderRadius:10,
-  //  backgroundColor:'red',
-  //  height:100,
-  //  padding:-100
   marginTop:-20
   },
 
   CustomRatingBarStyle: {
-    // justifyContent: 'center',
     padding:10,
     flexDirection: 'row',
-    marginTop: 30,
+    marginTop: 15,
     backgroundColor: 'white',
     borderRadius: 50,
     shadowColor: '#000',
-    // shadowOffset: {
-    //     width: 2,
-    //     height: 2,
-    //   },
-    //   shadowOpacity: 0.25,
-    //   shadowRadius: 3.84,
       elevation: 8,
   },
   starImgStyle: {
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
     resizeMode: 'cover',
   },
 

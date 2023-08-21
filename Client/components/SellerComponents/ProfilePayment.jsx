@@ -1,13 +1,15 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, TextInput , Button, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Image, Text, TouchableOpacity, StyleSheet, ImageBackground , Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useStripe } from '@stripe/stripe-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
 const ProfilePayment = () => {
-  const navigation = useNavigation()
+    const navigation = useNavigation()
     const [data , setData] = useState([])
     const [amount,setAmount]=useState(0)
  const {initPaymentSheet,presentPaymentSheet}=useStripe()
@@ -38,7 +40,7 @@ const ProfilePayment = () => {
 
 
     const fetch = () => {
-      axios.get(`http://172.20.10.8:3000/api/seller/get/${id}`)
+      axios.get(`http://192.168.234.127:3000/api/seller/get/${id}`)
         .then((res) => {
           console.log(res.data)
           setData(res.data)
@@ -55,12 +57,11 @@ const ProfilePayment = () => {
     setAmount(3500)
   }
   console.log(amount)
-  const pay = () => {
-    if (amount === 0) {
-      Alert.alert("Choose a Package", "Please choose a package first.")
+  const pay = (price) => {
+    if (price === 0) {
       return
     }
-    axios.post(`http://172.20.10.8:3000/api/payment/pay/${amount}`)
+    axios.post(`http://192.168.234.127:3000/api/payment/pay/${price}`)
       .then((response) => {
         const { paymentIntent } = response.data;
         console.log(paymentIntent)
@@ -73,12 +74,12 @@ presentPaymentSheet()
 .then((PaymentResponse) => {
   if (PaymentResponse.error) {
     console.log(PaymentResponse.error);
-    Alert.alert(
+    alert(
       `Error code: ${PaymentResponse.error.code}`,
       PaymentResponse.error.message
     )
   } else {
-    Alert.alert(
+    alert(
       "Payment Successful",
       "Your payment has been processed successfully!"
     )
@@ -92,222 +93,188 @@ presentPaymentSheet()
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
     return (
-       
-    <View style={styles.container}>
-    <View style={styles.containerCoverture} >
-      <View style={styles.containerImage}>
-        <Image
-         source={{ uri: data.image }}
-          style={styles.image}
-        />
-      </View>
+        
+  <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.header}>
+      <Image source={require('../../assets/logo.png')} style={styles.logo} />
+      <Text style={styles.title}>Tawelti Packages</Text>
+      <Text style={styles.tagline}>choose a package to complete the payment process</Text>
+    </View>
+
+    <ScrollView contentContainerStyle={styles.packageContainer} horizontal>
+      <ImageBackground
+        source={require('../../assets/gold.png')} 
+        style={[styles.package, styles.premiumPackageBackground]}
+        imageStyle={{ borderRadius: 10 }}
+      >
+        <View style={styles.premiumPackageContent}>
+          <Text style={styles.packageTitle}>Tawelti Premium</Text>
+          <View style={styles.features}>
+            <View style={styles.feature}>
+              <Icon name="check" size={16} color="#007bff" />
+              <Text style={styles.featureText}>Featured spot on the home page</Text>
+            </View>
+            <View style={styles.feature}>
+              <Icon name="check" size={16} color="#007bff" />
+              <Text style={styles.featureText}>VIP Listing Status</Text>
+            </View>
+            <View style={styles.feature}>
+              <Icon name="check" size={16} color="#007bff" />
+              <Text style={styles.featureText}>Attract More Clients</Text>
+            </View>
+          </View>
+          <Text style={styles.price}>$50.00/month</Text>
+          <TouchableOpacity style={styles.button} onPress={() => {
+            pay(5000)
+            }}>
+            <Text style={styles.buttonText}>Get Premium</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+
+      <View style={[styles.package, styles.normalPackage]}>
+        <Text style={styles.packageTitle}> Tawelti Normal</Text>
+        <View style={styles.features}>
+          <View style={styles.feature}>
+            <Icon name="check" size={16} color="#333" />
+            <Text style={styles.featureText}>Featured spot on the Category</Text>
+          </View>
+          <View style={styles.feature}>
+            <Icon name="check" size={16} color="#333" />
+            <Text style={styles.featureText}>Basic features</Text>
+          </View>
+        </View>
+        <Text style={styles.price}>$35.00/month</Text>
       
-      <Text style={styles.Username} variant="displayLarge"> {data.name}</Text>
-      <Text style={styles.profileUsername}>{data.email}</Text>
-</View>
+        <TouchableOpacity style={styles.button} onPress={() => {
 
-<View style={styles.AddButton}>
-<Button  title="Pay" onPress={pay}   />
-</View>
-<TouchableOpacity onPress={premuim} >
-<View style={styles.card}>
-<View style={styles.image}>
-<View style={styles.all}>
-<Image
-style={styles.logo}
-source={require("../../components/Image/Tawelti.png")}
-/>
-<Text style={styles.ta}> Tawelti</Text>
-</View>
-<Text style={styles.pre}>Premuim</Text>
-</View>
-<View style={styles.content}>
-<Text style={styles.title}>
-if you chose this package your place will be in the home page so every client will enter to our application will see it  
-</Text>
-</View>
-</View>
-</TouchableOpacity>
-<TouchableOpacity onPress={normale} >
-<View style={styles.cardd}>
-<View style={styles.imagee}>
-<View style={styles.all}>
-<Image
-style={styles.logo}
-source={require("../../components/Image/Tawelti.png")}
-/>
-    <Text style={styles.ta}> Tawelti</Text>
-    </View>
-    <Text style={styles.pre}>Normale</Text>
-    </View>
-    <View style={styles.content}>
-    <Text style={styles.title}>
-    if you chose this package your place will be in the category   
-    </Text>
-    
-    
-    </View>
-    
-    </View>
-    </TouchableOpacity>
-    </View>
-    
-    
-    
-    );
-}
+            pay(3500)
+            }}>
+          <Text style={styles.buttonText}>Get Normal</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
 
+    <View style={styles.footer}>
+      <Text style={{ color: '#000' }}>Privacy Policy | Terms of Use</Text>
+      <Text style={{ color: '#000' }}>Customer Support: tawleti@gmail.com</Text>
+    </View>
+  </ScrollView>
+)
+    }
 const styles = StyleSheet.create({
     container: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-    
-  },
-  containerImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 9999,
-    marginTop: '35%',
-    marginLeft: '38%',
-    overflow: 'hidden',
-    background: 'linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%)',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  Username: {
-    marginTop: '-1%',
-    marginLeft: '38%',
-    color: 'black',
-    fontSize: 20,
-    fontWeight: '400',
-    wordWrap: 'break-word',
-  },
-  profileUsername: {
-    marginTop: '1%',
-    color: '#757575',
-    fontSize: 12,
-    fontFamily: 'Hanuman',
-    fontWeight: '400',
-    marginLeft: '38%',
-  },
-  containerCoverture: {
-    width: '100%',
-    height: '25%',
-    backgroundColor: '#E7AF2F',
-    borderRadius: 40,
-    borderTopRightRadius: 40,
-  },
-                        
-  AddButton : {
-    marginTop : 110
-  },
-  cardd: {
-    maxWidth: 390,
-    maxHeight:230,
-    borderRadius: 0.5,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: {
-      width: 0,
-      height: 1,
+      flex: 1,
+      backgroundColor: '#fff',
     },
-    shadowRadius: 2,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    top:30
-    // Add more card styles as needed
-  },
-  image: {
-    width: '100%',
-    height: 90,
-    backgroundColor: '#E7AF2F',
-    // Add more image styles as needed
-  },
-  content: {
-    padding: 17.6,
-  },
-  title: {
-    color: '#111827',
-    fontSize: 10, 
-    lineHeight: 28, 
-    fontWeight: '600',
-    top:-15
-  },
-  
-  logo:{
-    maxWidth:70,
-    maxHeight:70,
-    marginLeft:20,
-
-  },
-  all:{
-    flexDirection: 'row',
-  },
-  ta:{
-    top:10
-  },
-  pre:{
-      left:95,
-      top:-40,
-  },
-  card: {
-    maxWidth: 390,
-    maxHeight:230,
-    borderRadius: 0.5,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: {
-      width: 0,
-      height: 1,
+    header: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 30,
+      backgroundColor: '#fff',
     },
-    shadowRadius: 2,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    top:20
-    
-    // Add more card styles as needed
-  },
-  imagee: {
-    width: '100%',
-    height: 90,
-    backgroundColor: '#F0F8FF',
-    // Add more image styles as needed
-  },
-  content: {
-    padding: 17.6,
-  },
-  title: {
-    color: '#111827',
-    fontSize: 10, 
-    lineHeight: 28, 
-    fontWeight: '600',
-    top:-15
-  },
-  
-  logo:{
-    maxWidth:70,
-    maxHeight:70,
-    marginLeft:110,
-
-  },
-  all:{
-    flexDirection: 'row',
-  },
-  ta:{
-    top:10
-  },
-  pre:{
-      left:215,
-      top:-40,
-  }
-
-});
+    logo: {
+      width: 150,
+      height: 150,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginTop: 10,
+      color: '#000',
+    },
+    tagline: {
+      fontSize: 18,
+      color: '#000',
+      marginTop: 5,
+      textAlign: 'center',
+    },
+    packageContainer: {
+      flexDirection: 'row',
+      paddingHorizontal: 20,
+    },
+    package: {
+      width: 300,
+      marginRight: 20,
+      padding: 20,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    premiumPackageBackground: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    premiumPackageContent: {
+      padding: 20,
+    },
+    normalPackage: {
+      backgroundColor: '#f5f5f5',
+      padding: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    packageTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: '#000',
+    },
+    features: {
+      marginBottom: 15,
+    },
+    feature: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 5,
+    },
+    featureText: {
+      fontSize: 16,
+      color: '#333',
+      marginLeft: 5,
+    },
+    price: {
+      fontSize: 24,
+      color: 'black',
+      marginTop: 10,
+    },
+    button: {
+      backgroundColor: '#E7AF2F',
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    footer: {
+        marginTop : 30 ,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 20,
+      backgroundColor: '#fff',
+    },
+  })
 
 export default ProfilePayment;
