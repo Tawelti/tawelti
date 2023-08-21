@@ -58,14 +58,14 @@ const Places = () => {
                <View style={styles.actionsContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Reservations')}>
+            onPress={() => navigation.navigate('Reservations' , {id : place.id})}>
             <Text style={styles.buttonText}>Reservations</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.actionsContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('MenuSeller')}>
+            onPress={() => navigation.navigate('MenuSeller' , {id : place.id})}>
             <Text style={styles.buttonText}>Menu</Text>
           </TouchableOpacity>
              </View>

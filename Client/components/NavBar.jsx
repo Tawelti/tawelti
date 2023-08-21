@@ -22,7 +22,7 @@ const Navbar = () => {
         <Text style={styles.navLinkText}>Order</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.navLink}>
-        <Icon name="user" size={25} color="white" onPress={()=>navigation.navigate("ClentProfile")}/>
+        <Icon name="user" size={25} color="white" onPress={()=>navigation.navigate("ClientProfile")}/>
         <Text style={styles.navLinkText}>Profile</Text>
       </TouchableOpacity>
     </View>

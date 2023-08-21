@@ -13,152 +13,153 @@ import Ratings from '../../components/ClientComponent/Ratings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+
 function Comments({route}) {
-const Comments = () => {
-  const [data, setData] = useState([]);
-  const [text, setText] = useState('');
-  const [showSymbolsModal, setShowSymbolsModal] = useState(false);
-  const [selectedSymbol, setSelectedSymbol] = useState('');
-  const [localLikes, setLocalLikes] = useState({});
-  const [userLikedComments, setUserLikedComments] = useState({});
-  const [placeImage, setPlaceImage] = useState(''); 
-
-  const getemail = async () => {
-    try {
-      const email = await AsyncStorage.getItem('userEmail')
-      if (email) {
-        const response = await axios.get(`http://192.168.11.45:3000/api/client/email/${email}`);
-       console.log(response.data.id);
-        setIddClient(response.data.id)
-      } else {
-        console.log('User email not found in AsyncStorage');
+  
+    const [data, setData] = useState([]);
+    const [text, setText] =useState('')
+    const { id } = route.params;
+    const [iddClient,setIddClient]=useState(0)
+    const{Seller_id}=route.params
+  
+    useEffect(() => {
+      getemail()
+      fetch()
+    }, [])
+    const [showSymbolsModal, setShowSymbolsModal] = useState(false);
+    const [selectedSymbol, setSelectedSymbol] = useState('');
+    const [localLikes, setLocalLikes] = useState({});
+    const [userLikedComments, setUserLikedComments] = useState({});
+    const [placeImage, setPlaceImage] = useState(''); 
+  
+    const getemail = async () => {
+      try {
+        const email = await AsyncStorage.getItem('userEmail')
+        if (email) {
+          const response = await axios.get(`http://192.168.11.45:3000/api/client/email/${email}`);
+         console.log(response.data.id);
+          setIddClient(response.data.id)
+        } else {
+          console.log('User email not found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
     }
-  }
-
-  const fetch =() => {
-    axios.get(`http://192.168.11.45:3000/api/Comments/${id}`)
-    .then(res => {
-      setData(res.data); 
-    })
-    .catch(err => console.log(err));
-  }
- 
-  const fetchComments = () => {
-    axios
-      .get('http://192.168.234.127:3000/api/Comments/1')
-      .then((res) => {
-        setData(res.data.comments);
-        setPlaceImage(res.data.placeImage);
+  
+    const fetch =() => {
+      axios.get(`http://192.168.11.45:3000/api/Comments/${id}`)
+      .then(res => {
+        setData(res.data); 
       })
-      .catch((err) => {
-        console.log('Error fetching data:', err);
-      });
-  };
-
-  useEffect(() => {
-    fetchComments();
-  }, []);
-
-  const postComment = () => {
-    axios
-      .post('http://192.168.234.127:3000/api/Comments/1/1/1', {
-        comment: text,
-      }) 
-      .then(() => {
-        fetchComments();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleLikePress = (commentId) => {
-    const updatedLocalLikes = { ...localLikes };
-    const updatedUserLikedComments = { ...userLikedComments };
-
-    if (userLikedComments[commentId]) {
-      updatedLocalLikes[commentId] = Math.max(0, localLikes[commentId] - 1);
-      updatedUserLikedComments[commentId] = false;
-    } else {
-      updatedLocalLikes[commentId] = (localLikes[commentId] || 0) + 1;
-      updatedUserLikedComments[commentId] = true;
+      .catch(err => console.log(err));
     }
-
-    setLocalLikes(updatedLocalLikes);
-    setUserLikedComments(updatedUserLikedComments);
-  };
-
-  const handleAddComment = () => {
-    if (text.trim() === '') {
-      return;
-    }
-    postComment();
-
-    setText('');
-    setSelectedSymbol('');
-  };
-
-  const formatTimeAgo = (commentIndex) => {
-    const currentTime = new Date();
-    const commentTime = new Date(currentTime - commentIndex * 60000);
-
-    const timeDiffInSeconds = Math.floor((currentTime - commentTime) / 1000);
-
-    if (timeDiffInSeconds < 60) {
-      return `${timeDiffInSeconds}s ago`;
-    } else if (timeDiffInSeconds < 3600) {
-      const minutes = Math.floor(timeDiffInSeconds / 60);
-      return `${minutes}m ago`;
-    } else if (timeDiffInSeconds < 86400) {
-      const hours = Math.floor(timeDiffInSeconds / 3600);
-      return `${hours}h ago`;
-    } else {
-      return commentTime.toLocaleString();
-    }
-  };
-
-  const symbols = ['😄', '❤️', '😊', '👍', '🎉', '😆', '😍', '😂', '😇'];
+   
+    const fetchComments = () => {
+      axios
+        .get('http://192.168.234.127:3000/api/Comments/1')
+        .then((res) => {
+          setData(res.data.comments);
+          setPlaceImage(res.data.placeImage);
+        })
+        .catch((err) => {
+          console.log('Error fetching data:', err);
+        });
+    };
+  
+    useEffect(() => {
+      fetchComments();
+    }, []);
+  
+  const postComment=()=>{
+  axios.post(`http://192.168.11.45:3000/api/Comments/${iddClient}/${id}/${Seller_id}`,{comment:text})
+  .then(() => {
+    fetch()
+  })
+  .catch(err => console.log(err));
+  }
+  
+  
+    const handleLikePress = (commentId) => {
+      const updatedLocalLikes = { ...localLikes };
+      const updatedUserLikedComments = { ...userLikedComments };
+  
+      if (userLikedComments[commentId]) {
+        updatedLocalLikes[commentId] = Math.max(0, localLikes[commentId] - 1);
+        updatedUserLikedComments[commentId] = false;
+      } else {
+        updatedLocalLikes[commentId] = (localLikes[commentId] || 0) + 1;
+        updatedUserLikedComments[commentId] = true;
+      }
+  
+      setLocalLikes(updatedLocalLikes);
+      setUserLikedComments(updatedUserLikedComments);
+    };
+  
+    const handleAddComment = () => {
+      if (text.trim() === '') {
+        return;
+      }
+      postComment();
+  
+      setText('');
+      setSelectedSymbol('');
+    };
+  
+    const formatTimeAgo = (commentIndex) => {
+      const currentTime = new Date();
+      const commentTime = new Date(currentTime - commentIndex * 60000);
+  
+      const timeDiffInSeconds = Math.floor((currentTime - commentTime) / 1000);
+  
+      if (timeDiffInSeconds < 60) {
+        return `${timeDiffInSeconds}s ago`;
+      } else if (timeDiffInSeconds < 3600) {
+        const minutes = Math.floor(timeDiffInSeconds / 60);
+        return `${minutes}m ago`;
+      } else if (timeDiffInSeconds < 86400) {
+        const hours = Math.floor(timeDiffInSeconds / 3600);
+        return `${hours}h ago`;
+      } else {
+        return commentTime.toLocaleString();
+      }
+    };
+  
 
   return (
     <View style={styles.container}>
-      <View style={styles.placeImageContainer}>
-        <Image source={{ uri: placeImage }} style={styles.placeImage} />
-      </View>
+    <View style={styles.placeImageContainer}>
+      <Image source={{ uri: placeImage }} style={styles.placeImage} />
+    </View>
 
-      <FlatList
-        data={data}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.container}>
-            <TouchableOpacity onPress={() => {}}>
-              <Image style={styles.image} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }}   />
-            </TouchableOpacity>
-            <View style={styles.content}>
-              <View style={styles.contentHeader}>
-                <Text style={styles.name}>{item. Client.name }</Text>
-        renderItem={({ item, index }) => (
-          <View style={styles.commentContainer}>
-            <Image source={{ uri: item.Client.image }} style={styles.profilePicture} />
-            <View style={styles.commentContent}>
-              <Text style={styles.commenterName}>{item.Client.name}</Text>
-              <View style={styles.commentHeader}>
-                <Text style={styles.commentTime}>{formatTimeAgo(index)}</Text>
-                <TouchableOpacity
-                  style={styles.likeButton}
-                  onPress={() => handleLikePress(item.id)}
-                >
-                  <Text style={styles.likeButtonText}>
-                    {userLikedComments[item.id] ? 'Unlike' : 'Like'} ({localLikes[item.id] || 0})
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.commentText}>{item.comment}</Text>
+    <FlatList
+      data={data}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({ item, index }) => (
+        <View style={styles.commentContainer}>
+          <Image
+            source={{ uri: item.Client.image }}
+            style={styles.profilePicture}
+          />
+          <View style={styles.commentContent}>
+            <Text style={styles.commenterName}>{item.Client.name}</Text>
+            <View style={styles.commentHeader}>
+              <Text style={styles.commentTime}>{formatTimeAgo(index)}</Text>
+              <TouchableOpacity
+                style={styles.likeButton}
+                onPress={() => handleLikePress(item.id)}
+              >
+                <Text style={styles.likeButtonText}>
+                  {userLikedComments[item.id] ? 'Unlike' : 'Like'}{' '}
+                  {`(${localLikes[item.id] || 0})`}
+                </Text>
+              </TouchableOpacity>
             </View>
+            <Text style={styles.commentText}>{item.comment}</Text>
           </View>
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
+        </View>
+      )}
+    />
       <View style={{position:'absolute',top:580 , left : 60}}>
        <Ratings client_id={iddClient}/>
        </View>
@@ -222,8 +223,10 @@ const Comments = () => {
         </View>
       </Modal>
     </View>
+    </View>
   );
-};
+}
+
 
 const styles = StyleSheet.create({
   container: {

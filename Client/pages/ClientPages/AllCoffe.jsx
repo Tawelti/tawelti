@@ -83,15 +83,14 @@ useEffect(() => {
                <View style={styles.actionsContainer}>
                  <TouchableOpacity
                    style={styles.button}
-                   onPress={() => navigation.navigate('PlaceProfil')}>
+                   onPress={() => navigation.navigate('PlaceProfil' , {id : place.id})}>
                    <Text style={styles.buttonText}>Book a table</Text>
                  </TouchableOpacity>
                </View>
              </View>
              
            </View>
-         </View>
-        
+         </View>  
        ))}
        </ScrollView>
        </View>

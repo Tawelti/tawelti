@@ -46,6 +46,50 @@ const Drinks = () => {
   fetch()
   },[])
 
+
+      {/* <View >
+    <View style={{flex:1}}>
+  {data.map((e) => (
+    <View  key={e.id}>
+      <View style={styles.divider}></View>
+      <View style={styles.tabContainer}>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DessertSeller", { id: e.id })}
+          >
+            Dessert
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("FoodSeller", { id: e.id })}
+          >
+            Food
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("ChichaSeller", { id: e.id })}
+          >
+            Chicha
+          </Text>
+        </View>
+        <View style={styles.activeTab}>
+          <Text
+            style={styles.tabText}
+            onPress={() => navigation.navigate("DrinksSeller", { id: e.id })}
+          >
+            Drinks
+          </Text>
+        </View>
+      </View>
+    </View>
+  ))}
+</View> */}
+
   return (
     <View style={styles.container}>
     <ImageBackground source={{uri : "https://imageio.forbes.com/specials-images/imageserve/44377845/UK-NIGHTLIFE/960x0.jpg?height=474&width=711&fit=bounds" }} style={styles.headerBackground}>

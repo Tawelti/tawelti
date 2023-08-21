@@ -6,120 +6,118 @@ import Places from './Places';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profil = () => {
-  
-    const navigation = useNavigation()
-    const [data , setData] = useState([])
-    const [isDialogOpen, setDialogOpen] = useState(false)
-    const [nameInput, setNameInput] = useState('')
-    const [emailInput, setEmailInput] = useState('')
-    const [refresh , setRefresh] = useState(false)
-    const [isLogoutPopupOpen, setLogoutPopupOpen] = useState(false);
-    const fadeAnim = useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation()
+  const [data , setData] = useState([])
+  const [isDialogOpen, setDialogOpen] = useState(false)
+  const [nameInput, setNameInput] = useState('')
+  const [emailInput, setEmailInput] = useState('')
+  const [refresh , setRefresh] = useState(false)
+  const [isLogoutPopupOpen, setLogoutPopupOpen] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  
-  
-    useEffect(() => {
-      fetch()
-      getemail()
-    }, [])
-  
-    const getemail = async () => {
-      try {
-        const email = await AsyncStorage.getItem('userEmail')
-        if (email) {
-          const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
-          console.log(response.data);
-          console.log(response.data.id);
-          setId(response.data.id)
-        } else {
-          console.log('User email not found in AsyncStorage');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+  const [id,setId]=useState(0)
+
+
+
+  useEffect(() => {
+    fetch()
+    getemail()
+  }, [])
+
+  const getemail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('userEmail')
+      if (email) {
+        const response = await axios.get(`http://192.168.11.45:3000/api/seller/email/${email}`);
+        console.log(response.data);
+        console.log(response.data.id);
+        setId(response.data.id)
+      } else {
+        console.log('User email not found in AsyncStorage');
       }
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  }
+  const fetch = () => {
 
-    const fetch = () => {
-
-      axios.get(`http://192.168.11.45:3000:3000/api/seller/get/${id}`)
-      axios.get('http://192.168.234.127:3000/api/seller/get/1')
-        .then((res) => {
-          console.log(res.data[0])
-          setData(res.data[0]);
-          
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    useEffect(() => {
-      fetch()
-    }, [])
-  
-    const updateProfile = (name , email) => {
-      axios.put(`http://192.168.11.45:3000:3000/api/seller/update/${id}`, {
-      axios.put('http://192.168.234.127:3000/api/seller/update/1', {
-          name: name,
-          email: email,
-         
-        })
-        .then((res) => {
-          setRefresh(!refresh)
-         fetch()
-          console.log(res)
-        })
-        .then((err) => {
-          console.log(err);
-        });
-    };
-    const updateProfileImage = (name , email) => {
-      axios.put(`http://192.168.11.45:3000/api/seller/updateImage/${id}`, {
-      axios.put('http://192.168.234.127/api/seller/updateImage/1', {
-          name: name,
-          email: email,
-         
-        })
-        .then((res) => {
-         setRefresh(!refresh)
-         fetch()
-          console.log("here");
-          console.log(res)
-        })
-        .then((err) => {
-          console.log(err);
-        });
-    };
-  
-    const openDialog = () => {
-      setDialogOpen(true);
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    };
-    
-    const closeDialog = () => {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start(() => {
-        setDialogOpen(false);
+    axios.get(`http://192.168.11.45:3000:3000/api/seller/get/${id}`)
+      .then((res) => {
+        console.log(res.data[0])
+        setData(res.data[0]);
+        
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    };
-    
-    const openLogoutPopup = () => {
-      setLogoutPopupOpen(true)
-    };
+  };
+  useEffect(() => {
+    fetch()
+  }, [])
+
+  const updateProfile = (name , email) => {
+    axios.put(`http://192.168.11.45:3000:3000/api/seller/update/${id}`, {
+        name: name,
+        email: email,
+       
+      })
+      .then((res) => {
+        setRefresh(!refresh)
+       fetch()
+        console.log(res)
+      })
+      .then((err) => {
+        console.log(err);
+      });
+  };
+  const updateProfileImage = (name , email) => {
+    axios.put(`http://192.168.11.45:3000/api/seller/updateImage/${id}`, {
+        name: name,
+        email: email,
+       
+      })
+      .then((res) => {
+       setRefresh(!refresh)
+       fetch()
+        console.log("here");
+        console.log(res)
+      })
+      .then((err) => {
+        console.log(err);
+      });
+  };
+
+  const openDialog = () => {
+    setDialogOpen(true);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
   
-    const closeLogoutPopup = () => {
-      setLogoutPopupOpen(false)
-    };
-    const handleEditProfile = () => {
-      console.log(' new name:', nameInput);
-      closeDialog();
-    };
+  const closeDialog = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setDialogOpen(false);
+    });
+  };
+  
+  const openLogoutPopup = () => {
+    setLogoutPopupOpen(true)
+  };
+
+  const closeLogoutPopup = () => {
+    setLogoutPopupOpen(false)
+  };
+  const handleEditProfile = () => {
+    console.log(' new name:', nameInput);
+    closeDialog();
+  };
+  
     
     return (
       <View style={styles.container}>

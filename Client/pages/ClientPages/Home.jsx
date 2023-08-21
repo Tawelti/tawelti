@@ -145,7 +145,6 @@ const HomePage = () => {
 </View>
 
     </ScrollView>
-
     <Navbar/>
     </View>
   );

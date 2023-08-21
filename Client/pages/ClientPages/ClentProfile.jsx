@@ -47,11 +47,7 @@ const ClentProfile = () => {
         });
     };
   
-    const openDialog = () => {
-      setDialogOpen(true);
-    };
-  
-    const closeDialog = () => {
+
 
 const ClientProfil = () => {
   const [data, setData] = useState([]);
@@ -250,7 +246,7 @@ const ClientProfil = () => {
     </ScrollView>   
   );
 };
-
+}
 const styles = StyleSheet.create({
   container: {
     width: '100%',

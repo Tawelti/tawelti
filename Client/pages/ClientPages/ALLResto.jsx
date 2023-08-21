@@ -7,7 +7,9 @@ import Pub from '../../components/ClientComponent/pub';
 import { useNavigation } from '@react-navigation/native';
 
 function ALLResto() {
-const [places,setPlaces]=useState([])
+  const navigation = useNavigation()
+  const [places, setPlaces] = useState([]);
+  const [heartClicked, setHeartClicked] = useState({});
 
   const getPlaces = () => {
     axios
@@ -82,7 +84,7 @@ const [places,setPlaces]=useState([])
               <View style={styles.actionsContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => navigation.navigate('PlaceProfil' )}>
+                  onPress={() => navigation.navigate('PlaceProfil' , {id : place.id} )}>
                   <Text style={styles.buttonText}>Book a table</Text>
                 </TouchableOpacity>
               </View>
