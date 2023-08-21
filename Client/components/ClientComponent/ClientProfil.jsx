@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet ,  Animated, Modal , TextInput} from 'react-native';
 import axios from 'axios';
 
-const PinterestCloneProfile = () => {
+const ClinetProfile = () => {
   const [data, setData] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [nameInput, setNameInput] = useState('');
@@ -356,4 +356,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PinterestCloneProfile;
+export default ClinetProfile;
