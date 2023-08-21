@@ -23,14 +23,38 @@ const Reservation = sequelize.define('Reservation', {
     }
   },{ timestamps: false });
 
-Client.hasMany(Reservation , { foreignKey: 'Client_id' })
-Reservation.belongsTo(Client , { foreignKey: 'Client_id' })
+Client.hasMany(Reservation , { foreignKey: {
+  name: 'Client_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
+Reservation.belongsTo(Client , { foreignKey: {
+  name: 'Client_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
 
-Reservation.hasOne(Order , { foreignKey: 'Reservation_id' } )
-Order.belongsTo(Reservation , { foreignKey: 'Reservation_id' })
+Reservation.hasOne(Order , {foreignKey: {
+  name: 'Reservation_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} } )
+Order.belongsTo(Reservation , {foreignKey: {
+  name: 'Reservation_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
 
 
-Places.hasMany(Reservation , {foreignKey : "Places_id"})
-Reservation.belongsTo(Places , {foreignKey : "Places_id"})
+Places.hasMany(Reservation , {foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
+Reservation.belongsTo(Places , {foreignKey: {
+  name: 'Places_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
 
 module.exports = {Reservation};

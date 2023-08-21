@@ -2,6 +2,7 @@ const {Seller}= require('../database/models/seller')
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Places } = require('../database/models/places');
 module.exports= {
   register: async (req, res) => {
     try {
@@ -89,7 +90,14 @@ markAsPayed: async (req, res) => {
 },
 
 getAll:(req,res)=>{
-  Seller.findAll()
+  Seller.findAll({
+    include:[
+      {
+        model:Places,
+        attributes:['id','name','images','phone','patentimage','approved','category','type']
+      }
+    ]
+  })
   .then((result) => {
     if (result) {
       res.json(result);
@@ -100,6 +108,18 @@ getAll:(req,res)=>{
   .catch((err) => {
     res.status(500).send(err);
   });
-}
+},
+acceptSeller:(req,res)=>{
+  const Updated = {
+    approved:1
+    }
+  Seller.update(Updated , {where:{id:req.params.id}})
+  .then(result =>
+   res.status(201).json(result)
+   )
+  .catch(error=> 
+  res.status(500).json(error)
+  )
+},
 
 }

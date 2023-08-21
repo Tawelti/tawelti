@@ -47,7 +47,15 @@ const Seller = sequelize.define('Seller', {
 },{ timestamps: false });
 
 
-Seller.hasMany(Places , { foreignKey: 'Seller_id' })
-Places.belongsTo(Seller , { foreignKey: 'Seller_id' })
+Seller.hasMany(Places , { foreignKey: {
+  name: 'Seller_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
+Places.belongsTo(Seller , { foreignKey: {
+  name: 'Seller_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} })
 
 module.exports = { Seller };

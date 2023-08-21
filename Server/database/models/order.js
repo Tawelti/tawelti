@@ -26,14 +26,32 @@ const Order = sequelize.define('Order', {
   },{ timestamps: false });
 
 
-Order.hasOne(Tables , { foreignKey: 'Order_id'  })
-Tables.belongsTo(Order , { foreignKey: 'Order_id'  })
+Order.hasOne(Tables , { foreignKey: {
+  name: 'Order_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}  })
+Tables.belongsTo(Order , { foreignKey: {
+  name: 'Order_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}  })
 
 Client.hasMany(Order)
 Order.belongsTo(Client)
 
-Products.hasMany(Order , { foreignKey: 'Products_id'  })
-Order.belongsTo(Products , { foreignKey: 'Products_id'  })
+Products.hasMany(Order , { foreignKey: {
+  name: 'Products_id',  
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}  })
+Order.belongsTo(Products , { foreignKey: {
+  name: 'Products_id',  
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}  })
 
 
 

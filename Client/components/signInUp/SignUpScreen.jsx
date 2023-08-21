@@ -37,7 +37,7 @@ const SignUpScreen = () => {
         registrationData.patentimage = patente
       }
 
-      const endpoint = userType === 'seller' ? 'http://192.168.11.45:3000/api/seller/register' : 'http://192.168.11.45:3000/api/client/register';
+      const endpoint = userType === 'seller' ? 'http://192.168.0.4:3000/api/seller/register' : 'http://192.168.0.4:3000/api/client/register';
 console.log(registrationData)
       const response = await axios.post(endpoint, registrationData)
 

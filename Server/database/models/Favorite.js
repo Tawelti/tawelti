@@ -21,8 +21,16 @@ const Favorite = sequelize.define('Favorite', {
 },{ timestamps: false });
 
 
-Client.hasMany(Favorite, { foreignKey: 'Client_id' });
-Favorite.belongsTo(Client, { foreignKey: 'Client_id' });
+Client.hasMany(Favorite, { foreignKey: {
+  name: 'Client_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
+Favorite.belongsTo(Client, { foreignKey: {
+  name: 'Client_id', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
 
 
 

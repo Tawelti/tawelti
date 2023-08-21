@@ -34,11 +34,31 @@ const Commentes = sequelize.define('Commentes', {
     },
   },{timestamps: false,});
 
-  Client.hasMany(Commentes, { foreignKey: 'Client_id' });
-  Commentes.belongsTo(Client, { foreignKey: 'Client_id' });
+  Client.hasMany(Commentes, { foreignKey: {
+  name: 'Client_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
+  Commentes.belongsTo(Client, { foreignKey: {
+  name: 'Client_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
   
-  Places.hasMany(Commentes, { foreignKey: 'Places_id' });
-  Commentes.belongsTo(Places, { foreignKey: 'Places_id' });
+  Places.hasMany(Commentes, { foreignKey: {
+  name: 'Client_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
+  Commentes.belongsTo(Places, { foreignKey: {
+  name: 'Client_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+} });
 
 
 module.exports = { Commentes };
