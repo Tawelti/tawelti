@@ -1,260 +1,201 @@
-import React  , {useState , useEffect} from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet , ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-
-
-
 const Dessert = () => {
-
-  const navigation = useNavigation()
-  const [data , setData]= useState([])
-
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const categories = ['Food', 'Drinks', 'Chicha', 'Dessert'];
 
   const fetch = () => {
-      axios.get("http://192.168.11.45:3000/api/Product/getAll/1/Dessert") 
+    axios.get("http://192.168.11.45:3000/api/Product/getAll/1/Dessert")
       .then(res => {
-        setData(res.data)
+        setData(res.data);
       })
       .catch(err => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
+
   const createOrder = (productId) => {
     const Order = {
       ClientId: 1,
       Products_id: productId,
-      Reservation_id: 1, 
+      Reservation_id: 1,
       paymentstatus: 'false',
     };
 
     axios.post("http://192.168.11.45:3000/api/order/create", Order)
       .then(response => {
-        console.log(response)
+        console.log(response);
       })
       .catch(error => {
         console.error(error);
       });
   };
 
+  const handleCategory = (category) => {
+    navigation.navigate(category);
+  };
+
   useEffect(() => {
-fetch()
-  },[])
+    fetch();
+  }, []);
+
   return (
+    <ScrollView style={styles.container}>
+      <ImageBackground
+        source={{ uri: "https://imageio.forbes.com/specials-images/imageserve/44377845/UK-NIGHTLIFE/960x0.jpg?height=474&width=711&fit=bounds" }}
+        style={styles.headerBackground}
+      >
+        <View style={styles.headerContent}>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.restaurantName}>Restaurant Name</Text>
+            <Text style={styles.subHeaderText}>Explore our delightful menu</Text>
+          </View>
+        </View>
+      </ImageBackground>
 
-  <View style={styles.containerCategory}>
-<View  style={{flex:1}}>
-  {data.map((e) => (
-    <View key={e.id}>
-      <View style={styles.divider}></View>
-      <View style={styles.tabContainer}>
-        <View style={styles.tab}>
-          <Text
-            style={styles.tabText}
-            onPress={() => navigation.navigate("DessertSeller", { id: e.id })}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.categoryContainer}
+      >
+        {categories.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.categoryButton,
+              activeCategory === category && styles.activeCategory,
+            ]}
+            onPress={() => handleCategory(category)}
           >
-            Dessert
-          </Text>
-        </View>
-        <View style={styles.tab}>
-          <Text
-            style={styles.tabText}
-            onPress={() => navigation.navigate("FoodSeller", { id: e.id })}
-          >
-            Food
-          </Text>
-        </View>
-        <View style={styles.tab}>
-          <Text
-            style={styles.tabText}
-            onPress={() => navigation.navigate("ChichaSeller", { id: e.id })}
-          >
-            Chicha
-          </Text>
-        </View>
-        <View style={styles.activeTab}>
-          <Text
-            style={styles.tabText}
-            onPress={() => navigation.navigate("DrinksSeller", { id: e.id })}
-          >
-            Drinks
-          </Text>
-        </View>
-      </View>
-    </View>
-  ))}
-</View>
-
-      <ScrollView  style={styles.scrollViewContent}>
-        <View style={styles.containeer}>
-          {data.map((el) => (
-            <View key={el.id} style={styles.menuItem}>
-              <Image style={styles.image} source={{ uri: el.image }} />
-              <Text style={styles.itemName}>{el.productname}</Text>
-              <Text style={styles.itemPrice}>${el.price}</Text>
-              <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.addButtonText} onPress={() => {
-                    createOrder(el.id)
-                    alert("added to card")
-                  }}>+</Text>
-              </TouchableOpacity>
-              <View style={styles.dividerMenu}></View>
-            </View>
-            
-          ))}
-        </View> 
+            <Text style={styles.categoryText}>{category}</Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
-  </View>
-);
+
+      <ScrollView style={styles.cardContainer}>
+        {data.map((product) => (
+          <View key={product.id} style={styles.card}>
+            <Image source={{ uri: product.image }} style={styles.cardImage} />
+            <Text style={styles.cardTitle}>{product.productname}</Text>
+            <Text style={styles.cardDescription}>
+              "Discover our exquisite range of delicious dishes that are made with the finest ingredients and a blend of flavors "
+            </Text>
+            <Text style={styles.cardPrice}>${product.price}</Text>
+            <TouchableOpacity style={styles.addButton} onPress={() => {
+              createOrder(product.id);
+              alert("Added to cart");
+            }}>
+              <Text style={styles.addButtonLabel}>Add to Cart</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
-  containeer: {
-    width: '100%',
-    height: '100%',
-  
-  },
-  header: {
-    width: "100%",
-    height: 140,
-    borderRadius: 40,
-    position: 'absolute',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-
-  },
-  headerText: {
-    color: 'black',
-    fontSize: 20,
-    fontFamily: 'Roboto',
-    fontWeight: '800',
-    letterSpacing: 1,
+  container: {
     flex: 1,
-    flexWrap: 'wrap',
+    backgroundColor: 'white',
+    paddingTop: 30,
   },
-  headerImage: {
-    width: "20%",
-    height: "55%",
-    marginRight : "100%"
+  headerBackground: {
+    height: 200,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  menuItem: {
-    width: '90%',
-    height: "10.5%",
-    marginTop : "1%",
-    marginBottom: -55,
-    
-
+  headerContent: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 20,
+    borderRadius: 10,
   },
-  itemName: {
-    fontSize: 20,
-    fontFamily: 'Roboto',
-    fontWeight: '500',
-    color: 'black',
-    marginBottom: 10,
-    marginBottom: 2,
-    flexWrap: 'wrap', 
-    width: '40%', 
-    marginTop : "19%"
+  headerTextContainer: {
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  itemPrice: {
+  restaurantName: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  subHeaderText: {
+    color: 'white',
     fontSize: 18,
-    fontFamily: 'Roboto',
-    fontWeight: '500',
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    height: 50,
+    marginTop: 10,
+    borderBottomColor: '#E5E5E5',
+  },
+  categoryButton: {
+    paddingHorizontal: 20,
+    marginRight: 20,
+  },
+  activeCategory: {
+    backgroundColor: '#E7AF2F',
+  },
+  categoryText: {
     color: 'black',
-    marginTop : 10
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cardContainer: {
+    padding: 20,
+  },
+  card: {
+    backgroundColor: 'white',
+    marginBottom: 20,
+    borderRadius: 10,
+    padding: 15,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  cardImage: {
+    width: '100%',
+    height: 150,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  cardDescription: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 5,
+  },
+  cardPrice: {
+    fontSize: 16,
+    color: '#E7AF2F',
   },
   addButton: {
-    width : "24%",
-    backgroundColor: '#20A090',
-    borderRadius: 15,
+    marginTop: 12,
+    backgroundColor: '#E7AF2F',
     paddingVertical: 8,
-    paddingHorizontal: 15,
+    paddingHorizontal: 12,
+    borderRadius: 4,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop : "20%",
-    marginLeft : "73%"
   },
-  addButtonText: {
+  addButtonLabel: {
     color: 'white',
-    fontSize: 16,
-    fontFamily: 'Roboto',
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
-  image: {
-    width: 202,
-    height: 206,
-    left: "17%",
-    top: "9%",
-    position: 'absolute',
-    marginLeft:"25%",
-    borderRadius : 15
-  },
-  containerCategory: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#FCFAF9',  
-  },
-  divider: {
-    width: 320,
-    height: StyleSheet.hairlineWidth,
-    left: 29,
-    top: 90,
-    position: 'absolute',
-    borderColor: '#AAAAAA',
-    borderWidth: 0.5,
-  },
-  tabContainer: {
-  width: "100%",
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: 25,
-  },
-  tab: {
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    display: 'flex',
-    borderBottomColor: 'transparent',
-    borderBottomWidth: 2
-  },
-  tabText: {
-    color: '#313131',
-    fontSize: 19,
-    fontStyle: 'italic',
-    fontWeight: '500',
-    flexWrap: 'wrap',
-  },
-  activeTab: {
-    flex: 1, 
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activeTabText: {
-    color: '#E7AF2F',
-    fontSize: 19,
-    fontStyle: 'italic',
-    fontWeight: '700',
-    flexWrap: 'wrap',
-  },
-  containeer : {
-    flexDirection: 'row', 
-    flexWrap: 'wrap',  
-    justifyContent: 'space-between', 
-    paddingHorizontal: 16, 
-  },
-  dividerMenu : {
-        width: "100%",
-        height: "0.5%",
-        top: 260,
-        position: 'absolute',
-        backgroundColor: '0.50px rgba(231, 175, 47, 0.75) solid'
-  }
 });
 
 export default Dessert;

@@ -1,16 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 import {
-  Button,
   Modal,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
+  Image,
 } from "react-native";
+import LogoImage from '../../assets/logo.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Claim({route}) {
@@ -53,7 +54,7 @@ function Claim({route}) {
     .catch((err)=>console.log(err))
   }
   return (
-    <View style={styles.centeredView}>
+    <View style={styles.container}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -63,65 +64,66 @@ function Claim({route}) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Send your claim to the admin!</Text>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Image source={LogoImage} style={styles.logo} />
 
-            <View>
-              <TextInput
-                style={styles.textArea}
-                multiline
-                numberOfLines={5} // Set the initial number of lines you want to display
-                placeholder="Type your text here..."
-                onChange={setText}
-                value={text}
-                onChangeText={setText}
-              />
+            <Text style={styles.modalTitle}>Send Your Claim to the Admin</Text>
+
+            <TextInput
+              style={styles.textInput}
+              multiline
+              numberOfLines={5}
+              placeholder="Type your text here..."
+              onChangeText={setText}
+              value={text}
+            />
+
+            <View style={styles.buttonContainer}>
+              <Pressable
+                style={[styles.button, styles.cancelButton]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                  navigation.navigate("PlaceProfil");
+                }}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.sendButton]}
+                onPress={() => {
+                  addClaim();
+                  navigation.navigate("PlaceProfil");
+                }}
+              >
+                <Text style={styles.buttonText} >Send</Text>
+              </Pressable>
             </View>
-                    <View style={{flexDirection: 'row'}} >
-                    <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => 
-                    {
-                    setModalVisible(!modalVisible)
-                    navigation.navigate("PlaceProfil",{id:idPlace})
-                     } }
-                    >
-                    <Text style={styles.textStyle}>Cancel</Text>
-                    </Pressable>
-                    <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => 
-            
-                   { 
-                    addClaim()
-                    navigation.navigate("PlaceProfil",{id:idPlace})
-                    
-                   }}
-                    >
-                    <Text style={styles.textStyle}>Send</Text>
-                    </Pressable>
-                    </View>
           </View>
         </View>
       </Modal>
-  
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  centeredView: {
-    //   flex: 1,
+  container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 180,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
+  modalContent: {
+    width: "90%",
+    backgroundColor: "#ffffff",
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -132,34 +134,52 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2,
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-    margin:8
-  },
-  textStyle: {
-    color: "white",
+  modalTitle: {
+    fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 20,
     textAlign: "center",
+    color: "#333",
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
-  textArea: {
+  textInput: {
     width: "100%",
-    borderColor: "gray",
+    height: 120,
+    borderColor: "#ddd",
     borderWidth: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius:10
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginBottom: 20,
+    color: "#333",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  button: {
+    flex: 1,
+    borderRadius: 10,
+    padding: 12,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  cancelButton: {
+    backgroundColor: '#E7AF2F',
+  },
+  sendButton: {
+    backgroundColor: '#E7AF2F',
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
+
 export default Claim;

@@ -2,7 +2,23 @@ const {Commentes}= require('../database/models/Commentes');
 const { Client } = require('../database/models/client');
 const { Places } = require('../database/models/places');
 
+const getPlaceImageById = (placeId) => {
+  return Places.findByPk(placeId)
+    .then((place) => {
+      if (place) {
+        return place.images;
+      }
+      return null;
+    })
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+};
+
 module.exports= {
+
+  
  createComments : (req , res) => {
    const { comment, rating} = req.body;
    const Client_id = req.params.Client_id;
@@ -17,28 +33,30 @@ module.exports= {
     });
     
  },
- getAllComment:(req,res)=>{
-   const id =req.params.placeId
- 
-   Commentes.findAll({
-      include:[
-         {
-            model:Client,
-            attributes: ['id','name','email','password','image']
-         },
-         {
-            model:Places,
-           where:{id:id}
-         }
-      ]
-   })
-   .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      return res.status(500).send(err);
+ getAllComment: async (req, res) => {
+  const placeId = req.params.placeId;
+
+  try {
+    const placeImage = await getPlaceImageById(placeId);
+    const comments = await Commentes.findAll({
+      where: {
+        Places_id: placeId,
+      },
+      include: [
+        {
+          model: Client,
+          attributes: ['id', 'name', 'email', 'password', 'image'],
+        },
+      ],
     });
- },
+
+    res.status(200).send({ placeImage, comments });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+},
+
  deleteOne:(req,res)=>{
    const id=req.params.commentId
    Commentes.destroy({where:{id:id}})
@@ -67,5 +85,7 @@ module.exports= {
       console.error(err);
       res.status(500).send({ message: 'Error updating rating' });
     });
-}
+},
+
+
 }

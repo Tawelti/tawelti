@@ -1,7 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../configdb');
 
-
 const { Favorite } = require('./Favorite');
 const { Client } = require('./client');
 
