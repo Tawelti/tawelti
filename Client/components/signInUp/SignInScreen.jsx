@@ -16,7 +16,7 @@ const SignInScreen = () => {
   
   const getemail = async () => {
     try {
-      const response = await axios.get(`http://192.168.104.9:3000/api/seller/email/${email}`)
+      const response = await axios.get(`http://192.168.0.4:3000/api/seller/email/${email}`)
       console.log("this the data ",response.data)
       setApproved(response.data.approved)
       console.log("app",response.data.approved);
@@ -32,7 +32,7 @@ const SignInScreen = () => {
   }, [email])
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('http://192.168.104.9:3000/api/login', {
+      const response = await axios.post('http://192.168.0.4:3000/api/login', {
         email,
         password: Password,   
       });

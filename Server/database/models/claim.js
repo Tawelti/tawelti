@@ -19,12 +19,31 @@ const Claim = sequelize.define('Claim', {
   },
 }, { timestamps: false })
 
-Client.hasMany(Claim , {foreignKey : "Client_id"})
-Claim.belongsTo(Client , {foreignKey : "Client_id"})
+Client.hasMany(Claim , { foreignKey: {
+  name: 'Client_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
+Claim.belongsTo(Client , { foreignKey: {
+  name: 'Client_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
 
-Places.hasMany(Claim , {foreignKey : "Places_id"})
-Claim.belongsTo(Places , {foreignKey : "Places_id"})
-
+Places.hasMany(Claim , {foreignKey: {
+  name: 'Places_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
+Claim.belongsTo(Places , {foreignKey: {
+  name: 'Places_id', 
+  allowNull: false, 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE', 
+}})
 
 
 module.exports = Claim;

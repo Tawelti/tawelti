@@ -108,6 +108,18 @@ getAll:(req,res)=>{
   .catch((err) => {
     res.status(500).send(err);
   });
-}
+},
+acceptSeller:(req,res)=>{
+  const Updated = {
+    approved:1
+    }
+  Seller.update(Updated , {where:{id:req.params.id}})
+  .then(result =>
+   res.status(201).json(result)
+   )
+  .catch(error=> 
+  res.status(500).json(error)
+  )
+},
 
 }

@@ -165,7 +165,7 @@ export default function DashboardAppPage({claim,places,sellers,clients}) {
             />
           </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppOrderTimeline
               title="Order Timeline"
               list={[...Array(5)].map((_, index) => ({
@@ -181,7 +181,7 @@ export default function DashboardAppPage({claim,places,sellers,clients}) {
                 time: faker.date.past(),
               }))}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={6} lg={4}>
             <AppTrafficBySite

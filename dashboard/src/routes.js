@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+// import SellerAproved from './pages/SellerAproved';
 
 // ----------------------------------------------------------------------
 
@@ -23,6 +24,7 @@ export default function Router({claim,places,sellers,clients}) {
         { path: 'user', element: <UserPage sellers={sellers} /> },
         { path: 'products', element: <ProductsPage places={places}/> },
         { path: 'blog', element: <BlogPage claim={claim} /> },
+        // { path: 'seller', element: <SellerAproved claim={claim} /> },
       ],
     },
     {

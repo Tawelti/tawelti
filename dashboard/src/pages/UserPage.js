@@ -27,6 +27,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import SellerAproved from './SellerAproved';
 // mock
 // import USERLIST from '../_mock/user';
 
@@ -88,6 +89,9 @@ export default function UserPage({sellers}) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [oneSeller,setOneSeller]=useState(true)
+  const [idSeller,setIdSeller]=useState(null)
+
 //   const [sellers,setSellers]=useState([])
 // useEffect(()=>{
 //   axios.get('http://127.0.0.1:3000/api/seller/all')
@@ -95,16 +99,19 @@ export default function UserPage({sellers}) {
 //   .catch((err)=>{console.log(err)})
   
 // },[])
-console.log('farz',sellers[0].Places[0].type)
+// console.log('farz',sellers[0].Places[0].type)
 const USERLIST = sellers.map((e) => ({
   id: e.id,
   avatarUrl: e.image,
   name: e.name,
   company: e.email,
   isVerified:e.approved,
-  status: e.Places[0].type,
+  status: e.payed,
   role:e.Places[0].category,
 }));
+console.log('gggggggggggggg',sellers)
+const paide = (n) => (n === 1 ? 'paid' : 'not paid');
+// console.log('gggggggggggggg',paide(sellers[0].payed))
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -176,104 +183,107 @@ const USERLIST = sellers.map((e) => ({
           </Typography>
         
         </Stack>
-
-        <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
-
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{company}</TableCell>
-
-                        <TableCell align="left">{role}</TableCell>
-
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-
-                        <TableCell align="left">
-                          <Label color={(status === 'normal' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
+        {oneSeller? (
+           <Card>
+           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+ 
+           <Scrollbar>
+             <TableContainer sx={{ minWidth: 800 }}>
+               <Table>
+                 <UserListHead
+                   order={order}
+                   orderBy={orderBy}
+                   headLabel={TABLE_HEAD}
+                   rowCount={USERLIST.length}
+                   numSelected={selected.length}
+                   onRequestSort={handleRequestSort}
+                   onSelectAllClick={handleSelectAllClick}
+                 />
+                 <TableBody >
+                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                     const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                     const selectedUser = selected.indexOf(name) !== -1;
+ 
+                     return (
+                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                         <TableCell padding="checkbox">
+                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                         </TableCell>
+                           
+                         <TableCell onClick={()=>{setIdSeller(id) 
+                          setOneSeller(false)}} component="th" scope="row" padding="none">
+                           <Stack direction="row" alignItems="center" spacing={2}>
+                             <Avatar alt={name} src={avatarUrl} />
+                             <Typography variant="subtitle2" noWrap>
+                               {name}
+                             </Typography>
+                           </Stack>
+                         </TableCell>
+ 
+                         <TableCell align="left">{company}</TableCell>
+ 
+                         <TableCell align="left">{role}</TableCell>
+ 
+                         <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+ 
+                         <TableCell align="left">
+                           <Label color={(paide(status) === 'not paid' && 'error') || 'success'}>{sentenceCase(paide(status))}</Label>
+                         </TableCell>
+ 
+                         <TableCell align="right">
+                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                             <Iconify icon={'eva:more-vertical-fill'} />
+                           </IconButton>
+                         </TableCell>
+                       </TableRow>
+                     );
+                   })}
+                   {emptyRows > 0 && (
+                     <TableRow style={{ height: 53 * emptyRows }}>
+                       <TableCell colSpan={6} />
+                     </TableRow>
+                   )}
+                 </TableBody>
+ 
+                 {isNotFound && (
+                   <TableBody>
+                     <TableRow>
+                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                         <Paper
+                           sx={{
+                             textAlign: 'center',
+                           }}
+                         >
+                           <Typography variant="h6" paragraph>
+                             Not found
+                           </Typography>
+ 
+                           <Typography variant="body2">
+                             No results found for &nbsp;
+                             <strong>&quot;{filterName}&quot;</strong>.
+                             <br /> Try checking for typos or using complete words.
+                           </Typography>
+                         </Paper>
+                       </TableCell>
+                     </TableRow>
+                   </TableBody>
+                 )}
+               </Table>
+             </TableContainer>
+           </Scrollbar >
+ 
+           <TablePagination
+             rowsPerPageOptions={[5, 10, 25]}
+             component="div"
+             count={USERLIST.length}
+             rowsPerPage={rowsPerPage}
+             page={page}
+             onPageChange={handleChangePage}
+             onRowsPerPageChange={handleChangeRowsPerPage}
+           />
+         </Card>
+        ):(<SellerAproved idSeller={idSeller} setOneSeller={setOneSeller}/>)}
+       
       </Container>
 
       <Popover
